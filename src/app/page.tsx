@@ -1,11 +1,12 @@
-import CampusMap from '@components/campus-map'
+import CampusMap from '@components/campus-map';
+import React from 'react';
 
-const Home = () => {
+const Home: React.FC = () => {
   return (
     <div>
-      <CampusMap/>
+      <CampusMap />
     </div>
-  )
+  );
 }
 
-export default Home
+export default Home;

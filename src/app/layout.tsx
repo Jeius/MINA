@@ -1,6 +1,6 @@
-import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "@styles/globals.css";
+import React from "react";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -9,11 +9,7 @@ export const metadata = {
   description: "MSU-IIT Navigation Aid",
 };
 
-const RootLayout = ({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) => {
+const RootLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   return (
     <html lang="en">
       <body className={inter.className}>{children}</body>
