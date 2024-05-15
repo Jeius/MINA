@@ -21,6 +21,7 @@ const CampusMap = () => {
                 bounds={campusBounds}
                 maxBounds={campusBounds}
                 maxBoundsViscosity={1.0}
+                zoomControl={false}
             >
                 <TileLayer
                     maxZoom={22}
