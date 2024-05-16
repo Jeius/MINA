@@ -1,5 +1,5 @@
-import CampusMap from '@/components/campus-map';
-import Tab from '@/components/bottom-tab';
+import CampusMap from '@/components/ui/campus-map';
+import Tab from '@/components/ui/bottom-tab';
 import React from 'react';
 
 const Home: React.FC = () => {

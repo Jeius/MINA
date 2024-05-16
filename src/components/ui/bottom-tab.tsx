@@ -1,7 +1,7 @@
-"use client"
+"use client";
 
 import { useState } from 'react';
-import { GlassContainer } from './ui/glass-container';
+import { GlassContainer } from './glass-container';
 
 const Tab: React.FC = () => {
     const [selectedTab, setSelectedTab] = useState('Explore');
