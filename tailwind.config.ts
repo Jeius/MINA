@@ -17,6 +17,9 @@ const config: Config = {
         satoshi: ['Satoshi', 'sans-serif'],
         inter: ['Inter', 'sans-serif'],
       },
+      colors: {
+        primary: '#931D23',
+      },
     },
   },
   plugins: [],
