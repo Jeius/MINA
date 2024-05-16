@@ -5,11 +5,8 @@ import React from 'react';
 const Home: React.FC = () => {
     return (
         <div className='flex flex-col h-screen w-screen'>
-            <CampusMap />
-            <Tab>
-                
-            </Tab>
-
+            <CampusMap/>
+            <Tab/>
         </div>
     );
 }

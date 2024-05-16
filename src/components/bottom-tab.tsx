@@ -2,7 +2,6 @@
 
 import { useState } from 'react';
 import { GlassContainer } from './ui/glass-container';
-import clsx from 'clsx';
 
 const Tab: React.FC = () => {
     const [selectedTab, setSelectedTab] = useState('Explore');
@@ -33,45 +32,38 @@ const Tab: React.FC = () => {
     };
 
     return (
-        <GlassContainer height='h-14' className='absolute bottom-0'>
-            <div className='w-auto self-center'>
-                <div
-                    className={clsx(
-                        'absolute top-2 h-10 w-32 bg-primary rounded-full transition-transform duration-300',
-                        getBackgroundClass(selectedTab)
-                    )}
-                />
-                {tabs.map((tabName) => (
-                    <button
-                        key={tabName}
-                        name={tabName}
-                        onClick={() => handleTabClick(tabName)}
-                        className='relative px-4 py-2 z-10 w-32'
-                    >
-                        <div className='flex items-center justify-center'>
-                            <img src={tabIcons[tabName]} alt={tabName}
-                                style={{
-                                    width: '20px',
-                                    height: '20px',
-                                    filter: 'drop-shadow(3px 3px 3px rgba(255, 255, 255, 0.7)) invert(90%)',
-                                    transform: selectedTab == tabName
-                                        ? 'translateX(0)'
-                                        : 'translateX(250%)',
-                                    transition: 'transform 300ms',
-                                }}
-                            />
+        <GlassContainer height='h-14' className='absolute bottom-0 flex items-center p-4'>
+            {tabs.map((tabName) => (
+                <button
+                    key={tabName}
+                    name={tabName}
+                    onClick={() => handleTabClick(tabName)}
+                    className={`relative z-10 w-auto px-4 py-2 rounded-full transition-width duration-200 
+                        ${selectedTab == tabName ? 'bg-primary' : 'bg-transparent'}`}
+                >
+                    <div className='flex items-center justify-around'>
+                        <img src={tabIcons[tabName]} alt={tabName}
+                            style={{
+                                width: '20px',
+                                height: '20px',
+                                filter: 'drop-shadow(3px 3px 3px rgba(255, 255, 255, 0.7)) invert(90%)',
+                                transform: selectedTab == tabName
+                                    ? 'translateX(0)'
+                                    : 'translateX(200%)',
+                                transition: 'transform 300ms',
+                            }}
+                        />
 
-                            <span className={`ml-2 ${selectedTab !== tabName
-                                ? 'opacity-0 transition-opacity duration-200'
-                                : 'opacity-100 transition-opacity duration-200'}
+                        <span className={`ml-1 ${selectedTab !== tabName
+                            ? 'opacity-0 transition-opacity duration-200'
+                            : 'opacity-100 transition-opacity duration-200'}
                                 font-medium`
-                            }>
-                                {tabName}
-                            </span>
-                        </div>
-                    </button>
-                ))}
-            </div>
+                        }>
+                            {tabName}
+                        </span>
+                    </div>
+                </button>
+            ))}
         </GlassContainer>
     );
 };
