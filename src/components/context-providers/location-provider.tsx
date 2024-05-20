@@ -45,7 +45,7 @@ const onError = (error: GeolocationError) => {
     });
 };
 
-const LocationComponent: React.FC<PropsWithChildren> = ({ children }) => {
+const LocationProvider: React.FC<PropsWithChildren> = ({ children }) => {
     useEffect(() => {
         if (!navigator.geolocation) {
             onError({
@@ -71,4 +71,4 @@ const useLocationContext = () => {
 }
 
 
-export { LocationComponent, location, useLocationContext };
+export { LocationProvider, location, useLocationContext };
