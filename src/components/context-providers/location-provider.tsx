@@ -20,32 +20,33 @@ type Location = {
     error: string | null,
 };
 
-const [location, setLocation] = useState<Location | null>(null);
+const Context = createContext<Location | null>(null);
 
-const Context = createContext(location);
-
-const options = {
-    enableHighAccuracy: true,
-    maximumAge: 30000,
-    timeout: 27000,
-};
-
-const onSuccess = (position: GeolocationPosition) => {
-    const { latitude, longitude } = position.coords;
-    setLocation({
-        location: new LatLng(latitude, longitude),
-        error: null,
-    });
-};
-
-const onError = (error: GeolocationError) => {
-    setLocation({
-        location: null,
-        error: `Error: ${error.message}`,
-    });
-};
 
 const LocationProvider: React.FC<PropsWithChildren> = ({ children }) => {
+    const [location, setLocation] = useState<Location | null>(null);
+
+    const options = {
+        enableHighAccuracy: true,
+        maximumAge: 30000,
+        timeout: 27000,
+    };
+    
+    const onSuccess = (position: GeolocationPosition) => {
+        const { latitude, longitude } = position.coords;
+        setLocation({
+            location: new LatLng(latitude, longitude),
+            error: null,
+        });
+    };
+    
+    const onError = (error: GeolocationError) => {
+        setLocation({
+            location: null,
+            error: `Error: ${error.message}`,
+        });
+    };
+
     useEffect(() => {
         if (!navigator.geolocation) {
             onError({
@@ -71,4 +72,4 @@ const useLocationContext = () => {
 }
 
 
-export { LocationProvider, location, useLocationContext };
+export { LocationProvider, useLocationContext };
