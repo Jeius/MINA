@@ -4,6 +4,7 @@ import 'leaflet/dist/leaflet.css';
 import { MapContainer, TileLayer } from 'react-leaflet';
 import { LatLngExpression, LatLngBoundsExpression } from 'leaflet';
 import { PropsWithChildren } from 'react';
+import LocationMarker from './location-marker';
 
 const CampusMap: React.FC = ({ children }: PropsWithChildren<{}>) => {
     const center: LatLngExpression = [8.241530595, 124.243854763];
@@ -16,22 +17,24 @@ const CampusMap: React.FC = ({ children }: PropsWithChildren<{}>) => {
     return (
         <div className='w-full h-full z-0'>
             <MapContainer
-            className='w-full h-full'
-            center={center}
-            zoom={16}
-            scrollWheelZoom={true}
-            minZoom={15}
-            maxZoom={22}
-            maxBounds={campusBounds}
-            maxBoundsViscosity={1.0}
-            zoomControl={false}
-            attributionControl={false}
-        >
-            <TileLayer
+                className='w-full h-full'
+                center={center}
+                zoom={16}
+                scrollWheelZoom={true}
+                minZoom={10}
                 maxZoom={22}
-                url={tileURL}
-            />
-        </MapContainer>
+                maxBounds={campusBounds}
+                maxBoundsViscosity={1.0}
+                zoomControl={false}
+                attributionControl={false}
+            >
+                <TileLayer
+                    maxZoom={22}
+                    url={tileURL}
+                />
+
+                <LocationMarker />
+            </MapContainer>
         </div>
 
     );

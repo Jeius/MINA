@@ -1,6 +1,6 @@
 'use client';
 
-import { LatLng } from 'leaflet';
+import { LatLng, LatLngExpression } from 'leaflet';
 import { useState, useEffect, PropsWithChildren, createContext, useContext } from 'react';
 
 
@@ -16,33 +16,41 @@ type GeolocationError = {
 };
 
 type Location = {
-    location: LatLng | null,
+    position: LatLngExpression | null,
     error: string | null,
 };
 
-const Context = createContext<Location | null>(null);
+const Context = createContext<Location>({
+    position: null,
+    error: null
+});
 
 
 const LocationProvider: React.FC<PropsWithChildren> = ({ children }) => {
-    const [location, setLocation] = useState<Location | null>(null);
+    const [location, setLocation] = useState<Location>({
+        position: null,
+        error: null
+    });
 
     const options = {
         enableHighAccuracy: true,
         maximumAge: 30000,
         timeout: 27000,
     };
-    
+
     const onSuccess = (position: GeolocationPosition) => {
         const { latitude, longitude } = position.coords;
         setLocation({
-            location: new LatLng(latitude, longitude),
+            position: new LatLng(latitude, longitude),
             error: null,
         });
+
+        console.log(`lat: ${latitude}\nlong: ${longitude}`);
     };
-    
+
     const onError = (error: GeolocationError) => {
         setLocation({
-            location: null,
+            position: null,
             error: `Error: ${error.message}`,
         });
     };
