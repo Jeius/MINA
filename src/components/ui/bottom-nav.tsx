@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { GlassContainer } from './glass-container';
 
-const Tab: React.FC = () => {
+const BottomNav: React.FC = () => {
     const [selectedTab, setSelectedTab] = useState('Explore');
 
     const tabs = ['Explore', 'Directions', 'Places'];
@@ -54,7 +54,7 @@ const Tab: React.FC = () => {
                             }}
                         />
 
-                        <span className={`ml-1 ${selectedTab !== tabName
+                        <span className={`ml-1 text-sm ${selectedTab !== tabName
                             ? 'opacity-0 transition-opacity duration-200'
                             : 'opacity-100 transition-opacity duration-200'}
                                 font-medium`
@@ -68,5 +68,5 @@ const Tab: React.FC = () => {
     );
 };
 
-export default Tab;
+export default BottomNav;
 
