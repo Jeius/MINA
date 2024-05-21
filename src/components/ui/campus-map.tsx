@@ -20,7 +20,7 @@ const CampusMap: React.FC = () => {
                 center={center}
                 zoom={16}
                 scrollWheelZoom={true}
-                minZoom={10}
+                minZoom={15}
                 maxZoom={22}
                 maxBounds={campusBounds}
                 maxBoundsViscosity={1.0}
