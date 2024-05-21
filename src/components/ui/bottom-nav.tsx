@@ -21,7 +21,7 @@ const BottomNav: React.FC = () => {
 
 
     return (
-        <GlassContainer height='h-14' className='absolute bottom-0 p-4'>
+        <GlassContainer height='h-max' className='fixed bottom-0 px-4 py-2'>
             {tabs.map((tabName) => (
                 <button
                     key={tabName}
