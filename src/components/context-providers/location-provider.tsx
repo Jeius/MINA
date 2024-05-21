@@ -1,6 +1,6 @@
 'use client';
 
-import { LatLng, LatLngExpression } from 'leaflet';
+import { LatLngExpression } from 'leaflet';
 import { useState, useEffect, PropsWithChildren, createContext, useContext } from 'react';
 
 
@@ -25,6 +25,12 @@ const Context = createContext<Location>({
     error: null
 });
 
+const options = {
+    enableHighAccuracy: true,
+    maximumAge: 30000,
+    timeout: 27000,
+};
+
 
 const LocationProvider: React.FC<PropsWithChildren> = ({ children }) => {
     const [location, setLocation] = useState<Location>({
@@ -32,16 +38,10 @@ const LocationProvider: React.FC<PropsWithChildren> = ({ children }) => {
         error: null
     });
 
-    const options = {
-        enableHighAccuracy: true,
-        maximumAge: 30000,
-        timeout: 27000,
-    };
-
     const onSuccess = (position: GeolocationPosition) => {
         const { latitude, longitude } = position.coords;
         setLocation({
-            position: new LatLng(latitude, longitude),
+            position: [latitude, longitude],
             error: null,
         });
 
@@ -56,16 +56,13 @@ const LocationProvider: React.FC<PropsWithChildren> = ({ children }) => {
     };
 
     useEffect(() => {
-        if (!navigator.geolocation) {
+        if (navigator.geolocation) {
+            navigator.geolocation.watchPosition(onSuccess, onError, options);
+        } else {
             onError({
                 message: 'Geolocation is not supported by your browser'
             });
-            return;
         }
-
-        navigator.geolocation.watchPosition(
-            onSuccess, onError, options,
-        );
     }, []);
 
     return (

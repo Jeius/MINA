@@ -3,10 +3,9 @@
 import 'leaflet/dist/leaflet.css';
 import { MapContainer, TileLayer } from 'react-leaflet';
 import { LatLngExpression, LatLngBoundsExpression } from 'leaflet';
-import { PropsWithChildren } from 'react';
 import LocationMarker from './location-marker';
 
-const CampusMap: React.FC = ({ children }: PropsWithChildren<{}>) => {
+const CampusMap: React.FC = () => {
     const center: LatLngExpression = [8.241530595, 124.243854763];
     const tileURL: string = 'https://jeius.github.io/MSUIIT_raster_tiles/tile/{z}/{x}/{y}.png';
     const campusBounds: LatLngBoundsExpression = [
