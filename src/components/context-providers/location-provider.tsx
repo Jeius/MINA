@@ -28,7 +28,7 @@ const Context = createContext<Location>({
 const options = {
     enableHighAccuracy: true,
     maximumAge: 0,
-    timeout: 5000,
+    timeout: 10000,
 };
 
 
@@ -40,19 +40,19 @@ const LocationProvider: React.FC<PropsWithChildren> = ({ children }) => {
 
     const onSuccess = (position: GeolocationPosition) => {
         const { latitude, longitude } = position.coords;
-        setLocation({
+        setLocation((prevState) => ({
+            ...prevState,
             position: [latitude, longitude],
-            error: null,
-        });
-
+        }));
         console.log(`lat: ${latitude}\nlong: ${longitude}`);
     };
 
     const onError = (error: GeolocationError) => {
-        setLocation({
-            position: null,
+        setLocation((prevState) => ({
+            ...prevState,
             error: `Error: ${error.message}`,
-        });
+        }));
+        console.log(`Error: ${error.message}`);
     };
 
     useEffect(() => {

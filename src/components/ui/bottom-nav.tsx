@@ -31,7 +31,7 @@ const BottomNav: React.FC = () => {
                         ${selectedTab == tabName ? 'bg-primary' : 'bg-transparent'}`}
                 >
                     <div className='flex items-center justify-around'>
-                        <Image src={tabIcons[tabName]} alt={tabName} width={21} height={21}
+                        <Image priority src={tabIcons[tabName]} alt={tabName} width={21} height={21}
                         className='fill-white'
                             style={{
                                 filter: 'drop-shadow(3px 3px 3px rgba(255, 255, 255, 0.7)) invert(90%)',
