@@ -8,7 +8,7 @@ const CampusMap = dynamic(()=> import('@/components/ui/campus-map'), {ssr:false}
 const Home: React.FC = () => {
     return (
         <LocationProvider>
-            <div className='flex flex-col h-screen w-screen'>
+            <div className='flex flex-col h-screen w-screen bg-gray-200'>
                 <CampusMap />
                 <BottomNav />
             </div>

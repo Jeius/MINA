@@ -7,9 +7,9 @@ import Image from 'next/image';
 const tabs = ['Explore', 'Directions', 'Places'];
 
 const tabIcons: { [key: string]: string } = {
-    Explore: '/assets/icons/location.svg',
-    Directions: '/assets/icons/navigate.svg',
-    Places: '/assets/icons/business.svg'
+    Explore: '/assets/icons/explore.svg',
+    Directions: '/assets/icons/directions.svg',
+    Places: '/assets/icons/building.svg'
 };
 
 const BottomNav: React.FC = () => {
@@ -31,7 +31,7 @@ const BottomNav: React.FC = () => {
                         ${selectedTab == tabName ? 'bg-primary' : 'bg-transparent'}`}
                 >
                     <div className='flex items-center justify-around'>
-                        <Image src={tabIcons[tabName]} alt={tabName} width={20} height={20}
+                        <Image src={tabIcons[tabName]} alt={tabName} width={21} height={21}
                         className='fill-white'
                             style={{
                         

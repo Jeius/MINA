@@ -2,10 +2,10 @@
 
 import { Marker, Popup } from "react-leaflet";
 import { useLocationContext } from "../context-providers/location-provider";
-import LocationSVG from '@/components/icons/location-icon'
-import L from "leaflet";
+import {Icon} from 'leaflet';
+import LocationSVG from '@/components/icons/location-icon';
 
-const markerIcon = L.icon({
+const markerIcon = new Icon({
     iconUrl: '/assets/icons/location.svg',
     iconSize: [28, 75],
     iconAnchor: [22, 94],
