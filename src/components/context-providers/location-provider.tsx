@@ -27,8 +27,8 @@ const Context = createContext<Location>({
 
 const options = {
     enableHighAccuracy: true,
-    maximumAge: 30000,
-    timeout: 27000,
+    maximumAge: 0,
+    timeout: 5000,
 };
 
 

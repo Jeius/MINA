@@ -21,7 +21,7 @@ const BottomNav: React.FC = () => {
 
 
     return (
-        <GlassContainer height='h-14' className='absolute bottom-0 flex items-center p-4'>
+        <GlassContainer height='h-14' className='absolute bottom-0 p-4'>
             {tabs.map((tabName) => (
                 <button
                     key={tabName}
@@ -34,11 +34,10 @@ const BottomNav: React.FC = () => {
                         <Image src={tabIcons[tabName]} alt={tabName} width={21} height={21}
                         className='fill-white'
                             style={{
-                        
                                 filter: 'drop-shadow(3px 3px 3px rgba(255, 255, 255, 0.7)) invert(90%)',
                                 transform: selectedTab == tabName
                                     ? 'translateX(0)'
-                                    : 'translateX(200%)',
+                                    : 'translateX(150%)',
                                 transition: 'transform 300ms',
                             }}
                         />
