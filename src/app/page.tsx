@@ -1,6 +1,6 @@
 import BottomNav from '@/components/ui/bottom-nav';
 import React from 'react';
-import { LocationProvider } from '@/components/context-providers/location-provider';
+import { LocationProvider } from '@/context-providers/location-provider';
 import dynamic from 'next/dynamic';
 
 const CampusMap = dynamic(()=> import('@/components/ui/campus-map'), {ssr:false})

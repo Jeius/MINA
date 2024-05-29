@@ -1,7 +1,7 @@
 'use client';
 
 import { CircleMarker, Popup } from "react-leaflet";
-import { useLocationContext } from "../context-providers/location-provider";
+import { useLocationContext } from "../../context-providers/location-provider";
 import {Icon} from 'leaflet';
 
 const markerIcon = new Icon({
