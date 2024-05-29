@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { GlassContainer } from './glass-container';
+import { motion, AnimatePresence } from "framer-motion"
 import Image from 'next/image';
 
 const tabs = ['Explore', 'Directions', 'Places'];
@@ -21,35 +22,38 @@ const BottomNav: React.FC = () => {
 
 
     return (
-        <GlassContainer height='h-max' className='fixed bottom-0 px-4 py-2'>
+        <GlassContainer height='h-max' className='fixed bottom-0 py-3'>
             {tabs.map((tabName) => (
                 <button
-                    key={tabName}
+                    key={`button:${tabName}`}
                     name={tabName}
                     onClick={() => handleTabClick(tabName)}
-                    className={`relative z-10 w-auto px-4 py-2 rounded-full transition-width duration-200 
-                        ${selectedTab == tabName ? 'bg-primary' : 'bg-transparent'}`}
+                    className={`relative flex w-auto z-10 sm:mx-0 md:mx-1 lg:mx-3 px-5 py-2 rounded-full
+                        ${ selectedTab == tabName ? 'bg-primary' : 'bg-transparent' }`
+                    }
                 >
-                    <div className='flex items-center justify-around'>
-                        <Image priority src={tabIcons[tabName]} alt={tabName} width={21} height={21}
-                        className='fill-white'
-                            style={{
-                                filter: 'drop-shadow(3px 3px 3px rgba(255, 255, 255, 0.7)) invert(90%)',
-                                transform: selectedTab == tabName
-                                    ? 'translateX(0)'
-                                    : 'translateX(150%)',
-                                transition: 'transform 300ms',
-                            }}
-                        />
+                    <Image priority
+                        src={tabIcons[tabName]}
+                        alt={tabName}
+                        width={21}
+                        height={21}
+                        className='fill-white mr-2'
+                        style={{
+                            filter: 'drop-shadow(3px 3px 3px rgba(255, 255, 255, 0.7)) invert(90%)',
+                        }}
+                    />
 
-                        <span className={`ml-1 text-sm ${selectedTab !== tabName
-                            ? 'opacity-0 transition-opacity duration-200'
-                            : 'opacity-100 transition-opacity duration-200'}
-                                font-medium`
-                        }>
-                            {tabName}
-                        </span>
-                    </div>
+                    <AnimatePresence>
+                        <motion.span
+                            key={`buttonTitle:${selectedTab}`}
+                            initial={{ opacity: 0, width: 0, }}
+                            animate={{ width: 'auto', opacity: 1, }}
+                            exit={{ opacity: 0, width: 0, }}
+                            className={`text-sm font-medium overflow-clip`}
+                        >
+                            {selectedTab == tabName ? tabName : null}
+                        </motion.span>
+                    </AnimatePresence>
                 </button>
             ))}
         </GlassContainer>
