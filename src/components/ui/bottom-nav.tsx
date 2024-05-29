@@ -4,13 +4,14 @@ import { useState } from 'react';
 import { GlassContainer } from './glass-container';
 import { motion, AnimatePresence } from "framer-motion"
 import Image from 'next/image';
+import { ExploreSVG, DirectionsSVG, PlacesSVG } from './icons';
 
 const tabs = ['Explore', 'Directions', 'Places'];
 
-const tabIcons: { [key: string]: string } = {
-    Explore: '/assets/icons/explore.svg',
-    Directions: '/assets/icons/directions.svg',
-    Places: '/assets/icons/building.svg'
+const tabIcons: { [key: string]: React.ReactNode } = {
+    Explore: <ExploreSVG className='fill-white drop-shadow-lg size-5 mr-2'/>,
+    Directions: <DirectionsSVG className='fill-white drop-shadow-lg size-5 mr-2'/>,
+    Places: <PlacesSVG className='fill-white drop-shadow-lg size-5 mr-2'/>,
 };
 
 const BottomNav: React.FC = () => {
@@ -28,23 +29,14 @@ const BottomNav: React.FC = () => {
                     key={`button:${tabName}`}
                     name={tabName}
                     onClick={() => handleTabClick(tabName)}
-                    className={`relative flex w-auto z-10 sm:mx-0 md:mx-1 lg:mx-3 px-5 py-2 rounded-full
+                    className={`relative flex items-center w-auto z-10 sm:mx-0 md:mx-1 lg:mx-3 px-5 py-2 rounded-full
                         ${ selectedTab == tabName ? 'bg-primary' : 'bg-transparent' }`
                     }
                 >
-                    <Image priority
-                        src={tabIcons[tabName]}
-                        alt={tabName}
-                        width={21}
-                        height={21}
-                        className='fill-white mr-2'
-                        style={{
-                            filter: 'drop-shadow(3px 3px 3px rgba(255, 255, 255, 0.7)) invert(90%)',
-                        }}
-                    />
+                    {tabIcons[tabName]}
 
                     <AnimatePresence>
-                        <motion.span
+                        <motion.div
                             key={`buttonTitle:${selectedTab}`}
                             initial={{ opacity: 0, width: 0, }}
                             animate={{ width: 'auto', opacity: 1, }}
@@ -52,7 +44,7 @@ const BottomNav: React.FC = () => {
                             className={`text-sm font-medium overflow-clip`}
                         >
                             {selectedTab == tabName ? tabName : null}
-                        </motion.span>
+                        </motion.div>
                     </AnimatePresence>
                 </button>
             ))}
