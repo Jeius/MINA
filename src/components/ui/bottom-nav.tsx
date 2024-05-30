@@ -1,10 +1,9 @@
-"use client";
-
-import { useState } from 'react';
+'use client';
 import { GlassContainer } from './glass-container';
 import { motion, AnimatePresence } from "framer-motion"
-import Image from 'next/image';
 import { ExploreSVG, DirectionsSVG, PlacesSVG } from './icons';
+import Link from 'next/link';
+import { useSearchParams } from 'next/navigation';
 
 const tabs = ['Explore', 'Directions', 'Places'];
 
@@ -14,21 +13,15 @@ const tabIcons: { [key: string]: React.ReactNode } = {
     Places: <PlacesSVG className='fill-white drop-shadow-lg size-5 mr-2'/>,
 };
 
-const BottomNav: React.FC = () => {
-    const [selectedTab, setSelectedTab] = useState(tabs[0]);
-
-    const handleTabClick = (tabName: string) => {
-        setSelectedTab(tabName);
-    };
-
+const BottomNav: React.FC= () => {
+    const selectedTab = useSearchParams().get("tab");
 
     return (
         <GlassContainer height='h-max' className='fixed bottom-0 py-3'>
             {tabs.map((tabName) => (
-                <button
+                <Link
                     key={`button:${tabName}`}
-                    name={tabName}
-                    onClick={() => handleTabClick(tabName)}
+                    href={`?tab=${tabName}`}
                     className={`relative flex items-center w-auto z-10 sm:mx-0 md:mx-1 lg:mx-3 px-5 py-2 rounded-full
                         ${ selectedTab == tabName ? 'bg-primary' : 'bg-transparent' }`
                     }
@@ -46,7 +39,7 @@ const BottomNav: React.FC = () => {
                             {selectedTab == tabName ? tabName : null}
                         </motion.div>
                     </AnimatePresence>
-                </button>
+                </Link>
             ))}
         </GlassContainer>
     );
