@@ -11,8 +11,8 @@ const CampusMap: React.FC = ({ children }: PropsWithChildren) => {
     const center: LatLngExpression = [8.241530595, 124.243854763];
     const tileURL: string = 'https://jeius.github.io/MSUIIT_raster_tiles/tile/{z}/{x}/{y}.png';
     const campusBounds: LatLngBoundsExpression = [
-        [8.244424, 124.241822], // Southwest corner
-        [8.238, 124.245358]  // Northeast corner
+        [8.248, 124.239], 
+        [8.233, 124.248]  
     ];
 
     return (
