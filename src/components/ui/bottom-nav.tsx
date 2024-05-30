@@ -1,5 +1,4 @@
 'use client';
-import { GlassContainer } from './glass-container';
 import { motion, AnimatePresence } from "framer-motion"
 import { ExploreSVG, DirectionsSVG, PlacesSVG } from './icons';
 import Link from 'next/link';
@@ -30,7 +29,7 @@ const BottomNav: React.FC= () => {
     const selectedTab = useSearchParams().get("tab") || 'Explore';
 
     return (
-        <GlassContainer height='h-max' className='fixed bottom-0 py-3'>
+        <nav className='fixed bottom-0 py-3 w-full flex justify-center backdrop-blur-md bg-black bg-opacity-80'>
             {tabs.map((tabName) => (
                 <Link
                     key={`button:${tabName}`}
@@ -54,7 +53,7 @@ const BottomNav: React.FC= () => {
                     </AnimatePresence>
                 </Link>
             ))}
-        </GlassContainer>
+        </nav>
     );
 };
 
