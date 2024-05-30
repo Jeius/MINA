@@ -5,6 +5,7 @@ import { MapContainer, TileLayer } from 'react-leaflet';
 import { LatLngExpression, LatLngBoundsExpression } from 'leaflet';
 import LocationMarker from './location-marker';
 import { PropsWithChildren } from 'react';
+import 'leaflet-rotate';
 
 const CampusMap: React.FC = ({ children }: PropsWithChildren) => {
     const center: LatLngExpression = [8.241530595, 124.243854763];
@@ -26,6 +27,9 @@ const CampusMap: React.FC = ({ children }: PropsWithChildren) => {
             maxBoundsViscosity={1.0}
             zoomControl={false}
             attributionControl={false}
+            rotateControl={false}
+            rotate={true}
+            touchRotate={true}
         >
             <TileLayer
                 maxZoom={22}
@@ -39,5 +43,6 @@ const CampusMap: React.FC = ({ children }: PropsWithChildren) => {
 
     );
 }
+
 
 export default CampusMap;
