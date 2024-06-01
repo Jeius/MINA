@@ -1,9 +1,8 @@
 import { Inter } from "next/font/google";
 import "@/styles/globals.css";
 import React from "react";
-import dynamic from "next/dynamic";
+import BottomNav from "@/components/ui/bottom-nav";
 
-const BottomNav = dynamic(() => import('../components/ui/bottom-nav'), { ssr: false })
 
 const inter = Inter({ subsets: ["latin"] });
 
