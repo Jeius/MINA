@@ -1,0 +1,77 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Facility {
+  id         Int      @id @unique @default(autoincrement())
+  name       String
+  categoryId Int
+  nodeId     String
+  Category   Category @relation(fields: [categoryId], references: [id])
+  Node       Node     @relation(fields: [nodeId], references: [id])
+
+  @@map("facilities")
+}
+
+model Room {
+  id         Int     @id @unique @default(autoincrement())
+  name       String
+  floor      Int
+  buildingId Int
+  categoryId Int
+  xCoord     Decimal
+  yCoord     Decimal
+
+  @@map("rooms")
+}
+
+model Category {
+  id       Int        @id @unique @default(autoincrement())
+  name     String
+  Facility Facility[]
+  Node     Node[]
+  Route    Route[]
+  Edge     Edge[]
+
+  @@map("categories")
+}
+
+model Node {
+  id         String     @id @unique
+  geomId     Int
+  categoryId Int
+  xCoord     Decimal
+  yCoord     Decimal
+  Facility   Facility[]
+  Category   Category   @relation(fields: [categoryId], references: [id])
+  EdgeStart  Edge[]     @relation("EdgeStart")
+  EdgeEnd    Edge[]     @relation("EdgeEnd")
+
+  @@map("nodes")
+}
+
+model Edge {
+  id         String   @id @unique
+  geomId     Int
+  categoryId Int
+  startId    String
+  endId      String
+  Category   Category @relation(fields: [categoryId], references: [id])
+  startNode  Node     @relation("EdgeStart", fields: [startId], references: [id])
+  endNode    Node     @relation("EdgeEnd", fields: [endId], references: [id])
+
+  @@map("edges")
+}
+
+model Route {
+  id         Int      @id @unique @default(autoincrement())
+  categoryId Int
+  Category   Category @relation(fields: [categoryId], references: [id])
+
+  @@map("routes")
+}
