@@ -8,24 +8,24 @@ datasource db {
 }
 
 model Facility {
-  id         Int      @id @unique @default(autoincrement())
-  name       String
-  categoryId Int
-  nodeId     String
-  Category   Category @relation(fields: [categoryId], references: [id])
-  Node       Node     @relation(fields: [nodeId], references: [id])
+  id          Int      @id @unique @default(autoincrement())
+  name        String
+  category_id Int
+  node_id     String
+  Category    Category @relation(fields: [category_id], references: [id])
+  Node        Node     @relation(fields: [node_id], references: [id])
 
   @@map("facilities")
 }
 
 model Room {
-  id         Int     @id @unique @default(autoincrement())
-  name       String
-  floor      Int
-  buildingId Int
-  categoryId Int
-  xCoord     Decimal
-  yCoord     Decimal
+  id          Int     @id @unique @default(autoincrement())
+  name        String
+  floor       Int
+  building_id Int
+  category_id Int
+  x_coord     Decimal
+  y_coord     Decimal
 
   @@map("rooms")
 }
@@ -42,36 +42,36 @@ model Category {
 }
 
 model Node {
-  id         String     @id @unique
-  geomId     Int
-  categoryId Int
-  xCoord     Decimal
-  yCoord     Decimal
-  Facility   Facility[]
-  Category   Category   @relation(fields: [categoryId], references: [id])
-  EdgeStart  Edge[]     @relation("EdgeStart")
-  EdgeEnd    Edge[]     @relation("EdgeEnd")
+  id          String     @id @unique
+  geom_id     Int
+  category_id Int
+  x_coord     Decimal
+  y_coord     Decimal
+  Facility    Facility[]
+  Category    Category   @relation(fields: [category_id], references: [id])
+  EdgeStart   Edge[]     @relation("EdgeStart")
+  EdgeEnd     Edge[]     @relation("EdgeEnd")
 
   @@map("nodes")
 }
 
 model Edge {
-  id         String   @id @unique
-  geomId     Int
-  categoryId Int
-  startId    String
-  endId      String
-  Category   Category @relation(fields: [categoryId], references: [id])
-  startNode  Node     @relation("EdgeStart", fields: [startId], references: [id])
-  endNode    Node     @relation("EdgeEnd", fields: [endId], references: [id])
+  id          String   @id @unique
+  geom_id     Int
+  category_id Int
+  start_id    String
+  end_id      String
+  Category    Category @relation(fields: [category_id], references: [id])
+  startNode   Node     @relation("EdgeStart", fields: [start_id], references: [id])
+  endNode     Node     @relation("EdgeEnd", fields: [end_id], references: [id])
 
   @@map("edges")
 }
 
 model Route {
-  id         Int      @id @unique @default(autoincrement())
-  categoryId Int
-  Category   Category @relation(fields: [categoryId], references: [id])
+  id          Int      @id @unique @default(autoincrement())
+  category_id Int
+  Category    Category @relation(fields: [category_id], references: [id])
 
   @@map("routes")
 }
