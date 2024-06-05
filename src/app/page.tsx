@@ -1,5 +1,5 @@
 import React from 'react';
-import { LocationProvider } from '@/context-providers/location-provider';
+import { LocationProvider } from '@/lib/context-providers/location-provider';
 import dynamic from 'next/dynamic';
 import ExploreTab from '@/components/explore-tab';
 

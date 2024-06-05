@@ -1,4 +1,4 @@
-import { cn } from "@/utils/style-merger";
+import { cn } from "@/lib/utils";
 import { HTMLAttributes } from "react";
 
 type Props = HTMLAttributes<HTMLElement>;
