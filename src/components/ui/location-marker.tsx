@@ -1,8 +1,8 @@
 'use client';
 
 import { CircleMarker, Popup } from "react-leaflet";
-import { useLocationContext } from "../../context-providers/location-provider";
-import {Icon} from 'leaflet';
+import { useLocationContext } from "../../lib/context-providers/location-provider";
+import { Icon } from 'leaflet';
 
 const markerIcon = new Icon({
     iconUrl: '/assets/icons/location.svg',
@@ -17,12 +17,12 @@ const LocationMarker: React.FC = () => {
     const location = useLocationContext();
     const position = location.position
 
-    return(
+    return (
         position == null
-        ? <></>
-        : <CircleMarker center={position} radius={8} className="bg-rose-100">
-            <Popup></Popup>
-        </CircleMarker>
+            ? <></>
+            : <CircleMarker center={position} radius={8} className="bg-rose-100">
+                <Popup></Popup>
+            </CircleMarker>
     );
 }
 
