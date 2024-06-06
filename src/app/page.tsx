@@ -5,7 +5,7 @@ import ExploreTab from '@/components/explore-tab';
 import DirectionsTab from '@/components/directions-tab';
 import PlacesTab from '@/components/places-tab';
 
-const CampusMap = dynamic(() => import('@/components/ui/campus-map'), { ssr: false })
+const CampusMap = dynamic(() => import('@/components/campus-map'), { ssr: false })
 
 const tabs: { [key: string]: React.ReactNode } = {
     'Explore': <ExploreTab />,
