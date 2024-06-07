@@ -12,7 +12,7 @@ const SearchField: React.FC<Props> = ({ className, placeholder }) => {
     const textStyle = 'px-3 py-2 text-sm text-white';
     const placeholderStyle = 'placeholder:text-slate-300';
     return (
-        <input placeholder={placeholder} className={
+        <input type="search" placeholder={placeholder} className={
             cn(`${glassStyle} ${outline} ${size} ${textStyle} ${placeholderStyle}`, className)
         } />
     )
