@@ -1,7 +1,6 @@
 import { Inter } from "next/font/google";
 import "@/styles/globals.css";
 import React from "react";
-import BottomNav from "@/components/bottom-nav";
 
 
 const inter = Inter({ subsets: ["latin"] });
@@ -16,7 +15,6 @@ const RootLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     <html lang="en">
       <body className={`relative ${inter.className} text-white`}>
         {children}
-        <footer> <BottomNav /> </footer>
       </body>
     </html>
   );

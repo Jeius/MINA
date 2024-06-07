@@ -1,6 +1,5 @@
-'use client';
+
 import { ExploreSVG, DirectionsSVG, PlacesSVG } from './ui/icons';
-import { useSearchParams } from 'next/navigation';
 import AnimatedButton from "./ui/animated-button";
 
 const tabs: { [key: string]: React.ReactNode } = {
@@ -20,16 +19,18 @@ const isValid = (tab: string | undefined) => {
     }
 }
 
-const BottomNav = () => {
-    const selectedTab = useSearchParams().get("tab") || 'Explore';
 
+const BottomNav = ({ active }: { active: string }) => {
+    const glassStyling = 'backdrop-blur-md bg-black bg-opacity-80';
+    const position = 'fixed bottom-0';
+    const style = 'py-3 w-full flex justify-center';
     return (
-        <nav className='fixed bottom-0 py-3 w-full flex justify-center backdrop-blur-md bg-black bg-opacity-80'>
+        <nav className={`${position} ${style} ${glassStyling}`}>
             {Object.entries(tabs).map(([tabName, icon]) => (
                 <AnimatedButton
                     key={tabName}
                     name={tabName}
-                    active={selectedTab}
+                    active={active}
                     icon={icon}
                 />
             ))}

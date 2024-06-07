@@ -3,7 +3,7 @@
 import 'leaflet/dist/leaflet.css';
 import { MapContainer, TileLayer } from 'react-leaflet';
 import { LatLngExpression, LatLngBoundsExpression } from 'leaflet';
-import LocationMarker from '@/components/ui/location-marker';
+import LocationMarker from '@/components/ui/markers';
 import { PropsWithChildren } from 'react';
 import 'leaflet-rotate';
 
