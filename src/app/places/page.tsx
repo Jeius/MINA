@@ -1,9 +1,7 @@
 import React from 'react'
 
 const PlacesTab = () => {
-    return (
-        <section>PlacesTab</section>
-    )
+    return null;
 }
 
 export default PlacesTab

@@ -14,6 +14,7 @@ export const metadata = {
   description: "MSU-IIT Navigation Aid",
 };
 
+
 const RootLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   return (
     <AppContext>
@@ -32,5 +33,6 @@ const RootLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     </AppContext>
   );
 }
+
 
 export default RootLayout;

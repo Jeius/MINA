@@ -4,11 +4,9 @@ import { Location, getLocation } from './context-providers/location-services';
 
 type App = {
     location?: Location,
-    selectedTab: string,
-    setSelectedTab?: (tab: string) => void,
 }
 
-const Context = createContext<App>({ selectedTab: "Explore" });
+const Context = createContext<App>({});
 
 export const useAppContext = () => {
     return useContext(Context);
@@ -16,7 +14,7 @@ export const useAppContext = () => {
 
 
 const AppContext: React.FC<PropsWithChildren> = ({ children }) => {
-    const [appContext, setAppContext] = useState<App>({ selectedTab: "Explore" });
+    const [appContext, setAppContext] = useState<App>({});
     useEffect(() => {
         setAppContext((prevState) => ({
             ...prevState,
@@ -24,15 +22,8 @@ const AppContext: React.FC<PropsWithChildren> = ({ children }) => {
         }));
     }, []);
 
-    const setSelectedTab = (tab: string) => {
-        setAppContext((prevState) => ({
-            ...prevState,
-            selectedTab: tab,
-        }));
-    };
-
     return (
-        <Context.Provider value={{ ...appContext, setSelectedTab }}>
+        <Context.Provider value={{ ...appContext }}>
             {children}
         </Context.Provider>
     )

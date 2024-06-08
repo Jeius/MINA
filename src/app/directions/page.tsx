@@ -1,9 +1,7 @@
 import React from 'react'
 
 const DirectionsTab = () => {
-    return (
-        <section>DirectionsTab</section>
-    )
+    return null;
 }
 
 export default DirectionsTab
