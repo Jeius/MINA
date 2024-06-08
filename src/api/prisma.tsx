@@ -14,3 +14,19 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 export default prisma;
+
+
+export const search = async (query: string) => {
+    try {
+        const facilities = await prisma.facility.findMany({
+            select: { id: true, name: true },
+            where: { name: query }
+        })
+
+        console.log(facilities);
+
+        return facilities;
+    } catch (error: any) {
+        console.error(error.message);
+    }
+}
