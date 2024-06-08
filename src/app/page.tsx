@@ -1,10 +1,10 @@
 import React from 'react';
-import { LocationProvider } from '@/lib/context-providers/location-provider';
 import dynamic from 'next/dynamic';
 import ExploreTab from '@/components/explore-tab';
 import DirectionsTab from '@/components/directions-tab';
 import PlacesTab from '@/components/places-tab';
 import BottomNav from '@/components/bottom-nav';
+import AppContext from '@/lib/context';
 
 const CampusMap = dynamic(() => import('@/components/campus-map'), { ssr: false })
 
@@ -22,18 +22,16 @@ type Props = {
 const Home = (props: Props) => {
     const selectedTab = props.searchParams?.tab as string || "Explore";
     return (
-        <>
+        <AppContext>
             <main className='relative flex flex-col h-screen w-screen bg-gray-200'>
-                <LocationProvider>
-                    <CampusMap />
-                    {tabs[selectedTab]}
-                </LocationProvider>
+                <CampusMap />
+                {tabs[selectedTab]}
             </main>
 
             <footer>
-                <BottomNav active={selectedTab} />
+                <BottomNav />
             </footer>
-        </>
+        </AppContext>
     );
 }
 

@@ -8,19 +8,8 @@ const tabs: { [key: string]: React.ReactNode } = {
     Places: <PlacesSVG className='fill-white drop-shadow-lg size-5 mr-2' />,
 };
 
-const isValid = (tab: string | undefined) => {
-    switch (tab) {
-        case 'Explore':
-        case 'Directions':
-        case 'Places':
-            return true;
-        default:
-            return false;
-    }
-}
 
-
-const BottomNav = ({ active }: { active: string }) => {
+const BottomNav = () => {
     const glassStyling = 'backdrop-blur-md bg-black bg-opacity-80';
     const position = 'fixed bottom-0';
     const style = 'py-3 w-full flex justify-center';
@@ -30,7 +19,6 @@ const BottomNav = ({ active }: { active: string }) => {
                 <AnimatedButton
                     key={tabName}
                     name={tabName}
-                    active={active}
                     icon={icon}
                 />
             ))}
