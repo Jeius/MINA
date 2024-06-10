@@ -1,5 +1,5 @@
 import { getFacilities } from "@/api/prisma-Fetchers"
-import SearchField from "@/components/ui/search-field";
+import { SearchField } from "@/components/ui/search";
 
 
 

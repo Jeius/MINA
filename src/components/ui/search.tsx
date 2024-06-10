@@ -9,7 +9,7 @@ type Props = HTMLAttributes<HTMLElement> & {
     placeholder?: string,
 };
 
-const SearchField: React.FC<Props> = ({ className, id, placeholder }) => {
+export const SearchField: React.FC<Props> = ({ className, id, placeholder }) => {
     const glassStyle = 'backdrop-blur-md bg-black bg-opacity-70';
     const outline = 'rounded-2xl outline outline-1 outline-slate-100 focus-visible:outline-primary';
     const size = 'w-full h-auto max-w-xl';
@@ -50,5 +50,3 @@ const SearchField: React.FC<Props> = ({ className, id, placeholder }) => {
         </form>
     )
 }
-
-export default SearchField;
