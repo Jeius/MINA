@@ -4,9 +4,11 @@ import { Location, getLocation } from './context-providers/location-services';
 
 type App = {
     location?: Location,
+    searchValue: string,
+    setSearchValue?: (value: string) => void,
 }
 
-const Context = createContext<App>({});
+const Context = createContext<App>({ searchValue: '' });
 
 export const useAppContext = () => {
     return useContext(Context);
@@ -14,7 +16,7 @@ export const useAppContext = () => {
 
 
 const AppContext: React.FC<PropsWithChildren> = ({ children }) => {
-    const [appContext, setAppContext] = useState<App>({});
+    const [appContext, setAppContext] = useState<App>({ searchValue: '' });
     useEffect(() => {
         setAppContext((prevState) => ({
             ...prevState,
@@ -22,8 +24,16 @@ const AppContext: React.FC<PropsWithChildren> = ({ children }) => {
         }));
     }, []);
 
+    const setSearchValue = (value: string) => {
+        setAppContext((prevState) => ({
+            ...prevState,
+            searchValue: value,
+        }));
+    }
+
+
     return (
-        <Context.Provider value={{ ...appContext }}>
+        <Context.Provider value={{ ...appContext, setSearchValue }}>
             {children}
         </Context.Provider>
     )
