@@ -1,6 +1,6 @@
 "use client"
 import React, { PropsWithChildren, createContext, useContext, useEffect, useState } from 'react'
-import { Location, getLocation } from './context-providers/location-services';
+import { Location, getLocation } from './location-services';
 
 type App = {
     location?: Location,
