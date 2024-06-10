@@ -21,15 +21,19 @@ const padding = 'py-2 px-4';
 const iconStyle = 'h-5 w-5 relative ml-2';
 
 export const SearchField: React.FC<Props> = ({ className, id, placeholder }) => {
-    const { searchValue, setSearchValue } = useAppContext();
+    const { searchState, setSearchState } = useAppContext();
 
     const handleClearSearch = () => {
-        if (setSearchValue) setSearchValue('');
+        if (setSearchState) setSearchState({ ...searchState, value: '' });
     };
 
     const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        if (setSearchValue) setSearchValue(event.target.value);
+        if (setSearchState) setSearchState({ ...searchState, value: event.target.value });
     };
+
+    const handleOnFocus = (value: boolean) => {
+        if (setSearchState) setSearchState({ ...searchState, isFocused: value });
+    }
 
     return (
         <form role="search" className={
@@ -38,15 +42,17 @@ export const SearchField: React.FC<Props> = ({ className, id, placeholder }) => 
             <input
                 id={id}
                 type="search"
-                value={searchValue}
+                value={searchState?.value || ''}
                 onChange={handleSearchChange}
+                onFocus={() => handleOnFocus(true)}
+                onBlur={() => handleOnFocus(false)}
                 placeholder={placeholder}
                 className={`w-full h-auto bg-transparent outline-none ${placeholderStyle} ${textStyle} `}
             />
-            {searchValue && (
+            {searchState && (
                 <CancelSVG className={iconStyle} onClick={handleClearSearch} />
             )}
-            {!searchValue && (
+            {!searchState && (
                 <SearchSVG className={iconStyle} />
             )}
         </form>
@@ -54,7 +60,7 @@ export const SearchField: React.FC<Props> = ({ className, id, placeholder }) => 
 }
 
 export const SearchResult: React.FC<Props> = ({ className }) => {
-    const { searchValue } = useAppContext();
+    const { searchState } = useAppContext();
     const [results, setResults] = useState<{ id: number, name: string }[]>([]);
     const [error, setError] = useState<string | null>(null);
 
@@ -66,7 +72,7 @@ export const SearchResult: React.FC<Props> = ({ className }) => {
     useEffect(() => {
         const getResult = async () => {
             try {
-                const response = await fetch(`/api/search?query=${encodeURIComponent(searchValue)}`);
+                const response = await fetch(`/api/search?query=${encodeURIComponent(searchState?.value || '')}`);
                 if (!response.ok) {
                     throw new Error('Failed to fetch search results');
                 }
@@ -77,42 +83,43 @@ export const SearchResult: React.FC<Props> = ({ className }) => {
             }
         };
 
-        if (searchValue) getResult();
+        if (searchState?.value) getResult();
 
-    }, [searchValue])
+    }, [searchState?.value])
 
     if (error)
         return (<li className="place-self-center text-sm">{error}</li>);
 
-    return (searchValue &&
-        <AnimatePresence>
-            <motion.ul
-                initial={{ opacity: 0, height: 0, }}
-                animate={{ height: 'auto', opacity: 1, }}
-                className={
-                    cn(`${scroll} ${scrollbar} ${style} ${size} ${padding} ${dropShadow} ${glassStyle}`, className)
-                }>
-                {results.length !== 0
-                    ? results.map((result) => (
-                        <motion.li
-                            key={result.id}
-                            initial={{ opacity: 0, }}
-                            animate={{ opacity: 1, }}
-                            exit={{ opacity: 0 }}
-                            className={`relative flex items-center min-h-12 text-sm my-1 
+    if (searchState?.isFocused)
+        return (searchState.value &&
+            <AnimatePresence>
+                <motion.ul
+                    initial={{ opacity: 0, height: 0, }}
+                    animate={{ height: 'auto', opacity: 1, }}
+                    className={
+                        cn(`${scroll} ${scrollbar} ${style} ${size} ${padding} ${dropShadow} ${glassStyle}`, className)
+                    }>
+                    {results.length !== 0
+                        ? results.map((result) => (
+                            <motion.li
+                                key={result.id}
+                                initial={{ opacity: 0, }}
+                                animate={{ opacity: 1, }}
+                                exit={{ opacity: 0 }}
+                                className={`relative flex items-center min-h-12 text-sm my-1 
                     rounded-xl bg-primary bg-opacity-90 cursor-pointer ${padding}`}>
-                            {result.name}
-                        </motion.li>
-                    ))
-                    : <motion.li
-                        key="noResults"
-                        initial={{ opacity: 0, height: 0, }}
-                        animate={{ height: 'auto', opacity: 1, }}
-                        exit={{ opacity: 0, height: 0, }}
-                        className="place-self-center text-sm">
-                        No results found
-                    </motion.li>}
-            </motion.ul>
-        </AnimatePresence>
-    );
+                                {result.name}
+                            </motion.li>
+                        ))
+                        : <motion.li
+                            key="noResults"
+                            initial={{ opacity: 0, height: 0, }}
+                            animate={{ height: 'auto', opacity: 1, }}
+                            exit={{ opacity: 0, height: 0, }}
+                            className="place-self-center text-sm">
+                            No results found
+                        </motion.li>}
+                </motion.ul>
+            </AnimatePresence>
+        );
 }
