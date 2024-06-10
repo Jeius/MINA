@@ -4,6 +4,7 @@ import { cn } from "@/lib/utils";
 import { HTMLAttributes, useEffect, useState } from "react";
 import { CancelSVG, SearchSVG } from "./icons";
 import { useAppContext } from "@/lib/context";
+import { AnimatePresence, motion } from "framer-motion";
 
 type Props = HTMLAttributes<HTMLElement> & {
     placeholder?: string,
@@ -20,7 +21,6 @@ const padding = 'py-2 px-4';
 const iconStyle = 'h-5 w-5 relative ml-2';
 
 export const SearchField: React.FC<Props> = ({ className, id, placeholder }) => {
-
     const { searchValue, setSearchValue } = useAppContext();
 
     const handleClearSearch = () => {
@@ -85,16 +85,34 @@ export const SearchResult: React.FC<Props> = ({ className }) => {
         return (<li className="place-self-center text-sm">{error}</li>);
 
     return (searchValue &&
-        <ul className={
-            cn(`${scroll} ${scrollbar} ${style} ${size} ${padding} ${dropShadow} ${glassStyle}`, className)
-        }>
-            {results.length !== 0 ?
-                results.map((result) => (
-                    <li key={result.id} className={`relative flex items-center min-h-12 text-sm my-1 
+        <AnimatePresence>
+            <motion.ul
+                initial={{ opacity: 0, height: 0, }}
+                animate={{ height: 'auto', opacity: 1, }}
+                className={
+                    cn(`${scroll} ${scrollbar} ${style} ${size} ${padding} ${dropShadow} ${glassStyle}`, className)
+                }>
+                {results.length !== 0
+                    ? results.map((result) => (
+                        <motion.li
+                            key={result.id}
+                            initial={{ opacity: 0, }}
+                            animate={{ opacity: 1, }}
+                            exit={{ opacity: 0 }}
+                            className={`relative flex items-center min-h-12 text-sm my-1 
                     rounded-xl bg-primary bg-opacity-90 cursor-pointer ${padding}`}>
-                        {result.name}
-                    </li>
-                )) : <li className="place-self-center text-sm">No results found</li>}
-        </ul>
+                            {result.name}
+                        </motion.li>
+                    ))
+                    : <motion.li
+                        key="noResults"
+                        initial={{ opacity: 0, height: 0, }}
+                        animate={{ height: 'auto', opacity: 1, }}
+                        exit={{ opacity: 0, height: 0, }}
+                        className="place-self-center text-sm">
+                        No results found
+                    </motion.li>}
+            </motion.ul>
+        </AnimatePresence>
     );
 }
