@@ -14,18 +14,21 @@ model Facility {
   node_id     String
   Category    Category @relation(fields: [category_id], references: [id])
   Node        Node     @relation(fields: [node_id], references: [id])
+  Room        Room[]
 
   @@map("facilities")
 }
 
 model Room {
-  id          Int     @id @unique @default(autoincrement())
+  id          Int      @id @unique @default(autoincrement())
   name        String
   floor       Int
   building_id Int
   category_id Int
   x_coord     Decimal
   y_coord     Decimal
+  Facility    Facility @relation(fields: [building_id], references: [id])
+  Category    Category @relation(fields: [category_id], references: [id])
 
   @@map("rooms")
 }
@@ -37,6 +40,7 @@ model Category {
   Node     Node[]
   Route    Route[]
   Edge     Edge[]
+  Room     Room[]
 
   @@map("categories")
 }

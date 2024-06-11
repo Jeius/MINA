@@ -7,10 +7,24 @@ const search = async (query: string) => {
         const facilities = await db.facility.findMany({
             select: { id: true, name: true },
             where: { name: { contains: query, mode: 'insensitive' } },
-        })
+        });
 
-        console.log(facilities);
-
+        const rooms = await db.room.findMany({
+            where: {
+                OR: [
+                    { name: { contains: query, mode: 'insensitive' } },
+                    { Facility: { name: { contains: query, mode: 'insensitive' } } },
+                ],
+            },
+            select: {
+                id: true,
+                name: true,
+                Facility: {
+                    select: { id: true, name: true },
+                },
+            },
+        });
+        console.log(rooms);
         return facilities;
     } catch (error: any) {
         console.error(error.message);

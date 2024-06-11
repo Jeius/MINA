@@ -91,8 +91,6 @@ export const SearchResult: React.FC<Props> = ({ className }) => {
 
     }, [searchState?.value])
 
-    if (error)
-        return (<li className="place-self-center text-sm">{error}</li>);
 
     if (searchState?.isFocused)
         return (searchState.value &&
@@ -111,8 +109,8 @@ export const SearchResult: React.FC<Props> = ({ className }) => {
                                 initial={{ opacity: 0, }}
                                 animate={{ opacity: 1, }}
                                 exit={{ opacity: 0 }}
-                                className={`relative flex items-center min-h-12 text-sm my-1 
-                    rounded-xl bg-primary bg-opacity-90 cursor-pointer ${padding}`}>
+                                className={`relative flex items-center min-h-12 text-sm my-1 rounded-xl
+                                bg-primary bg-opacity-90 cursor-pointer ${padding}`}>
                                 {result.name}
                             </motion.li>
                         ))
@@ -122,7 +120,7 @@ export const SearchResult: React.FC<Props> = ({ className }) => {
                             animate={{ height: 'auto', opacity: 1, }}
                             exit={{ opacity: 0, height: 0, }}
                             className="place-self-center text-sm">
-                            No results found
+                            {error ? error : 'No results found'}
                         </motion.li>}
                 </motion.ul>
             </AnimatePresence>
