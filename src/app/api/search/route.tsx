@@ -24,7 +24,6 @@ const search = async (query: string) => {
                 },
             },
         });
-        console.log(rooms);
         return facilities;
     } catch (error: any) {
         console.error(error.message);
@@ -33,7 +32,7 @@ const search = async (query: string) => {
 
 export const GET = async (request: Request) => {
     const { searchParams } = new URL(request.url);
-    const query = searchParams.get('query');
+    const query = searchParams.get('q');
 
     if (!query) {
         return NextResponse.json({ error: 'Query parameter is required' }, { status: 400 });

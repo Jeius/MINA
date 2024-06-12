@@ -1,13 +1,17 @@
 "use client"
 
 import { cn } from "@/lib/utils";
-import { HTMLAttributes, useEffect, useState } from "react";
+import { FormEvent, HTMLAttributes, useEffect, useState } from "react";
 import { CancelSVG, SearchSVG } from "./icons";
 import { useAppContext } from "@/lib/context";
 import { AnimatePresence, motion } from "framer-motion";
+import { Result } from "@/app/explore/page"
+import { updateQuery } from "@/lib/actions";
+import { usePathname } from "next/navigation";
 
 type Props = HTMLAttributes<HTMLElement> & {
     placeholder?: string,
+    searchParams?: { [key: string]: string | string[] | undefined }
 };
 
 const glassStyle = 'backdrop-blur-md bg-black bg-opacity-70';
@@ -17,112 +21,81 @@ const textStyle = 'text-sm';
 const placeholderStyle = 'placeholder:text-slate-300';
 const dropShadow = 'drop-shadow-lg';
 const style = 'relative flex items-center justify-center';
-const padding = 'py-2 px-4';
-const iconStyle = 'h-5 w-5 relative ml-2';
+const searchButtonStyle = 'h-full w-auto relative flex items-center rounded-full bg-primary bg-opacity-90 p-2';
 
-export const SearchField: React.FC<Props> = ({ className, id, placeholder }) => {
+export const SearchField: React.FC<Props> = ({ className, id, placeholder, searchParams }) => {
     const { searchState, setSearchState } = useAppContext();
-
-    const handleClearSearch = () => {
-        if (setSearchState) setSearchState({ ...searchState, value: '' });
-    };
-
-    const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        if (setSearchState) setSearchState({ ...searchState, value: event.target.value });
-    };
 
     const handleOnFocus = (value: boolean) => {
         if (setSearchState) setSearchState({ ...searchState, isFocused: value });
     }
+    const handleSubmit = (e: FormEvent<HTMLButtonElement>) => {
+        e.preventDefault();
+    }
 
     return (
-        <form role="search" className={
-            cn(`${style} ${padding} ${glassStyle} ${outline} ${size} ${dropShadow}`, className)
+        <form action={updateQuery} role="search" className={
+            cn(`pl-4 ${style} ${glassStyle} ${outline} ${size} ${dropShadow}`, className)
         }>
+            {searchState?.isFocused && (<button type='reset' className='relative mr-1 flex items-center'>
+                <CancelSVG className='w-6 h-6' />
+            </button>)}
+
             <input
                 id={id}
-                type="search"
-                value={searchState?.value || ''}
-                onChange={handleSearchChange}
+                name='query'
                 onFocus={() => handleOnFocus(true)}
                 onBlur={() => handleOnFocus(false)}
                 placeholder={placeholder}
-                className={`w-full h-auto bg-transparent outline-none ${placeholderStyle} ${textStyle} `}
+                className={`w-full h-auto bg-transparent outline-none my-2 ${placeholderStyle} ${textStyle} `}
             />
-            {searchState && (
-                <CancelSVG className={iconStyle} onClick={handleClearSearch} />
-            )}
-            {!searchState && (
-                <SearchSVG className={iconStyle} />
-            )}
+            <button type='submit' onSubmit={handleSubmit} className={searchButtonStyle}>
+                <SearchSVG />
+                {searchState?.isFocused && (<span className='ml-1 text-sm'>Search</span>)}
+            </button>
         </form>
     )
 }
 
-export const SearchResult: React.FC<Props> = ({ className }) => {
-    const { searchState, setSearchState } = useAppContext();
-    const [results, setResults] = useState<{ id: number, name: string }[]>([]);
-    const [error, setError] = useState<string | null>(null);
+type SearchResultProp = HTMLAttributes<HTMLElement> & { searchResults?: Result }
+
+export const SearchResult: React.FC<SearchResultProp> = ({ className, searchResults }) => {
 
     const scroll = 'overflow-x-auto overscroll-contain';
     const scrollbar = 'scrollbar-thin scrollbar-thumb-rounded-lg';
     const style = 'relative flex flex-col rounded-xl my-2';
     const size = 'w-full max-h-80';
 
-    const handleOnClick = () => {
-        if (setSearchState) setSearchState({ ...searchState, isFocused: true });
-    }
-
-    useEffect(() => {
-        const getResult = async () => {
-            try {
-                const response = await fetch(`/api/search?query=${encodeURIComponent(searchState?.value || '')}`);
-                if (!response.ok) {
-                    throw new Error('Failed to fetch search results');
-                }
-                const data = await response.json();
-                setResults(data);
-            } catch (error: any) {
-                setError(error.message);
-            }
-        };
-
-        if (searchState?.value) getResult();
-
-    }, [searchState?.value])
-
-
-    if (searchState?.isFocused)
-        return (searchState.value &&
-            <AnimatePresence>
-                <motion.ul
-                    initial={{ opacity: 0, height: 0, }}
-                    animate={{ height: 'auto', opacity: 1, }}
-                    onClick={handleOnClick}
-                    className={
-                        cn(`${scroll} ${scrollbar} ${style} ${size} ${padding} ${dropShadow} ${glassStyle}`, className)
-                    }>
-                    {results.length !== 0
-                        ? results.map((result) => (
-                            <motion.li
-                                key={result.id}
-                                initial={{ opacity: 0, }}
-                                animate={{ opacity: 1, }}
-                                exit={{ opacity: 0 }}
-                                className={`relative flex items-center min-h-12 text-sm my-1 rounded-xl
-                                bg-primary bg-opacity-90 cursor-pointer ${padding}`}>
-                                {result.name}
-                            </motion.li>
-                        ))
-                        : <motion.li
-                            key="noResults"
-                            initial={{ opacity: 0, height: 0, }}
-                            animate={{ height: 'auto', opacity: 1, }}
-                            exit={{ opacity: 0, height: 0, }}
-                            className="place-self-center text-sm">
-                            {error ? error : 'No results found'}
-                        </motion.li>}
-                </motion.ul>
-            </AnimatePresence>
-        );
+    return (searchResults &&
+        <AnimatePresence>
+            <motion.ul
+                initial={{ opacity: 0, height: 0, }}
+                animate={{ height: 'auto', opacity: 1, }}
+                className={
+                    cn(`px-3 py-2 ${scroll} ${scrollbar} ${style} ${size} 
+                        ${dropShadow} ${glassStyle}`, className)
+                }>
+                {searchResults.length !== 0
+                    ? searchResults.map((result, index) => (
+                        <motion.li
+                            key={index}
+                            initial={{ opacity: 0, }}
+                            animate={{ opacity: 1, }}
+                            exit={{ opacity: 0 }}
+                            className={`relative flex items-center px-2 py-1 min-h-12 
+                                text-sm my-1 rounded-xl bg-primary bg-opacity-90 cursor-pointer`}>
+                            {result.name}
+                        </motion.li>
+                    ))
+                    : <motion.li
+                        key="noResults"
+                        initial={{ opacity: 0, height: 0, }}
+                        animate={{ height: 'auto', opacity: 1, }}
+                        exit={{ opacity: 0, height: 0, }}
+                        className="place-self-center text-sm">
+                        No results found
+                    </motion.li>}
+            </motion.ul>
+        </AnimatePresence>
+    );
 }
