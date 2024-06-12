@@ -19,3 +19,7 @@ if (process.env.NODE_ENV === 'production') {
   }
   db = (global as any).db
 }
+
+export const stringToBoolean = (str: string): boolean => {
+  return str.toLowerCase() === 'true';
+};

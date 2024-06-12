@@ -3,7 +3,6 @@
 import { cn } from "@/lib/utils";
 import { ChangeEvent, HTMLAttributes, useEffect, useState } from "react";
 import { CancelSVG, SearchSVG } from "./icons";
-import { useAppContext } from "@/lib/context";
 import { AnimatePresence, motion } from "framer-motion";
 import { Result } from "@/app/explore/page"
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
@@ -23,20 +22,17 @@ const style = 'relative flex items-center justify-center';
 const iconStyle = 'h-full w-auto relative flex items-center';
 
 export const SearchField: React.FC<Props> = ({ className, id, placeholder }) => {
-    const { searchState, setSearchState } = useAppContext();
     const searchParams = useSearchParams();
     const [search, setSearch] = useState(new URLSearchParams(searchParams).get('q'));
+    const [focus, setFocus] = useState(new URLSearchParams(searchParams).get('f'));
     const pathname = usePathname();
     const router = useRouter();
 
-    const handleOnFocus = (value: boolean) => {
-        if (setSearchState) setSearchState({ ...searchState, isFocused: value });
-    }
     const handleClick = () => {
         setSearch('');
     }
 
-    const changeHandler = (e: ChangeEvent<HTMLInputElement>) => {
+    const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
         const { value } = e.target;
         setSearch(value);
     };
@@ -50,8 +46,9 @@ export const SearchField: React.FC<Props> = ({ className, id, placeholder }) => 
     useEffect(() => {
         const params = new URLSearchParams(searchParams);
         params.set('q', search || '');
+        params.set('f', focus || '');
         router.push(`${pathname}?${params.toString()}`);
-    }, [pathname, router, search, searchParams]);
+    }, [focus, pathname, router, search, searchParams]);
 
 
     return (
@@ -66,9 +63,9 @@ export const SearchField: React.FC<Props> = ({ className, id, placeholder }) => 
                 value={search || ''}
                 placeholder={placeholder}
                 autoComplete='off'
-                onChange={changeHandler}
-                onFocus={() => handleOnFocus(true)}
-                onBlur={() => handleOnFocus(false)}
+                onChange={handleChange}
+                onFocus={() => setFocus('true')}
+                onBlur={() => setFocus('false')}
                 onKeyDown={handleKeyDown}
                 className={`w-full h-auto mr-2 bg-transparent outline-none ${placeholderStyle} ${textStyle} `}
             />
@@ -80,16 +77,15 @@ export const SearchField: React.FC<Props> = ({ className, id, placeholder }) => 
     )
 }
 
-type SearchResultProp = HTMLAttributes<HTMLElement> & { searchResults?: Result }
+type SearchResultProp = HTMLAttributes<HTMLElement> & { searchResults?: Result, isFocused: boolean, }
 
-export const SearchResult: React.FC<SearchResultProp> = ({ className, searchResults }) => {
-    const { searchState } = useAppContext();
+export const SearchResult: React.FC<SearchResultProp> = ({ className, searchResults, isFocused }) => {
     const scroll = 'overflow-x-auto overscroll-contain';
     const scrollbar = 'scrollbar-thin scrollbar-thumb-rounded-lg';
     const style = 'relative flex flex-col rounded-xl my-2';
     const size = 'w-full max-h-80';
 
-    return (searchState?.isFocused &&
+    return (isFocused &&
         <AnimatePresence>
             <motion.ul
                 initial={{ opacity: 0, height: 0, }}

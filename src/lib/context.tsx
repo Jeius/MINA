@@ -4,14 +4,8 @@ import { Location, getLocation } from './location-services';
 
 type App = {
     location?: Location,
-    searchState?: SearchState,
-    setSearchState?: (state: SearchState) => void,
 }
 
-type SearchState = {
-    value?: string,
-    isFocused?: boolean
-}
 
 const Context = createContext<App>({});
 
@@ -29,16 +23,9 @@ const AppContext: React.FC<PropsWithChildren> = ({ children }) => {
         }));
     }, []);
 
-    const setSearchState = (state: SearchState) => {
-        setAppContext((prevState) => ({
-            ...prevState,
-            searchState: state,
-        }));
-    }
-
 
     return (
-        <Context.Provider value={{ ...appContext, setSearchState }}>
+        <Context.Provider value={{ ...appContext }}>
             {children}
         </Context.Provider>
     )

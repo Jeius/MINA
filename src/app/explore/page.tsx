@@ -1,5 +1,5 @@
 import { SearchField, SearchResult } from "@/components/ui/search";
-import { revalidatePath } from "next/cache";
+import { stringToBoolean } from "@/lib/utils";
 
 export type Result = { id: number; name: string }[];
 
@@ -31,7 +31,10 @@ const ExploreTab = async ({ searchParams }: ExploreTabProps) => {
     return (
         <section className="absolute left-0 right-0 w-full max-w-xl place-self-center flex flex-col p-3 z-10">
             <SearchField placeholder="Search for places" />
-            {searchParams.q && <SearchResult searchResults={results} />}
+            {searchParams.q &&
+                <SearchResult
+                    searchResults={results}
+                    isFocused={stringToBoolean(searchParams.f as string)} />}
         </section>
     );
 };
