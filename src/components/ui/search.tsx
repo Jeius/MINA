@@ -1,13 +1,12 @@
 "use client"
 
 import { cn } from "@/lib/utils";
-import { FormEvent, HTMLAttributes, useEffect, useState } from "react";
+import { ChangeEvent, HTMLAttributes, useEffect, useState } from "react";
 import { CancelSVG, SearchSVG } from "./icons";
 import { useAppContext } from "@/lib/context";
 import { AnimatePresence, motion } from "framer-motion";
 import { Result } from "@/app/explore/page"
-import { updateQuery } from "@/lib/actions";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 type Props = HTMLAttributes<HTMLElement> & {
     placeholder?: string,
@@ -21,38 +20,62 @@ const textStyle = 'text-sm';
 const placeholderStyle = 'placeholder:text-slate-300';
 const dropShadow = 'drop-shadow-lg';
 const style = 'relative flex items-center justify-center';
-const searchButtonStyle = 'h-full w-auto relative flex items-center rounded-full bg-primary bg-opacity-90 p-2';
+const iconStyle = 'h-full w-auto relative flex items-center';
 
-export const SearchField: React.FC<Props> = ({ className, id, placeholder, searchParams }) => {
+export const SearchField: React.FC<Props> = ({ className, id, placeholder }) => {
     const { searchState, setSearchState } = useAppContext();
+    const searchParams = useSearchParams();
+    const [search, setSearch] = useState(new URLSearchParams(searchParams).get('q'));
+    const pathname = usePathname();
+    const router = useRouter();
 
     const handleOnFocus = (value: boolean) => {
         if (setSearchState) setSearchState({ ...searchState, isFocused: value });
     }
-    const handleSubmit = (e: FormEvent<HTMLButtonElement>) => {
-        e.preventDefault();
+    const handleClick = () => {
+        setSearch('');
     }
 
-    return (
-        <form action={updateQuery} role="search" className={
-            cn(`pl-4 ${style} ${glassStyle} ${outline} ${size} ${dropShadow}`, className)
-        }>
-            {searchState?.isFocused && (<button type='reset' className='relative mr-1 flex items-center'>
-                <CancelSVG className='w-6 h-6' />
-            </button>)}
+    const changeHandler = (e: ChangeEvent<HTMLInputElement>) => {
+        const { value } = e.target;
+        setSearch(value);
+    };
 
+    const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+        }
+    };
+
+    useEffect(() => {
+        const params = new URLSearchParams(searchParams);
+        params.set('q', search || '');
+        router.push(`${pathname}?${params.toString()}`);
+    }, [pathname, router, search, searchParams]);
+
+
+    return (
+        <form role="search" className={
+            cn(`px-4 py-2 ${style} ${glassStyle} ${outline} ${size} ${dropShadow}`, className)
+        }>
             <input
                 id={id}
-                name='query'
+                name='q'
+                type='text'
+                role='searchbox'
+                value={search || ''}
+                placeholder={placeholder}
+                autoComplete='off'
+                onChange={changeHandler}
                 onFocus={() => handleOnFocus(true)}
                 onBlur={() => handleOnFocus(false)}
-                placeholder={placeholder}
-                className={`w-full h-auto bg-transparent outline-none my-2 ${placeholderStyle} ${textStyle} `}
+                onKeyDown={handleKeyDown}
+                className={`w-full h-auto mr-2 bg-transparent outline-none ${placeholderStyle} ${textStyle} `}
             />
-            <button type='submit' onSubmit={handleSubmit} className={searchButtonStyle}>
-                <SearchSVG />
-                {searchState?.isFocused && (<span className='ml-1 text-sm'>Search</span>)}
-            </button>
+            {search
+                ? <CancelSVG role='button' type='reset' onClick={handleClick} className={iconStyle} />
+                : <SearchSVG role='img' className={iconStyle} />}
+
         </form>
     )
 }
@@ -60,13 +83,13 @@ export const SearchField: React.FC<Props> = ({ className, id, placeholder, searc
 type SearchResultProp = HTMLAttributes<HTMLElement> & { searchResults?: Result }
 
 export const SearchResult: React.FC<SearchResultProp> = ({ className, searchResults }) => {
-
+    const { searchState } = useAppContext();
     const scroll = 'overflow-x-auto overscroll-contain';
     const scrollbar = 'scrollbar-thin scrollbar-thumb-rounded-lg';
     const style = 'relative flex flex-col rounded-xl my-2';
     const size = 'w-full max-h-80';
 
-    return (searchResults &&
+    return (searchState?.isFocused &&
         <AnimatePresence>
             <motion.ul
                 initial={{ opacity: 0, height: 0, }}
@@ -75,14 +98,14 @@ export const SearchResult: React.FC<SearchResultProp> = ({ className, searchResu
                     cn(`px-3 py-2 ${scroll} ${scrollbar} ${style} ${size} 
                         ${dropShadow} ${glassStyle}`, className)
                 }>
-                {searchResults.length !== 0
-                    ? searchResults.map((result, index) => (
+                {searchResults?.length !== 0
+                    ? searchResults?.map((result, index) => (
                         <motion.li
                             key={index}
                             initial={{ opacity: 0, }}
                             animate={{ opacity: 1, }}
                             exit={{ opacity: 0 }}
-                            className={`relative flex items-center px-2 py-1 min-h-12 
+                            className={`relative flex items-center p-2 min-h-14
                                 text-sm my-1 rounded-xl bg-primary bg-opacity-90 cursor-pointer`}>
                             {result.name}
                         </motion.li>
@@ -92,7 +115,7 @@ export const SearchResult: React.FC<SearchResultProp> = ({ className, searchResu
                         initial={{ opacity: 0, height: 0, }}
                         animate={{ height: 'auto', opacity: 1, }}
                         exit={{ opacity: 0, height: 0, }}
-                        className="place-self-center text-sm">
+                        className="place-self-center text-sm overflow-hidden">
                         No results found
                     </motion.li>}
             </motion.ul>
