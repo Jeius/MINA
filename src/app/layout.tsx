@@ -31,7 +31,7 @@ export const viewport: Viewport = {
 const RootLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   return (
     <AppContext>
-      <html lang="en" className={`${inter.className} ${scrollbar} text-white text-sm overflow-clip`}>
+      <html lang="en" className={`${inter.className} ${scrollbar} text-white text-sm overflow-hidden`}>
         <body className='relative'>
           <main className='relative h-screen w-screen bg-gray-200'>
             {children}

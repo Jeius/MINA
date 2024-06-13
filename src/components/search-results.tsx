@@ -22,12 +22,12 @@ export const SearchResult = async ({ query }: { query: string | string[] | undef
                     className={`relative flex items-center p-2 min-h-14 
                         text-sm my-1 rounded-xl bg-primary bg-opacity-90 cursor-pointer`}
                 >
-                    <text>
+                    <span>
                         {result.facility
                             ? highlightText(`${result.name}, ${result.facility.name}`, typeof query === 'string' ? query : query![0])
                             : highlightText(result.name, typeof query === 'string' ? query : query![0])
                         }
-                    </text>
+                    </span>
                 </AnimatedLi>
             ))
             : <AnimatedLi

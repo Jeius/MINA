@@ -27,7 +27,7 @@ const ExploreTab = async ({ searchParams }: ExploreTabProps) => {
     const isFocused = stringToBoolean(searchParams.f as string);
     const query = searchParams.q as string;
 
-    const scroll = 'overflow-x-auto overscroll-contain';
+    const scroll = 'overflow-x-auto';
     const scrollbar = 'scrollbar-thin scrollbar-thumb-rounded-lg';
     const style = 'relative flex flex-col rounded-xl my-2';
     const outline = `rounded-2xl outline outline-1 outline-slate-500`;
