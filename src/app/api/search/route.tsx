@@ -13,20 +13,22 @@ const search = async (query: string) => {
             where: {
                 OR: [
                     { name: { contains: query, mode: 'insensitive' } },
-                    { Facility: { name: { contains: query, mode: 'insensitive' } } },
+                    { facility: { name: { contains: query, mode: 'insensitive' } } },
                 ],
             },
             select: {
                 id: true,
                 name: true,
-                Facility: {
+                facility: {
                     select: { id: true, name: true },
                 },
             },
         });
-        return facilities;
+
+        return facilities.concat(rooms);
     } catch (error: any) {
         console.error(error.message);
+        throw error;
     }
 }
 
