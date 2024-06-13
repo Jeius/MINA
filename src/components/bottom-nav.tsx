@@ -3,6 +3,7 @@ import { AnimatedButton } from "@/components/ui/animated";
 
 const glassStyling = 'backdrop-blur-md bg-black bg-opacity-80';
 const position = 'fixed bottom-0';
+const outline = `outline outline-1 outline-slate-500`;
 const style = 'py-3 w-full flex justify-center';
 const iconStyle = 'fill-white drop-shadow-lg size-5 mr-2';
 
@@ -14,7 +15,7 @@ const tabs: { [key: string]: React.ReactNode } = {
 
 const BottomNav = () => {
     return (
-        <nav className={`${position} ${style} ${glassStyling}`}>
+        <nav className={`${position} ${outline} ${style} ${glassStyling}`}>
             {Object.entries(tabs).map(([tabName, icon]) => (
                 <AnimatedButton
                     key={tabName}

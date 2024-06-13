@@ -1,6 +1,6 @@
 "use client"
 
-import { cn } from "@/lib/utils";
+import { cn, stringToBoolean } from "@/lib/utils";
 import { ChangeEvent, HTMLAttributes, useEffect, useState } from "react";
 import { CancelSVG, SearchSVG } from "./ui/icons";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
@@ -10,14 +10,6 @@ type Props = HTMLAttributes<HTMLElement> & {
     searchParams?: { [key: string]: string | string[] | undefined }
 };
 
-const glassStyle = 'backdrop-blur-md bg-black bg-opacity-70';
-const outline = 'rounded-2xl outline outline-1 outline-slate-100';
-const size = 'w-full h-auto';
-const textStyle = 'text-sm';
-const placeholderStyle = 'placeholder:text-slate-300';
-const dropShadow = 'drop-shadow-lg';
-const style = 'relative flex items-center justify-center';
-const iconStyle = 'h-full w-auto relative flex items-center';
 
 export const SearchField: React.FC<Props> = ({ className, id, placeholder }) => {
     const searchParams = useSearchParams();
@@ -25,6 +17,16 @@ export const SearchField: React.FC<Props> = ({ className, id, placeholder }) => 
     const [focus, setFocus] = useState('false');
     const pathname = usePathname();
     const router = useRouter();
+
+    const glassStyle = 'backdrop-blur-md bg-black bg-opacity-70';
+    const outline = `rounded-2xl outline outline-1 `;
+    const outlineColor = stringToBoolean(focus) ? 'outline-slate-200' : 'outline-slate-400';
+    const size = 'w-full h-auto';
+    const textStyle = 'text-sm';
+    const placeholderStyle = 'placeholder:text-slate-300';
+    const dropShadow = 'drop-shadow-lg';
+    const style = 'relative flex items-center justify-center';
+    const iconStyle = 'h-full w-auto relative flex items-center';
 
     const handleClick = () => {
         setSearch('');
@@ -51,7 +53,7 @@ export const SearchField: React.FC<Props> = ({ className, id, placeholder }) => 
 
     return (
         <form role="search" className={
-            cn(`px-4 py-2 ${style} ${glassStyle} ${outline} ${size} ${dropShadow}`, className)
+            cn(`px-4 py-2 ${style} ${glassStyle} ${outline} ${outlineColor} ${size} ${dropShadow}`, className)
         }>
             <input
                 id={id}
