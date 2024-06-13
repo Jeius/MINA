@@ -47,7 +47,7 @@ export const SearchField: React.FC<Props> = ({ className, id, placeholder }) => 
         const params = new URLSearchParams(searchParams);
         params.set('q', search || '');
         params.set('f', focus || '');
-        router.push(`${pathname}?${params.toString()}`);
+        router.replace(`${pathname}?${params.toString()}`);
     }, [focus, pathname, router, search, searchParams]);
 
 
