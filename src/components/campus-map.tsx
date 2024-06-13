@@ -8,7 +8,8 @@ import 'leaflet-rotate';
 
 const CampusMap: React.FC<{ children?: React.ReactNode }> = ({ children }) => {
     const center: LatLngExpression = [8.241530595, 124.243854763];
-    const tileURL: string = 'https://jeius.github.io/MSUIIT_raster_tiles/tile/{z}/{x}/{y}.png';
+    // const tileURL: string = 'https://jeius.github.io/MSUIIT_raster_tiles/tile/{z}/{x}/{y}.png';
+    const tileURL: string = '/tiles/{z}/{x}/{y}.png';
     const campusBounds: LatLngBoundsExpression = [
         [8.248, 124.239],
         [8.233, 124.248]
