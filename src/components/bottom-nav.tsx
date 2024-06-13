@@ -1,3 +1,4 @@
+import { Suspense } from 'react';
 import { ExploreSVG, DirectionsSVG, PlacesSVG } from './ui/icons';
 import { AnimatedButton } from "@/components/ui/animated";
 
@@ -17,11 +18,13 @@ const BottomNav = () => {
     return (
         <nav className={`${position} ${outline} ${style} ${glassStyling}`}>
             {Object.entries(tabs).map(([tabName, icon]) => (
-                <AnimatedButton
-                    key={tabName}
-                    name={tabName}
-                    icon={icon}
-                />
+                <Suspense key={tabName} >
+                    <AnimatedButton
+                        key={tabName}
+                        name={tabName}
+                        icon={icon}
+                    />
+                </Suspense>
             ))}
         </nav>
     );

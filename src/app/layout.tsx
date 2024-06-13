@@ -4,7 +4,6 @@ import React from "react";
 import AppContext from "@/lib/context";
 import dynamic from "next/dynamic";
 import BottomNav from "@/components/bottom-nav";
-import type { Viewport } from 'next'
 
 const CampusMap = dynamic(() => import('@/components/campus-map'), { ssr: false })
 
@@ -15,17 +14,6 @@ export const metadata = {
   title: "MINA",
   description: "MSU-IIT Navigation Aid",
 };
-
-
-
-export const viewport: Viewport = {
-  width: 'device-width',
-  initialScale: 1,
-  maximumScale: 1,
-  userScalable: false,
-  // Also supported by less commonly used
-  // interactiveWidget: 'resizes-visual',
-}
 
 
 const RootLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {

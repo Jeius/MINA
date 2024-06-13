@@ -24,7 +24,7 @@ export const AnimatedButton = ({ className, name, icon }: AnimatedButtonProps) =
     return (
         <Link
             href={`/${name.toLowerCase()}?${params.toString()}`}
-            role='navigation'
+            role='button'
             className={cn(`${style} ${bg}`, className)}
         >
             {icon}
