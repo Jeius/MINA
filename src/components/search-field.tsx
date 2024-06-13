@@ -22,7 +22,7 @@ const iconStyle = 'h-full w-auto relative flex items-center';
 export const SearchField: React.FC<Props> = ({ className, id, placeholder }) => {
     const searchParams = useSearchParams();
     const [search, setSearch] = useState(new URLSearchParams(searchParams).get('q'));
-    const [focus, setFocus] = useState(new URLSearchParams(searchParams).get('f'));
+    const [focus, setFocus] = useState('false');
     const pathname = usePathname();
     const router = useRouter();
 

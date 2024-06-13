@@ -1,6 +1,7 @@
 import { getSearchResult } from "@/lib/fetchers";
 import { HTMLAttributes } from "react";
 import { AnimatedLi, AnimatedUl } from "./ui/animated";
+import { cn } from "@/lib/utils";
 
 type SearchResultProp = HTMLAttributes<HTMLElement> & { query: string | string[] | undefined, isFocused: boolean, }
 
@@ -13,7 +14,7 @@ export const SearchResult: React.FC<SearchResultProp> = async ({ className, quer
     const searchResults = await getSearchResult(query);
 
     return (isFocused && <AnimatedUl
-        className={`${scroll} ${scrollbar} ${style} ${size}`}   >
+        className={cn(`${scroll} ${scrollbar} ${style} ${size}`, className)}   >
         {searchResults.length !== 0
             ? searchResults.map((result, index) => (
                 <AnimatedLi

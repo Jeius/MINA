@@ -3,22 +3,23 @@
 import { cn } from '@/lib/utils'
 import { AnimatePresence, motion } from 'framer-motion'
 import Link from 'next/link'
-import { useSearchParams } from 'next/navigation'
+import { usePathname, useSearchParams } from 'next/navigation'
 import React, { HTMLAttributes } from 'react'
 
 type AnimatedButtonProps = HTMLAttributes<HTMLElement> & {
     name: string,
     icon: React.ReactNode,
-    active: string,
 }
 
-export const AnimatedButton = ({ className, name, active, icon }: AnimatedButtonProps) => {
+export const AnimatedButton = ({ className, name, icon }: AnimatedButtonProps) => {
+    const searchParams = useSearchParams();
+    const params = new URLSearchParams(searchParams);
+    const pathname = usePathname();
+    const active = pathname.substring(1) || 'explore';
+
     const bg = active.toLowerCase() == name.toLowerCase() ? 'bg-primary' : 'bg-transparent';
     const style = 'relative flex items-center w-auto z-10 sm:mx-0 md:mx-1 lg:mx-3 px-5 py-2 rounded-full';
     const textStyle = 'text-sm font-medium overflow-clip';
-
-    const searchParams = useSearchParams();
-    const params = new URLSearchParams(searchParams);
 
     return (
         <Link
