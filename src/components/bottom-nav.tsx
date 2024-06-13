@@ -1,7 +1,7 @@
 "use client"
 
 import { ExploreSVG, DirectionsSVG, PlacesSVG } from './ui/icons';
-import AnimatedButton from "./ui/animated-button";
+import { AnimatedButton } from "@/components/ui/animated";
 import { usePathname } from 'next/navigation';
 
 const glassStyling = 'backdrop-blur-md bg-black bg-opacity-80';
