@@ -2,9 +2,7 @@
 
 import { cn } from "@/lib/utils";
 import { ChangeEvent, HTMLAttributes, useEffect, useState } from "react";
-import { CancelSVG, SearchSVG } from "./icons";
-import { AnimatePresence, motion } from "framer-motion";
-import { Result } from "@/app/explore/page"
+import { CancelSVG, SearchSVG } from "./ui/icons";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 type Props = HTMLAttributes<HTMLElement> & {
@@ -77,44 +75,4 @@ export const SearchField: React.FC<Props> = ({ className, id, placeholder }) => 
     )
 }
 
-type SearchResultProp = HTMLAttributes<HTMLElement> & { searchResults?: Result, isFocused: boolean, }
 
-export const SearchResult: React.FC<SearchResultProp> = ({ className, searchResults, isFocused }) => {
-    const scroll = 'overflow-x-auto overscroll-contain';
-    const scrollbar = 'scrollbar-thin scrollbar-thumb-rounded-lg';
-    const style = 'relative flex flex-col rounded-xl my-2';
-    const size = 'w-full max-h-80';
-
-    return (isFocused &&
-        <AnimatePresence>
-            <motion.ul
-                initial={{ opacity: 0, height: 0, }}
-                animate={{ height: 'auto', opacity: 1, }}
-                className={
-                    cn(`px-3 py-2 ${scroll} ${scrollbar} ${style} ${size} 
-                        ${dropShadow} ${glassStyle}`, className)
-                }>
-                {searchResults?.length !== 0
-                    ? searchResults?.map((result, index) => (
-                        <motion.li
-                            key={index}
-                            initial={{ opacity: 0, }}
-                            animate={{ opacity: 1, }}
-                            exit={{ opacity: 0 }}
-                            className={`relative flex items-center p-2 min-h-14
-                                text-sm my-1 rounded-xl bg-primary bg-opacity-90 cursor-pointer`}>
-                            {result.name}
-                        </motion.li>
-                    ))
-                    : <motion.li
-                        key="noResults"
-                        initial={{ opacity: 0, height: 0, }}
-                        animate={{ height: 'auto', opacity: 1, }}
-                        exit={{ opacity: 0, height: 0, }}
-                        className="place-self-center text-sm overflow-hidden">
-                        No results found
-                    </motion.li>}
-            </motion.ul>
-        </AnimatePresence>
-    );
-}

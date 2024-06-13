@@ -1,7 +1,10 @@
-import { SearchField, SearchResult } from "@/components/ui/search";
+import { SearchResult } from "@/components/search-results";
+import { SearchField } from "@/components/search-field";
+import { Skeleton } from "@/components/ui/skeleton";
 import { stringToBoolean } from "@/lib/utils";
+import { Suspense } from "react";
 
-export type Result = { id: number; name: string }[];
+
 
 type SearchParams = { [key: string]: string | string[] | undefined };
 
@@ -9,32 +12,26 @@ type ExploreTabProps = {
     searchParams: SearchParams;
 };
 
-export const getData = async (query: string | string[] | undefined): Promise<Result> => {
-    try {
-        const q = Array.isArray(query) ? query.join(',') : query; // Handle array case
-
-        if (!q) return ([]) as Result;
-        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/search?q=${q}`);
-        if (!res.ok) {
-            throw new Error('Failed to fetch search results');
-        }
-        return (await res.json()) as Result;
-    } catch (error: any) {
-        throw new Error(error.message);
-    }
-};
+const CustomSkeleton = () => {
+    const skeletonStyle = 'w-full h-14 rounded-xl my-2 backdrop-blur-md bg-black bg-opacity-70';
+    return (
+        <Skeleton className={skeletonStyle} />
+    );
+}
 
 const ExploreTab = async ({ searchParams }: ExploreTabProps) => {
-    console.log(searchParams.q);
-    const results = await getData(searchParams.q);
+
+    const isFocused = stringToBoolean(searchParams.f as string);
 
     return (
         <section className="absolute left-0 right-0 w-full max-w-xl place-self-center flex flex-col p-3 z-10">
             <SearchField placeholder="Search for places" />
-            {searchParams.q &&
-                <SearchResult
-                    searchResults={results}
-                    isFocused={stringToBoolean(searchParams.f as string)} />}
+            <Suspense fallback={isFocused && <CustomSkeleton />} >
+                {searchParams.q &&
+                    <SearchResult
+                        query={searchParams.q}
+                        isFocused={isFocused} />}
+            </Suspense>
         </section>
     );
 };
