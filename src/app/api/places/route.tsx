@@ -2,7 +2,7 @@
 import { db } from '@/lib/utils';
 import { NextResponse } from 'next/server';
 
-const getCoords = async () => {
+const getPlaces = async () => {
     try {
         const facilities = await db.facility.findMany({
             select: {
@@ -36,7 +36,7 @@ const getCoords = async () => {
 
 export const GET = async () => {
     try {
-        const results = await getCoords();
+        const results = await getPlaces();
         return NextResponse.json(results);
     } catch (error) {
         return NextResponse.json({ error: 'Failed to fetch place coordinates' }, { status: 500 });
