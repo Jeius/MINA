@@ -3,7 +3,7 @@
 import 'leaflet/dist/leaflet.css';
 import { MapContainer, TileLayer } from 'react-leaflet';
 import { LatLngExpression, LatLngBoundsExpression } from 'leaflet';
-import { LocationMarker } from '@/components/ui/markers';
+import { LocationMarker } from '@/components/map-markers';
 import 'leaflet-rotate';
 
 const CampusMap: React.FC<{ children?: React.ReactNode }> = ({ children }) => {

@@ -1,10 +1,10 @@
 import { Inter } from "next/font/google";
 import "@/styles/globals.css";
-import React, { Suspense } from "react";
+import React from "react";
 import AppContext from "@/lib/context";
 import dynamic from "next/dynamic";
 import BottomNav from "@/components/bottom-nav";
-import { MapMarker } from "@/components/ui/markers";
+import { PlacesMarkers } from "@/components/map-markers";
 
 const CampusMap = dynamic(() => import('@/components/campus-map'), { ssr: false });
 
@@ -25,7 +25,7 @@ const RootLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
           <main className='relative h-screen w-screen bg-gray-200'>
             {children}
             <CampusMap>
-              <MapMarker />
+              <PlacesMarkers />
             </CampusMap>
           </main>
 

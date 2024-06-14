@@ -26,7 +26,7 @@ export const SearchField: React.FC<Props> = ({ className, id, placeholder }) => 
     const placeholderStyle = 'placeholder:text-slate-300';
     const dropShadow = 'drop-shadow-lg';
     const style = 'relative flex items-center justify-center';
-    const iconStyle = 'h-full w-auto relative flex items-center';
+    const iconStyle = 'h-full w-auto relative flex items-center fill-white';
 
     const handleClick = () => {
         setSearch('');
