@@ -3,13 +3,13 @@
 import 'leaflet/dist/leaflet.css';
 import { MapContainer, TileLayer } from 'react-leaflet';
 import { LatLngExpression, LatLngBoundsExpression } from 'leaflet';
-import LocationMarker from '@/components/ui/markers';
+import { LocationMarker } from '@/components/ui/markers';
 import 'leaflet-rotate';
 
 const CampusMap: React.FC<{ children?: React.ReactNode }> = ({ children }) => {
     const center: LatLngExpression = [8.241530595, 124.243854763];
-    // const tileURL: string = 'https://jeius.github.io/MSUIIT_raster_tiles/tile/{z}/{x}/{y}.png';
-    const tileURL: string = '/tiles/{z}/{x}/{y}.png';
+    const tileURL: string = 'https://jeius.github.io/MSUIIT_raster_tiles/framework/{z}/{x}/{y}.png';
+    // const tileURL: string = '/tiles/{z}/{x}/{y}.png';
     const campusBounds: LatLngBoundsExpression = [
         [8.248, 124.239],
         [8.233, 124.248]
@@ -32,14 +32,18 @@ const CampusMap: React.FC<{ children?: React.ReactNode }> = ({ children }) => {
             touchRotate={true}
         >
             <TileLayer
-                maxZoom={22}
                 url={tileURL}
-                className='z-0'
+                maxZoom={22}
+                maxNativeZoom={22}
+                minNativeZoom={13}
             />
 
             <LocationMarker />
 
             {children}
+
+
+
         </MapContainer>
 
     );

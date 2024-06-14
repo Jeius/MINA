@@ -13,6 +13,9 @@ const getPlaces = async () => {
                         x_coord: true,
                         y_coord: true,
                     }
+                },
+                category: {
+                    select: { name: true }
                 }
             },
         });
@@ -24,7 +27,16 @@ const getPlaces = async () => {
                 name: true,
                 x_coord: true,
                 y_coord: true,
+                category: {
+                    select: { name: true }
+                }
             },
+            where: {
+                category: {
+                    // Ensures that the category is not null
+                    isNot: null
+                }
+            }
         });
 
         return { facilities: facilities, rooms: rooms };
@@ -39,6 +51,6 @@ export const GET = async () => {
         const results = await getPlaces();
         return NextResponse.json(results);
     } catch (error) {
-        return NextResponse.json({ error: 'Failed to fetch place coordinates' }, { status: 500 });
+        return NextResponse.json({ error: 'Failed to fetch places' }, { status: 500 });
     }
 }

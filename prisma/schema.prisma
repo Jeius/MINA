@@ -20,15 +20,15 @@ model facility {
 }
 
 model room {
-  id          Int      @id @unique @default(autoincrement())
+  id          Int       @id @unique @default(autoincrement())
   name        String
   floor       Int
   building_id Int
-  category_id Int
+  category_id Int?
   x_coord     Decimal
   y_coord     Decimal
-  facility    facility @relation(fields: [building_id], references: [id])
-  category    category @relation(fields: [category_id], references: [id])
+  facility    facility  @relation(fields: [building_id], references: [id])
+  category    category? @relation(fields: [category_id], references: [id])
 
   @@map("rooms")
 }

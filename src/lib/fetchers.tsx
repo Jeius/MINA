@@ -29,7 +29,7 @@ export const getSearchResult = async (query: Query): Promise<SearchResult> => {
 };
 
 
-export type CoordsResult = {
+export type Places = {
     facilities: {
         id: number | string,
         name: string,
@@ -37,25 +37,27 @@ export type CoordsResult = {
             x_coord: number,
             y_coord: number,
         }
-    }
+        category: { name: string, }
+    }[],
     rooms: {
         id: number | string,
         building_id: number | string,
         name: string,
         x_coord: number,
         y_coord: number,
-    }
-}
+        category: { name: string, }
+    }[],
+};
 
-export const getCoordinates = async (): Promise<CoordsResult> => {
+export const getPlaces = async (): Promise<Places> => {
     try {
-        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/coordinates`);
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/places`);
 
         if (!res.ok) {
-            throw new Error('Failed to fetch places coordinates');
+            throw new Error('Failed to fetch places');
         }
 
-        return (await res.json()) as CoordsResult;
+        return (await res.json()) as Places;
     } catch (error: any) {
         throw new Error(error.message);
     }
