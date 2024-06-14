@@ -7,14 +7,13 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { MyBeatLoader as BeatLoader } from "@/components/ui/spinners";
 
 
-
 type SearchParams = { [key: string]: string | string[] | undefined };
 
 type ExploreTabProps = {
     searchParams: SearchParams;
 };
 
-export const CustomSkeleton = () => {
+const CustomSkeleton = () => {
     const align = 'flex flex-row place-content-center place-items-center items-end';
     const bg = 'bg-transparent';
     const skeletonStyle = `relative w-full text-sm ${align} ${bg}`;
