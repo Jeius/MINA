@@ -1,5 +1,4 @@
 
-
 export type SearchResult = {
     id: number;
     name: string,
@@ -16,7 +15,7 @@ export const getSearchResult = async (query: Query): Promise<SearchResult> => {
 
         if (!q) return ([]) as SearchResult;
 
-        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/search?q=${q}`);
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/search?q=${encodeURIComponent(q)}`);
 
         if (!res.ok) {
             throw new Error('Failed to fetch search results');
@@ -28,3 +27,36 @@ export const getSearchResult = async (query: Query): Promise<SearchResult> => {
         throw new Error(error.message);
     }
 };
+
+
+export type CoordsResult = {
+    facilities: {
+        id: number | string,
+        name: string,
+        node: {
+            x_coord: number,
+            y_coord: number,
+        }
+    }
+    rooms: {
+        id: number | string,
+        building_id: number | string,
+        name: string,
+        x_coord: number,
+        y_coord: number,
+    }
+}
+
+export const getCoordinates = async (): Promise<CoordsResult> => {
+    try {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/coordinates`);
+
+        if (!res.ok) {
+            throw new Error('Failed to fetch places coordinates');
+        }
+
+        return (await res.json()) as CoordsResult;
+    } catch (error: any) {
+        throw new Error(error.message);
+    }
+}

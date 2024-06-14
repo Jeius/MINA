@@ -1,9 +1,10 @@
 import { SearchResult } from "@/components/search-results";
 import { SearchField } from "@/components/search-field";
-import { Skeleton } from "@/components/ui/skeleton";
 import { stringToBoolean } from "@/lib/utils";
 import { Suspense } from "react";
 import { AnimatedUl } from "@/components/ui/animated";
+import { Skeleton } from "@/components/ui/skeleton";
+import { MyBeatLoader as BeatLoader } from "@/components/ui/spinners";
 
 
 
@@ -13,19 +14,22 @@ type ExploreTabProps = {
     searchParams: SearchParams;
 };
 
-const CustomSkeleton = () => {
-    const align = 'flex place-content-center place-items-center';
+export const CustomSkeleton = () => {
+    const align = 'flex flex-row place-content-center place-items-center items-end';
     const bg = 'bg-transparent';
     const skeletonStyle = `relative w-full text-sm ${align} ${bg}`;
     return (
-        <Skeleton className={skeletonStyle} >Searching...</Skeleton>
+        <Skeleton className={skeletonStyle} >
+            <span className='mr-1'>Searching</span>
+            <BeatLoader className='mb-1' color="#ffffff" size={3} speedMultiplier={0.5} />
+        </Skeleton>
     );
 }
 
 const ExploreTab = async ({ searchParams }: ExploreTabProps) => {
 
     const isFocused = stringToBoolean(searchParams.f as string);
-    const query = searchParams.q as string;
+    const query = searchParams.q;
 
     const scroll = 'overflow-x-auto';
     const scrollbar = 'scrollbar-thin';
