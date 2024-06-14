@@ -6,7 +6,7 @@ import dynamic from "next/dynamic";
 import BottomNav from "@/components/bottom-nav";
 import { MapMarker } from "@/components/ui/markers";
 
-const CampusMap = dynamic(() => import('@/components/campus-map'), { ssr: false })
+const CampusMap = dynamic(() => import('@/components/campus-map'), { ssr: false });
 
 const inter = Inter({ subsets: ["latin"] });
 const scrollbar = 'scrollbar-thumb-gray-500 scrollbar-track-transparent';
@@ -25,9 +25,7 @@ const RootLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
           <main className='relative h-screen w-screen bg-gray-200'>
             {children}
             <CampusMap>
-              <Suspense>
-                <MapMarker />
-              </Suspense>
+              <MapMarker />
             </CampusMap>
           </main>
 

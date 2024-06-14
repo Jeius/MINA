@@ -70,7 +70,7 @@ const filterMarkers = (category: { name: string }, currentZoom: number) => {
     return false;
 }
 
-export const MapMarker = async () => {
+export const MapMarker = () => {
     const map = useMap();
     const [places, setPlaces] = useState<Places>();
     const [currentZoom, setCurrentZoom] = useState(map.getZoom());
