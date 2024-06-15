@@ -29,6 +29,20 @@ const config = {
       },
       colors: {
         primary: '#931D23',
+        building: "#b5a596",
+        park: "#3fb587",
+        security: "#7b90f1",
+        hostel: "#FF33A8",
+        college: "#6b7dde",
+        laboratory: "#af7af5",
+        food: "#dcc9a8",
+        clinic: "#FF3333",
+        school: "#b5a596",
+        hall: "#b5a596",
+        sports: "#2596be",
+        office: "#c5903f",
+        library: "#e2552f",
+        underConstruction: "#ead539",
       },
       keyframes: {
         "accordion-down": {
