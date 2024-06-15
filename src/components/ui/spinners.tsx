@@ -1,35 +1,16 @@
 "use client"
 
-import { CSSProperties, HTMLAttributes } from "react"
-import { BeatLoader } from "react-spinners"
+import { BeatLoader, PulseLoader } from "react-spinners"
+import { LoaderSizeMarginProps } from "react-spinners/helpers/props"
 
-export type LoadingProps = HTMLAttributes<HTMLElement> & {
-    color?: string,
-    size?: number | string,
-    speedMultiplier?: number,
-    margin?: number | string,
-    loading?: boolean,
-    cssOverride?: CSSProperties
+export const MyBeatLoader = (props: LoaderSizeMarginProps) => {
+    return (
+        <BeatLoader {...props} />
+    )
 }
 
-export const MyBeatLoader = ({
-    className,
-    color,
-    size,
-    speedMultiplier,
-    margin,
-    loading,
-    cssOverride,
-}: LoadingProps) => {
+export const MyPulseLoader = (props: LoaderSizeMarginProps) => {
     return (
-        <BeatLoader
-            className={className}
-            color={color}
-            size={size}
-            speedMultiplier={speedMultiplier}
-            margin={margin}
-            loading={loading}
-            cssOverride={cssOverride}
-        />
+        <PulseLoader {...props} />
     )
 }
