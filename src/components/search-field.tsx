@@ -18,14 +18,14 @@ export const SearchField: React.FC<Props> = ({ className, id, placeholder }) => 
     const pathname = usePathname();
     const router = useRouter();
 
-    const glassStyle = 'backdrop-blur-md bg-black bg-opacity-70';
+    const glass = 'backdrop-blur-md bg-black bg-opacity-70';
     const outline = `rounded-2xl outline outline-1 `;
     const outlineColor = stringToBoolean(focus) ? 'outline-slate-200' : 'outline-slate-400';
     const size = 'w-full h-auto';
     const textStyle = 'text-sm';
     const placeholderStyle = 'placeholder:text-slate-300';
     const dropShadow = 'drop-shadow-lg';
-    const style = 'relative flex items-center justify-center';
+    const style = 'relative flex items-center justify-center px-4 py-2';
     const iconStyle = 'h-full w-auto relative flex items-center fill-white';
 
     const handleClick = () => {
@@ -52,9 +52,12 @@ export const SearchField: React.FC<Props> = ({ className, id, placeholder }) => 
 
 
     return (
-        <form role="search" className={
-            cn(`px-4 py-2 ${style} ${glassStyle} ${outline} ${outlineColor} ${size} ${dropShadow}`, className)
-        }>
+        <form
+            role="search"
+            className={cn(
+                style, glass, outline,
+                outlineColor, size, dropShadow, className)
+            }>
             <input
                 id={id}
                 name='q'
@@ -67,7 +70,11 @@ export const SearchField: React.FC<Props> = ({ className, id, placeholder }) => 
                 onFocus={() => setFocus('true')}
                 onBlur={() => setFocus('false')}
                 onKeyDown={handleKeyDown}
-                className={`w-full h-auto mr-2 bg-transparent outline-none ${placeholderStyle} ${textStyle} `}
+                className={cn(
+                    `w-full h-auto mr-2 bg-transparent outline-none`,
+                    textStyle,
+                    placeholderStyle,
+                )}
             />
             {search
                 ? <CancelSVG role='button' type='reset' onClick={handleClick} className={iconStyle} />
