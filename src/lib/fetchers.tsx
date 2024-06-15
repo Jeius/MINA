@@ -51,7 +51,7 @@ export type Places = {
 
 export const getPlaces = async (): Promise<Places> => {
     try {
-        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/places`);
+        const res = await fetch(`/api/places`);
 
         if (!res.ok) {
             throw new Error('Failed to fetch places');

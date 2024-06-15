@@ -7,25 +7,31 @@ import { Places, getPlaces } from "@/lib/fetchers";
 import { useEffect, useState } from "react";
 import { LocationSVG } from "./ui/icons";
 import ReactDOMServer from 'react-dom/server';
+import { getCategoryIcons } from "@/lib/data/category-icons";
 
 export type MapIcon = React.HTMLAttributes<HTMLElement> & {
-    icon?: React.ReactNode,
     iconAnchor?: PointExpression,
     category?: string,
 }
 
-export const createMapIcon = ({
-    icon = <LocationSVG className='stroke-slate-900 fill-slate-500 size-12' />,
-    iconAnchor = [21.5, 39.5] }: MapIcon) => {
-
-    const myIcon = () => {
-
+export const createMapIcon = ({ category = 'building', iconAnchor = [24.6, 44.4] }: MapIcon) => {
+    const icon = () => {
+        return (
+            <div className="relative size-auto">
+                <LocationSVG className='relative size-14' />
+                <div className="absolute inset-y-4 inset-x-[16px] size-[17px]">
+                    {getCategoryIcons({
+                        category: category.toLowerCase(),
+                        className: "relative size-full flex items-center justify-center"
+                    })}
+                </div>
+            </div>
+        );
     }
 
-    const iconhtml = ReactDOMServer.renderToString(icon);
     return new DivIcon(
         {
-            html: iconhtml,
+            html: ReactDOMServer.renderToString(icon()),
             className: 'bg-transparent size-auto',
             iconAnchor: iconAnchor,
         }
@@ -113,11 +119,12 @@ export const PlacesMarkers = () => {
             {places?.facilities
                 .filter(f => (filterMarkers(f.category)))
                 .map(f => (
-                    <Marker
-                        key={f.id}
-                        position={[f.node.y_coord, f.node.x_coord]}
-                        icon={createMapIcon({})}
-                    />
+                    <div key={f.id}>
+                        <Marker
+                            position={[f.node.y_coord, f.node.x_coord]}
+                            icon={createMapIcon({ category: f.category.name })}
+                        />
+                    </div>
                 ))
             }
 
@@ -127,7 +134,7 @@ export const PlacesMarkers = () => {
                     <Marker
                         key={r.id}
                         position={[r.y_coord, r.x_coord]}
-                        icon={createMapIcon({})}
+                        icon={createMapIcon({ category: r.category.name })}
                     />
                 ))
             }
