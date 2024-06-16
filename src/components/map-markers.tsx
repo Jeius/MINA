@@ -14,12 +14,15 @@ export type MapIcon = React.HTMLAttributes<HTMLElement> & {
     category?: string,
 }
 
-export const createMapIcon = ({ category = 'building', iconAnchor = [24.6, 44.4] }: MapIcon) => {
+export const createMapIcon = ({
+    category = 'building',
+    iconAnchor = [17, 37],
+}: MapIcon) => {
     const icon = () => {
         return (
             <>
-                <LocationSVG className={`relative fill-slate-900 stroke-slate-400 size-14`} />
-                <div className="absolute inset-y-4 inset-x-[16px] size-[17px]">
+                <LocationSVG className={`relative fill-slate-900 stroke-slate-400 size-full`} />
+                <div className="absolute inset-y-[9px] inset-x-[8.5px] size-[17px]">
                     {getCategoryIcons(category)}
                 </div>
             </>
@@ -31,6 +34,7 @@ export const createMapIcon = ({ category = 'building', iconAnchor = [24.6, 44.4]
             html: ReactDOMServer.renderToString(icon()),
             className: 'bg-transparent size-auto',
             iconAnchor: iconAnchor,
+            iconSize: [33, 40.8],
         }
     );
 }
@@ -51,15 +55,9 @@ export const LocationMarker = () => {
 
 
 export const PlacesMarkers = () => {
-    const markerStyle = [
-        "filter-none",
-        "brightness-125"
-    ];
-
     const map = useMap();
     const [places, setPlaces] = useState<Places>();
     const [currentZoom, setCurrentZoom] = useState(map.getZoom());
-    const [focusStyle, setFocusStyle] = useState(markerStyle[0]);
 
     useEffect(() => {
         const get = async () => {
@@ -126,6 +124,10 @@ export const PlacesMarkers = () => {
                         key={f.id}
                         position={[f.node.y_coord, f.node.x_coord]}
                         icon={createMapIcon({ category: f.category.name.toLowerCase() })}
+                        title={f.name}
+                        alt={f.category.name}
+                        riseOnHover={true}
+                        interactive={true}
                     />
                 ))
             }
@@ -137,6 +139,10 @@ export const PlacesMarkers = () => {
                         key={r.id}
                         position={[r.y_coord, r.x_coord]}
                         icon={createMapIcon({ category: r.category.name.toLowerCase() })}
+                        title={r.name}
+                        alt={r.category.name}
+                        riseOnHover={true}
+                        interactive={true}
                     />
                 ))
             }
