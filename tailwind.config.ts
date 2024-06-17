@@ -1,5 +1,39 @@
 import type { Config } from "tailwindcss"
 
+const MyColorScheme: { [key: string]: string } = {
+  "primary": "#931D23",
+  "primary-dark": "#671419",
+  "building": "#A28D75",
+  "building-dark": "#615546",
+  "park": "#3fb587",
+  "park-dark": "#2B775E",
+  "security": "#7b90f1",
+  "security-dark": "#5362A7",
+  "hostel": "#FF33A8",
+  "hostel-dark": "#B22374",
+  "college": "#6b7dde",
+  "college-dark": "#4C5697",
+  "laboratory": "#af7af5",
+  "laboratory-dark": "#7640B2",
+  "food": "#c5903f",
+  "food-dark": "#8A622B",
+  "clinic": "#FF3333",
+  "clinic-dark": "#B22424",
+  "school": "#6b7dde",
+  "school-dark": "#4C5697",
+  "hall": "#A28D75",
+  "hall-dark": "#615546",
+  "sports": "#2596be",
+  "sports-dark": "#1B6581",
+  "office": "#c5903f",
+  "office-dark": "#8A622B",
+  "library": "#e2552f",
+  "library-dark": "#992F1D",
+  "underConstruction": "#c1b22c",
+  "underConstruction-dark": "#9a8e23"
+}
+
+
 const config = {
   darkMode: ["class"],
   content: [
@@ -27,23 +61,7 @@ const config = {
         satoshi: ['Satoshi', 'sans-serif'],
         inter: ['Inter', 'sans-serif'],
       },
-      colors: {
-        primary: '#931D23',
-        building: "#b5a596",
-        park: "#3fb587",
-        security: "#7b90f1",
-        hostel: "#FF33A8",
-        college: "#6b7dde",
-        laboratory: "#af7af5",
-        food: "#dcc9a8",
-        clinic: "#FF3333",
-        school: "#b5a596",
-        hall: "#b5a596",
-        sports: "#2596be",
-        office: "#c5903f",
-        library: "#e2552f",
-        underConstruction: "#ead539",
-      },
+      colors: MyColorScheme,
       keyframes: {
         "accordion-down": {
           from: { height: "0" },
@@ -67,3 +85,4 @@ const config = {
 } satisfies Config
 
 export default config
+

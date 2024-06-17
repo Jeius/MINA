@@ -8,31 +8,69 @@ import {
     HostelSVG,
     LaboratorySVG,
     LibrarySVG,
+    LocationSVG,
     OfficeSVG,
     ParkSVG,
     SchoolSVG,
     SecuritySVG,
     SportsSVG
 } from "@/components/ui/icons";
+import { cn } from "../utils";
 
 
 export const getCategoryIcons = (category?: string) => {
-    const categoryIcons: { [key: string]: React.ReactNode } = {
-        'building': <BuildingSVG className='relative size-full fill-building' />,
-        'college': <CollegeSVG className='relative size-full fill-college' />,
-        'clinic': <ClinicSVG className='relative size-full fill-clinic' />,
-        'food': <FoodSVG className='relative size-full fill-food' />,
-        'hall': <HallSVG className='relative size-full fill-hall' />,
-        'hostel': <HostelSVG className='relative size-full fill-hostel' />,
-        'laboratory': <LaboratorySVG className='relative size-full fill-laboratory' />,
-        'library': <LibrarySVG className='relative size-full fill-library' />,
-        'office': <OfficeSVG className='relative size-full fill-office' />,
-        'park': <ParkSVG className='relative size-full fill-park' />,
-        'school': <SchoolSVG className='relative size-full fill-school' />,
-        'security': <SecuritySVG className='relative size-full fill-security' />,
-        'sports': <SportsSVG className='relative size-full fill-sports' />,
-        'under construction': <ConstructionSVG className='relative size-full fill-underConstruction' />,
+    const categoryMarkerIcons: { [key: string]: React.ReactNode } = {
+        'building': <CategoryMarkerIcon category={category} className='fill-building stroke-building-dark' />,
+        'college': <CategoryMarkerIcon category={category} className='fill-college stroke-college-dark' />,
+        'clinic': <CategoryMarkerIcon category={category} className='fill-clinic stroke-clinic-dark' />,
+        'food': <CategoryMarkerIcon category={category} className='fill-food stroke-food-dark' />,
+        'hall': <CategoryMarkerIcon category={category} className='fill-hall stroke-hall-dark' />,
+        'hostel': <CategoryMarkerIcon category={category} className='fill-hostel stroke-hostel-dark' />,
+        'laboratory': <CategoryMarkerIcon category={category} className='fill-laboratory stroke-laboratory-dark' />,
+        'library': <CategoryMarkerIcon category={category} className='fill-library stroke-library-dark' />,
+        'office': <CategoryMarkerIcon category={category} className='fill-office stroke-office-dark' />,
+        'park': <CategoryMarkerIcon category={category} className='fill-park stroke-park-dark' />,
+        'school': <CategoryMarkerIcon category={category} className='fill-school stroke-school-dark' />,
+        'security': <CategoryMarkerIcon category={category} className='fill-security stroke-security-dark' />,
+        'sports': <CategoryMarkerIcon category={category} className='fill-sports stroke-sports-dark' />,
+        'under construction': <CategoryMarkerIcon category={category} className='fill-underConstruction stroke-underConstruction-dark' />,
+        'default': <CategoryMarkerIcon category={category} className='fill-slate-900 stroke-slate-400' />,
     }
 
-    return category && categoryIcons[category];
+    return category ? categoryMarkerIcons[category] : categoryMarkerIcons['default'];
 }
+
+type CategoryMarkerIconProps = React.HTMLAttributes<HTMLElement> & {
+    category?: string,
+}
+
+
+const CategoryMarkerIcon = ({ category, className, ...props }: CategoryMarkerIconProps) => {
+    const categoryIcons: { [key: string]: React.ReactNode } = {
+        'building': <BuildingSVG className='relative size-full fill-white' />,
+        'college': <CollegeSVG className='relative size-full fill-white' />,
+        'clinic': <ClinicSVG className='relative size-full fill-white' />,
+        'food': <FoodSVG className='relative size-full fill-white' />,
+        'hall': <HallSVG className='relative size-full fill-white' />,
+        'hostel': <HostelSVG className='relative size-full fill-white' />,
+        'laboratory': <LaboratorySVG className='relative size-full fill-white' />,
+        'library': <LibrarySVG className='relative size-full fill-white' />,
+        'office': <OfficeSVG className='relative size-full fill-white' />,
+        'park': <ParkSVG className='relative size-full fill-white' />,
+        'school': <SchoolSVG className='relative size-full fill-white' />,
+        'security': <SecuritySVG className='relative size-full fill-white' />,
+        'sports': <SportsSVG className='relative size-full fill-white' />,
+        'under construction': <ConstructionSVG className='relative size-full fill-white' />,
+    }
+
+    return (
+        <>
+            <LocationSVG className={cn(`relative size-full`, className)} {...props} />
+            <div className="absolute inset-y-[9px] inset-x-[8.5px] size-[17px]">
+                {category && categoryIcons[category]}
+            </div>
+        </>
+    )
+}
+
+export default CategoryMarkerIcon

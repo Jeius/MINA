@@ -4,35 +4,23 @@ import { CircleMarker, Marker, Popup, useMap, useMapEvent } from "react-leaflet"
 import { DivIcon, LatLngTuple, PointExpression } from 'leaflet';
 import { useAppContext } from "@/lib/context";
 import { Places, getPlaces } from "@/lib/fetchers";
-import { useEffect, useState } from "react";
-import { LocationSVG } from "./ui/icons";
+import { ReactNode, useEffect, useState } from "react";
 import ReactDOMServer from 'react-dom/server';
 import { getCategoryIcons } from "@/lib/data/category-icons";
 import { useSearchParams, usePathname, useRouter } from "next/navigation";
 
 export type MapIcon = React.HTMLAttributes<HTMLElement> & {
     iconAnchor?: PointExpression,
-    category?: string,
+    icon?: ReactNode,
 }
 
-export const createMapIcon = ({
-    category = 'building',
+export const createDivIcon = ({
+    icon,
     iconAnchor = [17, 37],
 }: MapIcon) => {
-    const icon = () => {
-        return (
-            <>
-                <LocationSVG className={`relative fill-slate-900 stroke-slate-400 size-full`} />
-                <div className="absolute inset-y-[9px] inset-x-[8.5px] size-[17px]">
-                    {getCategoryIcons(category)}
-                </div>
-            </>
-        );
-    }
-
     return new DivIcon(
         {
-            html: ReactDOMServer.renderToString(icon()),
+            html: ReactDOMServer.renderToString(icon),
             className: 'bg-transparent size-auto',
             iconAnchor: iconAnchor,
             iconSize: [33, 40.8],
@@ -154,7 +142,7 @@ export const PlacesMarkers = () => {
                     return <Marker
                         key={id}
                         position={position}
-                        icon={createMapIcon({ category: categoryName })}
+                        icon={createDivIcon({ icon: getCategoryIcons(categoryName) })}
                         title={name}
                         alt={categoryName}
                         riseOnHover={true}
@@ -182,7 +170,7 @@ export const PlacesMarkers = () => {
                     return <Marker
                         key={id}
                         position={position}
-                        icon={createMapIcon({ category: categoryName })}
+                        icon={createDivIcon({ icon: getCategoryIcons(categoryName) })}
                         title={name}
                         alt={categoryName}
                         riseOnHover={true}
