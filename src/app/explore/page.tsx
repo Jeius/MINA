@@ -1,22 +1,10 @@
-import { SearchResult } from "@/components/search-results";
+import { SearchResults } from "@/components/search-results";
 import { SearchField } from "@/components/search-field";
 import { cn, stringToBoolean } from "@/lib/utils";
 import { Suspense } from "react";
 import { AnimatedUl } from "@/components/ui/animated";
-import { Skeleton } from "@/components/ui/skeleton";
-import { MyPulseLoader } from "@/components/ui/spinners";
+import { CustomSkeleton } from "@/components/ui/skeleton";
 
-const CustomSkeleton = () => {
-    const align = 'flex flex-row place-content-center place-items-center items-end';
-    const bg = 'bg-transparent';
-    const skeletonStyle = `relative w-full text-sm ${align} ${bg}`;
-    return (
-        <Skeleton className={skeletonStyle} >
-            <span className='mr-1'>Searching</span>
-            <MyPulseLoader className='mb-1' color="#ffffff" size={3} speedMultiplier={0.5} />
-        </Skeleton>
-    );
-}
 
 type ExploreTabProps = {
     searchParams: { [key: string]: string | string[] | undefined };
@@ -37,7 +25,7 @@ const ExploreTab = async ({ searchParams }: ExploreTabProps) => {
             {(query && isFocused) &&
                 <AnimatedUl className={cn(scroll, style, outline, size)}>
                     <Suspense fallback={<CustomSkeleton />} >
-                        <SearchResult query={query} />
+                        <SearchResults query={query} />
                     </Suspense>
                 </AnimatedUl>
             }

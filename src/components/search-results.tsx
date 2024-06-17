@@ -11,7 +11,7 @@ const highlightText = (text: string, query: string) => {
 };
 
 
-export const SearchResult = async ({ query }: { query: string | string[] | undefined }) => {
+export const SearchResults = async ({ query }: { query: string | string[] | undefined }) => {
     const searchResults = await getSearchResult(query);
 
     return (
