@@ -1,5 +1,6 @@
 import { getSearchResult } from "@/lib/fetchers";
 import { AnimatedLi, } from "./ui/animated";
+import { cn } from "@/lib/utils";
 
 const highlightText = (text: string, query: string) => {
     if (!query) return text;
@@ -13,14 +14,16 @@ const highlightText = (text: string, query: string) => {
 
 export const SearchResults = async ({ query }: { query: string | string[] | undefined }) => {
     const searchResults = await getSearchResult(query);
+    const outline = 'outline outline-1 outline-primary-dark';
+    const bg = 'bg-primary rounded-xl bg-opacity-90';
+    const style = 'relative flex items-center p-2 min-h-14 text-sm my-1 cursor-pointer';
 
     return (
         searchResults.length !== 0
             ? searchResults.map((result, index) => (
                 <AnimatedLi
                     key={index}
-                    className={`relative flex items-center p-2 min-h-14 
-                        text-sm my-1 rounded-xl bg-primary bg-opacity-90 cursor-pointer`}
+                    className={cn(bg, style, outline)}
                 >
                     <span>
                         {result.facility
