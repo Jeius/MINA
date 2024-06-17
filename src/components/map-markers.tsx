@@ -1,13 +1,14 @@
 'use client';
 
 import { CircleMarker, Marker, Popup, useMap, useMapEvent } from "react-leaflet";
-import { DivIcon, PointExpression } from 'leaflet';
+import { DivIcon, LatLngTuple, PointExpression } from 'leaflet';
 import { useAppContext } from "@/lib/context";
 import { Places, getPlaces } from "@/lib/fetchers";
 import { useEffect, useState } from "react";
 import { LocationSVG } from "./ui/icons";
 import ReactDOMServer from 'react-dom/server';
 import { getCategoryIcons } from "@/lib/data/category-icons";
+import { useSearchParams, usePathname, useRouter } from "next/navigation";
 
 export type MapIcon = React.HTMLAttributes<HTMLElement> & {
     iconAnchor?: PointExpression,
@@ -55,6 +56,9 @@ export const LocationMarker = () => {
 
 
 export const PlacesMarkers = () => {
+    const searchParams = useSearchParams();
+    const pathname = usePathname();
+    const router = useRouter();
     const map = useMap();
     const [places, setPlaces] = useState<Places>();
     const [currentZoom, setCurrentZoom] = useState(map.getZoom());
@@ -114,37 +118,85 @@ export const PlacesMarkers = () => {
         }
     }
 
+    const handleClick = ({ id, type, pos, z }: {
+        id: number | string,
+        type: number,
+        pos: LatLngTuple,
+        z: number,
+    }) => {
+        const params = new URLSearchParams(searchParams);
+        params.set('id', id.toString());
+        params.set('ty', type.toString());
+        params.set('x', pos[1].toString());
+        params.set('y', pos[0].toString());
+        params.set('z', z.toString());
+        router.replace(`${pathname}?${params.toString()}`);
+    }
+
+    const getSearchParams = () => {
+        const params = new URLSearchParams(searchParams);
+        const x = params.get('x');
+        const y = params.get('y');
+
+    }
+
 
     return (
         <>
             {places?.facilities
                 .filter(f => (filterMarkers(f.category)))
-                .map(f => (
-                    <Marker
-                        key={f.id}
-                        position={[f.node.y_coord, f.node.x_coord]}
-                        icon={createMapIcon({ category: f.category.name.toLowerCase() })}
-                        title={f.name}
-                        alt={f.category.name}
+                .map(f => {
+                    const id = f.id;
+                    const name = f.name;
+                    const type = 1;
+                    const categoryName = f.category.name.toLowerCase();
+                    const position = [f.node.y_coord, f.node.x_coord] as LatLngTuple;
+                    return <Marker
+                        key={id}
+                        position={position}
+                        icon={createMapIcon({ category: categoryName })}
+                        title={name}
+                        alt={categoryName}
                         riseOnHover={true}
                         interactive={true}
-                    />
-                ))
+                        eventHandlers={{
+                            click: () => handleClick({
+                                id: id,
+                                type: type,
+                                pos: position,
+                                z: currentZoom,
+                            }),
+                        }}
+                    />;
+                })
             }
 
             {places?.rooms
                 .filter(r => (filterRooms(r.category) && filterMarkers(r.category)))
-                .map(r => (
-                    <Marker
-                        key={r.id}
-                        position={[r.y_coord, r.x_coord]}
-                        icon={createMapIcon({ category: r.category.name.toLowerCase() })}
-                        title={r.name}
-                        alt={r.category.name}
+                .map(r => {
+                    const id = r.id;
+                    const name = r.name;
+                    const type = 2;
+                    const categoryName = r.category.name.toLowerCase();
+                    const position = [r.y_coord, r.x_coord] as LatLngTuple;
+                    return <Marker
+                        key={id}
+                        position={position}
+                        icon={createMapIcon({ category: categoryName })}
+                        title={name}
+                        alt={categoryName}
                         riseOnHover={true}
                         interactive={true}
-                    />
-                ))
+                        eventHandlers={{
+                            click: () => handleClick({
+                                id: id,
+                                type: type,
+                                pos: position,
+                                z: currentZoom,
+                            }),
+                        }}
+                    />;
+                })
             }
         </>
     );
