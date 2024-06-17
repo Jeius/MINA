@@ -2,6 +2,46 @@
 import { db } from '@/lib/utils';
 import { NextResponse } from 'next/server';
 
+
+type Facility = {
+    id: string,
+    name: string,
+    category: {
+        name: string,
+    },
+    node: {
+        x_coord: number,
+        y_coord: number
+    }
+}
+
+type Room = {
+    id: string,
+    name: string,
+    category: {
+        name: string,
+    },
+    x_coord: number,
+    y_coord: number,
+}
+
+const createData = (facilities: any, rooms: any) => {
+    const newFacilities = facilities.map((f: Facility) => ({
+        id: `F${f.id}`,
+        name: f.name,
+        category: f.category.name,
+        position: [f.node.y_coord, f.node.x_coord],
+    }));
+    const newRooms = rooms.map((r: Room) => ({
+        id: `R${r.id}`,
+        name: r.name,
+        category: r.category.name,
+        position: [r.y_coord, r.x_coord],
+    }));
+
+    return newFacilities.concat(newRooms);
+}
+
 const getPlaces = async () => {
     try {
         const facilities = await db.facility.findMany({
@@ -23,7 +63,6 @@ const getPlaces = async () => {
         const rooms = await db.room.findMany({
             select: {
                 id: true,
-                building_id: true,
                 name: true,
                 x_coord: true,
                 y_coord: true,
@@ -39,7 +78,7 @@ const getPlaces = async () => {
             }
         });
 
-        return { facilities: facilities, rooms: rooms };
+        return createData(facilities, rooms);
     } catch (error: any) {
         console.error(error.message);
         throw error;
