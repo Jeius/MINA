@@ -5,6 +5,7 @@ import AppContext from "@/lib/context";
 import dynamic from "next/dynamic";
 import BottomNav from "@/components/bottom-nav";
 import { PlacesMarkers } from "@/components/map-markers";
+import MapComponent from "@/components/MapComponent";
 
 const CampusMap = dynamic(() => import('@/components/campus-map'), { ssr: false });
 
@@ -24,9 +25,12 @@ const RootLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
         <body className='relative'>
           <main className='relative h-screen w-screen bg-gray-200'>
             {children}
-            <CampusMap>
+            {/* <CampusMap>
               <PlacesMarkers />
-            </CampusMap>
+            </CampusMap> */}
+            <MapComponent>
+              <PlacesMarkers />
+            </MapComponent>
           </main>
 
           <footer>
