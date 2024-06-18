@@ -1,4 +1,3 @@
-// app/components/MapEventsHandler.tsx
 
 import { useMapEvents } from 'react-leaflet';
 
@@ -19,7 +18,7 @@ const MapEventsHandler = () => {
     });
 
     const updateHash = (zoom: number, lat: number, lng: number) => {
-        window.location.hash = `#map=${zoom}/${lat}/${lng}`;
+        window.location.hash = `#map=${zoom}/${lat.toFixed(8)}/${lng.toFixed(8)}`;
     };
 
     return null;

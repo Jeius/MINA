@@ -4,10 +4,9 @@ import React from "react";
 import AppContext from "@/lib/context";
 import dynamic from "next/dynamic";
 import BottomNav from "@/components/bottom-nav";
-import { PlacesMarkers } from "@/components/map-markers";
-import MapComponent from "@/components/MapComponent";
+import { MapMarkers } from "@/components/MapMarkers";
 
-const CampusMap = dynamic(() => import('@/components/campus-map'), { ssr: false });
+const MapComponent = dynamic(() => import('@/components/MapComponent'), { ssr: false });
 
 const inter = Inter({ subsets: ["latin"] });
 const scrollbar = 'scrollbar-thumb-gray-500 scrollbar-track-transparent';
@@ -25,11 +24,8 @@ const RootLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
         <body className='relative'>
           <main className='relative h-screen w-screen bg-gray-200'>
             {children}
-            {/* <CampusMap>
-              <PlacesMarkers />
-            </CampusMap> */}
             <MapComponent>
-              <PlacesMarkers />
+              <MapMarkers />
             </MapComponent>
           </main>
 

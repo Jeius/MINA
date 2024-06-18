@@ -43,7 +43,7 @@ export const LocationMarker = () => {
 }
 
 
-export const PlacesMarkers = () => {
+export const MapMarkers = () => {
     const searchParams = useSearchParams();
     const pathname = usePathname();
     const router = useRouter();

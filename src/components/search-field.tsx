@@ -7,7 +7,6 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 type Props = HTMLAttributes<HTMLElement> & {
     placeholder?: string,
-    searchParams?: { [key: string]: string | string[] | undefined }
 };
 
 

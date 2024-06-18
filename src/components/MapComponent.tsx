@@ -1,9 +1,11 @@
 "use client"
 
-import { LatLngExpression, LatLngBoundsExpression } from 'leaflet';
+import { LatLngBoundsExpression } from 'leaflet';
 import { PropsWithChildren, useEffect, useState } from 'react';
-import { MapContainer, TileLayer, Marker } from 'react-leaflet';
+import { MapContainer, TileLayer } from 'react-leaflet';
 import MapEventsHandler from './MapEventsHandler';
+import 'leaflet/dist/leaflet.css';
+import 'leaflet-rotate';
 
 type MapComponentProps = PropsWithChildren;
 
@@ -48,7 +50,7 @@ const MapComponent: React.FC<MapComponentProps> = ({ children }) => {
         <MapContainer
             center={center}
             zoom={currentZoom}
-            className='absolute w-full h-full z-0'
+            className='w-full h-full z-0'
             scrollWheelZoom={true}
             minZoom={15}
             maxZoom={22}
