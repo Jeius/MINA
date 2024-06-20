@@ -5,6 +5,7 @@ import AppContext from "@/lib/context";
 import dynamic from "next/dynamic";
 import BottomNav from "@/components/bottom-nav";
 import { MapMarkers } from "@/components/MapMarkers";
+import { cn } from "@/lib/utils";
 
 const MapComponent = dynamic(() => import('@/components/MapComponent'), { ssr: false });
 
@@ -18,20 +19,32 @@ export const metadata = {
 
 
 const RootLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const glass = 'backdrop-blur-md bg-black bg-opacity-80';
+  const outline = `outline outline-1 outline-slate-500`;
+  const textStyle = 'text-white text-md';
+  const style = 'p-3 justify-center pointer-events-auto';
+
   return (
     <AppContext>
       <html lang="en" className={`${inter.className} ${scrollbar} text-white text-sm overflow-hidden`}>
-        <body className='relative'>
-          <main className='relative h-screen w-screen bg-gray-200'>
-            {children}
-            <MapComponent>
-              <MapMarkers />
-            </MapComponent>
-          </main>
+        <body className='relative h-screen w-screen bg-gray-300'>
+          <MapComponent>
+            <MapMarkers />
+          </MapComponent>
 
-          <footer>
-            <BottomNav />
-          </footer>
+          <main className='relative size-full flex flex-col z-20 pointer-events-none'>
+            <header className={cn(style, glass, outline, textStyle)}>
+              <strong>MSU-IIT Campus Navigation Guide</strong>
+            </header>
+
+            <section className='flex justify-center pointer-events-auto'>
+              {children}
+            </section>
+
+            <footer className='fixed bottom-0 w-full pointer-events-auto'>
+              <BottomNav />
+            </footer>
+          </main>
         </body>
       </html>
     </AppContext>
