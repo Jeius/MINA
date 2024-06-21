@@ -18,7 +18,7 @@ const MapEventsHandler = () => {
     });
 
     const updateHash = (zoom: number, lat: number, lng: number) => {
-        window.location.hash = `#map=${zoom}/${lat.toFixed(8)}/${lng.toFixed(8)}`;
+        window.location.hash = `#map=${zoom}/${lat.toFixed(6)}/${lng.toFixed(6)}`;
     };
 
     return null;
