@@ -50,7 +50,7 @@ const MapComponent: React.FC<MapComponentProps> = ({ children }) => {
         <MapContainer
             center={center}
             zoom={currentZoom}
-            className='w-full h-full z-0'
+            className='absolute w-full h-full z-0 bg-transparent'
             scrollWheelZoom={true}
             minZoom={15}
             maxZoom={22}
@@ -67,6 +67,7 @@ const MapComponent: React.FC<MapComponentProps> = ({ children }) => {
                 maxZoom={22}
                 maxNativeZoom={22}
                 minNativeZoom={13}
+                zIndex={0}
             />
 
             <MapEventsHandler />
