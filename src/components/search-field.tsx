@@ -1,25 +1,30 @@
 "use client"
 
 import { cn, stringToBoolean } from "@/lib/utils";
-import { ChangeEvent, HTMLAttributes, useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { CancelSVG, SearchSVG } from "./ui/icons";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import debounce from "debounce";
 
-type Props = HTMLAttributes<HTMLElement> & {
+type Props = React.HTMLAttributes<HTMLElement> & {
     placeholder?: string,
 };
 
 
-export const SearchField: React.FC<Props> = ({ className, id, placeholder }) => {
+export const SearchField: React.FC<Props> = ({ className, placeholder }) => {
     const searchParams = useSearchParams();
-    const [search, setSearch] = useState(new URLSearchParams(searchParams).get('q'));
-    const [focus, setFocus] = useState('false');
     const pathname = usePathname();
-    const router = useRouter();
+    const { replace } = useRouter();
+    const inputRef = useRef<HTMLInputElement>(null);
+
+    const [focus, setFocus] = useState(false);
+    const [search, setSearch] = useState(new URLSearchParams(searchParams).get('q'));
+    const debouncedsetSearch = debounce(setSearch, 1000);
+
 
     const glass = 'backdrop-blur-md bg-black bg-opacity-70';
-    const outline = `rounded-2xl outline outline-1 `;
-    const outlineColor = stringToBoolean(focus) ? 'outline-slate-200' : 'outline-slate-400';
+    const outline = `rounded-xl outline outline-1 `;
+    const outlineColor = focus ? 'outline-slate-200' : 'outline-slate-400';
     const size = 'w-full h-auto';
     const textStyle = 'text-sm';
     const placeholderStyle = 'placeholder:text-slate-300';
@@ -27,13 +32,17 @@ export const SearchField: React.FC<Props> = ({ className, id, placeholder }) => 
     const style = 'relative flex items-center justify-center px-4 py-2';
     const iconStyle = 'h-full w-auto relative flex items-center fill-white';
 
-    const handleClick = () => {
+    const clearInput = () => {
+        if (inputRef.current) {
+            inputRef.current.value = '';
+        }
         setSearch('');
-    }
+    };
 
-    const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { value } = e.target;
-        setSearch(value);
+        debouncedsetSearch(value);
     };
 
     const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -45,10 +54,13 @@ export const SearchField: React.FC<Props> = ({ className, id, placeholder }) => 
     useEffect(() => {
         const params = new URLSearchParams(searchParams);
         const hash = window.location.hash;
-        params.set('q', search || '');
-        params.set('f', focus || '');
-        router.replace(`${pathname}?${params.toString()}${hash}`);
-    }, [focus, pathname, router, search, searchParams]);
+        if (search && focus) {
+            params.set('query', search);
+        } else {
+            params.delete('query');
+        }
+        replace(`${pathname}?${params.toString()}${hash}`);
+    }, [focus, pathname, replace, search, searchParams]);
 
 
     return (
@@ -59,16 +71,16 @@ export const SearchField: React.FC<Props> = ({ className, id, placeholder }) => 
                 outlineColor, size, dropShadow, className)
             }>
             <input
-                id={id}
-                name='q'
+                name='query'
                 type='text'
                 role='searchbox'
-                value={search || ''}
+                ref={inputRef}
+                defaultValue={search || ''}
                 placeholder={placeholder}
                 autoComplete='off'
                 onChange={handleChange}
-                onFocus={() => setFocus('true')}
-                onBlur={() => setFocus('false')}
+                onFocus={() => setFocus(true)}
+                onBlur={() => setFocus(false)}
                 onKeyDown={handleKeyDown}
                 className={cn(
                     `w-full h-auto mr-2 bg-transparent outline-none`,
@@ -77,7 +89,7 @@ export const SearchField: React.FC<Props> = ({ className, id, placeholder }) => 
                 )}
             />
             {search
-                ? <CancelSVG role='button' type='reset' onClick={handleClick} className={iconStyle} />
+                ? <CancelSVG role='button' type='reset' onClick={clearInput} className={iconStyle} />
                 : <SearchSVG role='img' className={iconStyle} />}
 
         </form>
