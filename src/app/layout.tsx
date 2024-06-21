@@ -3,7 +3,7 @@ import "@/styles/globals.css";
 import React from "react";
 import AppContext from "@/lib/context";
 import dynamic from "next/dynamic";
-import BottomNav from "@/components/bottom-nav";
+import BottomNav from "@/components/BottomNav";
 import { MapMarkers } from "@/components/MapMarkers";
 import { cn } from "@/lib/utils";
 

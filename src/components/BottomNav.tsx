@@ -46,7 +46,6 @@ export const NavButton = ({ className, name, icon }: NavButtonProps) => {
 
 const BottomNav = () => {
     const glass = 'backdrop-blur-md bg-black bg-opacity-80';
-    const position = 'fixed bottom-0';
     const outline = `outline outline-1 outline-slate-500`;
     const style = 'py-3 w-full flex justify-center';
     const iconStyle = 'fill-white drop-shadow-lg size-5 mr-2';
@@ -58,7 +57,7 @@ const BottomNav = () => {
     };
 
     return (
-        <nav className={cn(position, outline, style, glass)}>
+        <nav className={cn(outline, style, glass)}>
             {Object.entries(tabs).map(([tabName, icon]) => (
                 <NavButton
                     key={tabName}
