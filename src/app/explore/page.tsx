@@ -20,7 +20,7 @@ const ExploreTab = async ({ searchParams }: ExploreTabProps) => {
     const size = 'w-full max-h-80';
 
     return (
-        <section className="w-full max-w-xl place-self-center flex flex-col p-3 z-10">
+        <section role='search' className="w-full max-w-xl place-self-center flex flex-col p-3 z-10">
             <SearchField placeholder="Search for places" />
             {(query && show) &&
                 <AnimatedUl className={cn(scroll, style, outline, size)}>

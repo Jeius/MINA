@@ -37,7 +37,7 @@ const RootLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
               <strong>MSU-IIT Campus Navigation Guide</strong>
             </header>
 
-            <section className='flex justify-around pointer-events-auto'>
+            <section role='main' className='relative flex justify-around pointer-events-auto'>
               {children}
             </section>
 
