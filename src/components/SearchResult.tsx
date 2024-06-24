@@ -12,7 +12,7 @@ const highlightText = (text: string, query: string) => {
 };
 
 
-export const SearchResults = async ({ query }: { query: string | string[] | undefined }) => {
+export const SearchResult = async ({ query }: { query: string | string[] | undefined }) => {
     const searchResults = await getSearchResult(query);
     const outline = 'outline outline-1 outline-primary-dark';
     const bg = 'bg-primary rounded-xl bg-opacity-90';

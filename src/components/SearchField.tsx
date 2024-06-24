@@ -1,6 +1,6 @@
 "use client"
 
-import { cn, stringToBoolean } from "@/lib/utils";
+import { cn } from "@/lib/utils";
 import { useEffect, useRef, useState } from "react";
 import { CancelSVG, SearchSVG } from "./ui/icons";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
@@ -14,12 +14,12 @@ type Props = React.HTMLAttributes<HTMLElement> & {
 export const SearchField: React.FC<Props> = ({ className, placeholder }) => {
     const searchParams = useSearchParams();
     const pathname = usePathname();
-    const { replace } = useRouter();
+    const router = useRouter();
     const inputRef = useRef<HTMLInputElement>(null);
 
     const [focus, setFocus] = useState(false);
-    const [search, setSearch] = useState(new URLSearchParams(searchParams).get('q'));
-    const debouncedsetSearch = debounce(setSearch, 1000);
+    const [search, setSearch] = useState(new URLSearchParams(searchParams).get('query'));
+    const debouncedsetSearch = debounce(setSearch, 500);
 
 
     const glass = 'backdrop-blur-md bg-black bg-opacity-70';
@@ -39,6 +39,15 @@ export const SearchField: React.FC<Props> = ({ className, placeholder }) => {
         setSearch('');
     };
 
+    const handleFocus = (e: React.FocusEvent<HTMLInputElement, Element>) => {
+        e.preventDefault();
+        setFocus(true);
+    }
+
+    const handleBlur = (e: React.FocusEvent<HTMLInputElement, Element>) => {
+        e.preventDefault();
+        setFocus(false);
+    }
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { value } = e.target;
@@ -59,8 +68,13 @@ export const SearchField: React.FC<Props> = ({ className, placeholder }) => {
         } else {
             params.delete('query');
         }
-        replace(`${pathname}?${params.toString()}${hash}`);
-    }, [focus, pathname, replace, search, searchParams]);
+        if (focus) {
+            params.set('s', focus.toString());
+        } else {
+            params.delete('s');
+        }
+        router.replace(`${pathname}?${params.toString()}${hash}`, { scroll: false });
+    }, [focus, pathname, router, search, searchParams]);
 
 
     return (
@@ -79,8 +93,8 @@ export const SearchField: React.FC<Props> = ({ className, placeholder }) => {
                 placeholder={placeholder}
                 autoComplete='off'
                 onChange={handleChange}
-                onFocus={() => setFocus(true)}
-                onBlur={() => setFocus(false)}
+                onFocus={handleFocus}
+                onBlur={handleBlur}
                 onKeyDown={handleKeyDown}
                 className={cn(
                     `w-full h-auto mr-2 bg-transparent outline-none`,
@@ -89,7 +103,7 @@ export const SearchField: React.FC<Props> = ({ className, placeholder }) => {
                 )}
             />
             {search
-                ? <CancelSVG role='button' type='reset' onClick={clearInput} className={iconStyle} />
+                ? <CancelSVG role='button' onClick={clearInput} className={iconStyle} />
                 : <SearchSVG role='img' className={iconStyle} />}
 
         </form>
