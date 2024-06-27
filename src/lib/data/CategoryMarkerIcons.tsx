@@ -18,7 +18,7 @@ import {
 import { cn } from "../utils";
 
 
-export const getCategoryIcons = (category?: string) => {
+export const getCategoryMarkers = (category?: string) => {
     const categoryMarkerIcons: { [key: string]: React.ReactNode } = {
         'building': <CategoryMarkerIcon category={category} className='fill-building stroke-building-dark' />,
         'college': <CategoryMarkerIcon category={category} className='fill-college stroke-college-dark' />,
