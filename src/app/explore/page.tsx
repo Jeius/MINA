@@ -1,5 +1,5 @@
-import { SearchResult } from "@/components/SearchResult";
-import { SearchField } from "@/components/SearchField";
+import SearchList from "@/components/SearchList";
+import Search from "@/app/explore/Search";
 import { cn, stringToBoolean } from "@/lib/utils";
 import { Suspense } from "react";
 import { AnimatedUl } from "@/components/ui/animated";
@@ -21,11 +21,11 @@ const ExploreTab = async ({ searchParams }: ExploreTabProps) => {
 
     return (
         <section role='search' className="w-full max-w-xl place-self-center flex flex-col p-3 z-10">
-            <SearchField placeholder="Search for places" />
+            <Search />
             {(query && show) &&
                 <AnimatedUl className={cn(scroll, style, outline, size)}>
                     <Suspense fallback={<CustomSkeleton />} >
-                        <SearchResult query={query} />
+                        <SearchList query={query} />
                     </Suspense>
                 </AnimatedUl>
             }
