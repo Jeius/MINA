@@ -25,8 +25,11 @@ export const MapCenterUpdater = () => {
                 const [hashZoom, hashLat, hashLng] = hash.replace('#map=', '').split('/');
                 const center = [parseFloat(hashLat), parseFloat(hashLng)] as [number, number];
                 const zoom = parseInt(hashZoom);
-                map.setView(center, zoom);
-                console.log("MapUpdater Executed")
+                map.setView(center, zoom, {
+                    animate: true,
+                    duration: 0.4,
+                    easeLinearity: 0.25,
+                });
             }
         };
 
