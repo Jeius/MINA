@@ -1,7 +1,7 @@
 "use client"
 
 import { LatLngBoundsExpression } from 'leaflet';
-import { PropsWithChildren, useEffect, useState } from 'react';
+import { PropsWithChildren } from 'react';
 import { MapContainer, TileLayer } from 'react-leaflet';
 import MapEventsHandler from './MapEventsHandler';
 import 'leaflet/dist/leaflet.css';
@@ -17,39 +17,9 @@ const MapComponent: React.FC<MapComponentProps> = ({ children }) => {
         [8.248, 124.239],
         [8.233, 124.248]
     ];
-    const defaultCenter: [number, number] = [8.241530595, 124.243854763];
-    const defaultZoom = 16;
-    const [center, setCenter] = useState<[number, number]>(defaultCenter);
-    const [currentZoom, setCurrentZoom] = useState<number>(defaultZoom);
-
-    useEffect(() => {
-        const handleHashChange = () => {
-            const hash = window.location.hash;
-            if (hash.startsWith('#map=')) {
-                const [hashZoom, hashLat, hashLng] = hash.replace('#map=', '').split('/');
-                setCenter([parseFloat(hashLat), parseFloat(hashLng)]);
-                setCurrentZoom(parseInt(hashZoom));
-            }
-        };
-
-        // Handle initial load
-        handleHashChange();
-
-        // Add event listener for hash changes
-        window.addEventListener('hashchange', handleHashChange);
-
-        // Cleanup event listener on component unmount
-        return () => {
-            window.removeEventListener('hashchange', handleHashChange);
-        };
-    }, []);
-
-
 
     return (
         <MapContainer
-            center={center}
-            zoom={currentZoom}
             className='fixed top-0 w-full h-full z-0 bg-transparent'
             scrollWheelZoom={true}
             minZoom={15}

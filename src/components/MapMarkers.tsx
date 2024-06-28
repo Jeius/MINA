@@ -6,8 +6,10 @@ import { useAppContext } from "@/lib/context";
 import { Data, getPlaces } from "@/lib/fetchers";
 import { ReactNode, useEffect, useState } from "react";
 import ReactDOMServer from 'react-dom/server';
-import { getCategoryIcons } from "@/lib/data/category-icons";
+import { getCategoryMarkers } from "@/lib/data/CategoryMarkerIcons";
 import { useSearchParams, usePathname, useRouter } from "next/navigation";
+import { updateHash } from "./MapEventsHandler";
+import { animate } from "framer-motion";
 
 export type MapIcon = React.HTMLAttributes<HTMLElement> & {
     iconAnchor?: PointExpression,
@@ -109,23 +111,22 @@ export const MapMarkers = () => {
         }
     }
 
-    const handleClick = ({ id, pos, z }: {
-        id: number | string,
+    const handleClick = ({ name, pos, z }: {
+        name: string,
         pos: LatLngTuple,
         z: number,
     }) => {
         const params = new URLSearchParams(searchParams);
-        params.set('id', id.toString());
-        params.set('pos', pos.toLocaleString());
-        params.set('z', z.toString());
-        router.replace(`${pathname}?${params.toString()}`);
-    }
-
-    const getSearchParams = () => {
-        const params = new URLSearchParams(searchParams);
-        const x = params.get('x');
-        const y = params.get('y');
-
+        params.set('name', name);
+        router.replace(
+            `${pathname}?${params.toString()}`
+        );
+        updateHash(z, pos[0], pos[1]);
+        map.flyTo(pos, z, {
+            animate: true,
+            duration: 0.4,
+            easeLinearity: 0.25,
+        });
     }
 
 
@@ -140,16 +141,16 @@ export const MapMarkers = () => {
                     return <Marker
                         key={id}
                         position={position}
-                        icon={createDivIcon({ icon: getCategoryIcons(categoryName) })}
+                        icon={createDivIcon({ icon: getCategoryMarkers(categoryName) })}
                         title={name}
                         alt={categoryName}
                         riseOnHover={true}
                         interactive={true}
                         eventHandlers={{
                             click: () => handleClick({
-                                id: id,
+                                name: name,
                                 pos: position,
-                                z: currentZoom,
+                                z: 19,
                             }),
                         }}
                     />;
