@@ -32,14 +32,12 @@ const RootLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
             <MapMarkers />
           </MapComponent>
 
-          <main className='relative size-full flex flex-col z-20 pointer-events-none'>
+          <main className='relative size-full flex flex-col justify-items-center z-20 pointer-events-none'>
             <header className={cn(style, glass, outline, textStyle)}>
               <strong>MSU-IIT Campus Navigation Guide</strong>
             </header>
 
-            <section role='main' className='relative flex justify-around pointer-events-auto'>
-              {children}
-            </section>
+            {children}
 
             <footer className='fixed bottom-0 w-full pointer-events-auto'>
               <BottomNav />
