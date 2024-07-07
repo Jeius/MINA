@@ -1,8 +1,10 @@
 import {
     BuildingSVG,
+    CampusSVG,
     ClinicSVG,
     CollegeSVG,
     ConstructionSVG,
+    ExpandSVG,
     FoodSVG,
     HallSVG,
     HostelSVG,
@@ -34,7 +36,9 @@ export const getCategoryMarkers = (category?: string) => {
         'security': <CategoryMarkerIcon category={category} className='fill-security stroke-security-dark' />,
         'sports': <CategoryMarkerIcon category={category} className='fill-sports stroke-sports-dark' />,
         'under construction': <CategoryMarkerIcon category={category} className='fill-underConstruction stroke-underConstruction-dark' />,
-        'default': <CategoryMarkerIcon category={category} className='fill-slate-900 stroke-slate-400' />,
+        'cluster': <CategoryMarkerIcon category={category} className='fill-slate-700 stroke-slate-800' />,
+        'campus': <CategoryMarkerIcon category={category} className='fill-primary stroke-primary-dark' />,
+        'default': <CategoryMarkerIcon className='fill-slate-700 stroke-slate-800' />,
     }
 
     return category ? categoryMarkerIcons[category] : categoryMarkerIcons['default'];
@@ -45,7 +49,11 @@ type CategoryMarkerIconProps = React.HTMLAttributes<HTMLElement> & {
 }
 
 
-const CategoryMarkerIcon = ({ category, className, ...props }: CategoryMarkerIconProps) => {
+const CategoryMarkerIcon = ({
+    category = 'default',
+    className,
+    ...props
+}: CategoryMarkerIconProps) => {
     const categoryIcons: { [key: string]: React.ReactNode } = {
         'building': <BuildingSVG className='relative size-full fill-white' />,
         'college': <CollegeSVG className='relative size-full fill-white' />,
@@ -61,6 +69,8 @@ const CategoryMarkerIcon = ({ category, className, ...props }: CategoryMarkerIco
         'security': <SecuritySVG className='relative size-full fill-white' />,
         'sports': <SportsSVG className='relative size-full fill-white' />,
         'under construction': <ConstructionSVG className='relative size-full fill-white' />,
+        'cluster': <ExpandSVG className='relative size-full fill-white' />,
+        'campus': <CampusSVG className='relative size-full fill-white' />
     }
 
     return (
