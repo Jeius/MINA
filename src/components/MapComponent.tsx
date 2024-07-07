@@ -6,6 +6,7 @@ import { MapContainer, TileLayer } from 'react-leaflet';
 import MapEventsHandler from './MapEventsHandler';
 import 'leaflet/dist/leaflet.css';
 import 'leaflet-rotate';
+import { MapMarkers } from './MapMarkers';
 
 type MapComponentProps = PropsWithChildren;
 
@@ -39,6 +40,8 @@ const MapComponent: React.FC<MapComponentProps> = ({ children }) => {
                 minNativeZoom={13}
                 zIndex={0}
             />
+
+            <MapMarkers />
 
             <MapEventsHandler />
 

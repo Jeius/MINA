@@ -28,9 +28,7 @@ const RootLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     <AppContext>
       <html lang="en" className={`${inter.className} ${scrollbar} text-white text-sm overflow-hidden`}>
         <body className='relative h-screen w-screen bg-gray-300'>
-          <MapComponent>
-            <MapMarkers />
-          </MapComponent>
+          <MapComponent />
 
           <main className='relative size-full flex flex-col justify-items-center z-20 pointer-events-none'>
             <header className={cn(style, glass, outline, textStyle)}>
