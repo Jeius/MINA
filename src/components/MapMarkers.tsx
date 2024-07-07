@@ -1,7 +1,7 @@
 'use client';
 
 import { CircleMarker, Marker, Popup, useMap, useMapEvent } from "react-leaflet";
-import { DivIcon, LatLngTuple, PointExpression } from 'leaflet';
+import { DivIcon, LatLngTuple, PointExpression, } from 'leaflet';
 import { useAppContext } from "@/lib/context";
 import { Data, getPlaces } from "@/lib/fetchers";
 import { ReactNode, useEffect, useState } from "react";
@@ -9,7 +9,7 @@ import ReactDOMServer from 'react-dom/server';
 import { getCategoryMarkers } from "@/lib/data/CategoryMarkerIcons";
 import { useSearchParams, usePathname, useRouter } from "next/navigation";
 import { updateHash } from "./MapEventsHandler";
-import { animate } from "framer-motion";
+import MarkerClusterGroup from "react-leaflet-cluster";
 
 export type MapIcon = React.HTMLAttributes<HTMLElement> & {
     iconAnchor?: PointExpression,
@@ -17,7 +17,7 @@ export type MapIcon = React.HTMLAttributes<HTMLElement> & {
 }
 
 export const createDivIcon = ({
-    icon,
+    icon = getCategoryMarkers(),
     iconAnchor = [17, 37],
 }: MapIcon) => {
     return new DivIcon(
@@ -64,37 +64,6 @@ export const MapMarkers = () => {
         setCurrentZoom(event.target.getZoom());
     });
 
-    const filterMarkers = (category: string) => {
-        const categoryName = category.toLowerCase();
-
-        if (currentZoom >= 19) {
-            return true;
-        }
-
-        if (currentZoom >= 18) {
-            switch (categoryName) {
-                case 'building':
-                case 'park':
-                case 'library':
-                    return true;
-                default:
-                    break;
-            }
-        }
-
-        if (currentZoom >= 16) {
-            switch (categoryName) {
-                case 'college':
-                case 'clinic':
-                    return true;
-                default:
-                    break;
-            }
-        }
-
-        return false;
-    };
-
     const filterRooms = (id: string, category: string) => {
         const categoryName = category.toLowerCase();
 
@@ -129,10 +98,34 @@ export const MapMarkers = () => {
         });
     }
 
+    const cluster = (zoom: number) => {
+        if (zoom <= 16) {
+            return Infinity;
+        } else {
+            return 40;
+        }
+    }
+
+
+    const iconCreateFunction = (cluster: any) => {
+        const markers = cluster.getChildCount();
+        if (markers >= 54) {
+            return createDivIcon({ icon: getCategoryMarkers('campus') });
+        }
+        return createDivIcon({ icon: getCategoryMarkers('cluster') });
+    }
+
 
     return (
-        <>
-            {places?.filter(p => (filterRooms(p.id, p.category) && filterMarkers(p.category)))
+        <MarkerClusterGroup
+            chunkedLoading
+            iconCreateFunction={iconCreateFunction}
+            showCoverageOnHover={false}
+            maxClusterRadius={cluster}
+            disableClusteringAtZoom={21}
+            spiderfyOnMaxZoom={false}
+        >
+            {places?.filter(p => (filterRooms(p.id, p.category)))
                 .map(p => {
                     const id = p.id;
                     const name = p.name;
@@ -150,12 +143,12 @@ export const MapMarkers = () => {
                             click: () => handleClick({
                                 name: name,
                                 pos: position,
-                                z: 19,
+                                z: currentZoom,
                             }),
                         }}
                     />;
                 })
             }
-        </>
+        </MarkerClusterGroup>
     );
 }
