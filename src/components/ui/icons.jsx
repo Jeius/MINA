@@ -53,10 +53,20 @@ export const CancelSVG = (props) => (
 )
 
 export const LocationSVG = (props) => (
-    <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="3 4 17.7 18" {...props}>
-        <path fillRule="evenodd" fillOpacity="0.7" d="M17.5 16.5L12 22l-5.5-5.5a7.778 7.778 0 1 1 11 0ZM12 12a1 1 0 1 0 0-2a1 1 0 0 0 0 2Z"></path>
-        <path fillOpacity="0.7" strokeLinejoin="bevel" strokeWidth="0" d="M12 11h.01v.01H12z"></path>
-        <path fillOpacity="0.7" strokeLinejoin="bevel" strokeWidth="1" d="m12 22l5.5-5.5a7.778 7.778 0 1 0-11 0L12 22Z"></path>
+    <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width={800}
+        height={800}
+        viewBox="0 0 24 24"
+        {...props}
+    >
+        <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={1}
+            opacity={0.9}
+            d="M12 21c3.5-3.6 7-6.824 7-10.8C19 6.224 15.866 3 12 3s-7 3.224-7 7.2 3.5 7.2 7 10.8Z"
+        />
     </svg>
 )
 
@@ -89,7 +99,11 @@ export const ClinicSVG = (props) => (
         viewBox="0 0 512 512"
         {...props}
     >
-        <path d="M486.4 153.6h-128v-128c0-14.14-11.46-25.6-25.6-25.6H179.2c-14.14 0-25.6 11.46-25.6 25.6v128h-128C11.46 153.6 0 165.06 0 179.2v153.6c0 14.14 11.46 25.6 25.6 25.6h128v128c0 14.14 11.46 25.6 25.6 25.6h153.6c14.14 0 25.6-11.46 25.6-25.6v-128h128c14.14 0 25.6-11.46 25.6-25.6V179.2c0-14.14-11.46-25.6-25.6-25.6zm0 179.2H332.8v153.6H179.2V332.8H25.6V179.2h153.6V25.6h153.6v153.6h153.6v153.6z" />
+        <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={3}
+            d="M486.4 153.6h-128v-128c0-14.14-11.46-25.6-25.6-25.6H179.2c-14.14 0-25.6 11.46-25.6 25.6v128h-128C11.46 153.6 0 165.06 0 179.2v153.6c0 14.14 11.46 25.6 25.6 25.6h128v128c0 14.14 11.46 25.6 25.6 25.6h153.6c14.14 0 25.6-11.46 25.6-25.6v-128h128c14.14 0 25.6-11.46 25.6-25.6V179.2c0-14.14-11.46-25.6-25.6-25.6zm0 179.2H332.8v153.6H179.2V332.8H25.6V179.2h153.6V25.6h153.6v153.6h153.6v153.6z" />
     </svg>
 )
 

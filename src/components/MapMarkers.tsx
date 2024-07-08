@@ -18,14 +18,14 @@ export type MapIcon = React.HTMLAttributes<HTMLElement> & {
 
 export const createDivIcon = ({
     icon = getCategoryMarkers(),
-    iconAnchor = [17, 37],
+    iconAnchor = [23, 43],
 }: MapIcon) => {
     return new DivIcon(
         {
             html: ReactDOMServer.renderToString(icon),
             className: 'bg-transparent size-auto',
             iconAnchor: iconAnchor,
-            iconSize: [33, 40.8],
+            iconSize: [47, 54.8],
         }
     );
 }

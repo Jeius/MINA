@@ -76,7 +76,7 @@ const CategoryMarkerIcon = ({
     return (
         <>
             <LocationSVG className={cn(`relative size-full`, className)} {...props} />
-            <div className="absolute inset-y-[9px] inset-x-[8.5px] size-[17px]">
+            <div className="absolute inset-[15px] size-[17px]">
                 {category && categoryIcons[category]}
             </div>
         </>
