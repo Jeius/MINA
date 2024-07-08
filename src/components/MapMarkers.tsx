@@ -10,6 +10,7 @@ import { getCategoryMarkers } from "@/lib/data/CategoryMarkerIcons";
 import { useSearchParams, usePathname, useRouter } from "next/navigation";
 import { updateHash } from "./MapEventsHandler";
 import MarkerClusterGroup from "react-leaflet-cluster";
+import { MyBeatLoader, MyCircleLoader, MyMoonLoader } from "./ui/spinners";
 
 export type MapIcon = React.HTMLAttributes<HTMLElement> & {
     iconAnchor?: PointExpression,
@@ -87,10 +88,8 @@ export const MapMarkers = () => {
     }) => {
         const params = new URLSearchParams(searchParams);
         params.set('name', name);
-        router.replace(
-            `${pathname}?${params.toString()}`
-        );
         updateHash(z, pos[0], pos[1]);
+        router.replace(`${pathname}?${params}`, { scroll: false });
         map.flyTo(pos, z, {
             animate: true,
             duration: 0.4,
@@ -116,7 +115,7 @@ export const MapMarkers = () => {
     }
 
 
-    return (
+    return (places ?
         <MarkerClusterGroup
             chunkedLoading
             iconCreateFunction={iconCreateFunction}
@@ -150,5 +149,11 @@ export const MapMarkers = () => {
                 })
             }
         </MarkerClusterGroup>
+        :
+        <div className="absolute left-0 bottom-14 flex flex-row p-3 items-center">
+            <span className="text-black text-sm mr-2">Loading Markers</span>
+            <MyCircleLoader size={12} />
+        </div>
+
     );
 }
