@@ -1,5 +1,5 @@
 import SearchList from "@/components/SearchList";
-import Search from "@/app/explore/Search";
+import Search from "@/app/explore/search";
 import { cn, stringToBoolean } from "@/lib/utils";
 import { Suspense } from "react";
 import { AnimatedUl } from "@/components/ui/animated";
