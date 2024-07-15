@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useSearchParams } from "next/navigation";
 import SearchBox from "../../components/SearchBox";
+import SearchList from "@/components/SearchList";
 
 
 const Search = () => {
@@ -10,11 +11,14 @@ const Search = () => {
     const [search, setSearch] = useState(new URLSearchParams(searchParams).get('query'));
 
     return (
-        <SearchBox
-            placeholder='Search for places'
-            query={search}
-            setQuery={setSearch}
-        />
+        <>
+            <SearchBox
+                placeholder='Search for places'
+                query={search}
+                setQuery={setSearch}
+            />
+            <SearchList pathName={'explore'} />
+        </>
     )
 }
 

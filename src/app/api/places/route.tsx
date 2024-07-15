@@ -1,5 +1,5 @@
 
-import { Place } from '@/lib/fetchers';
+import { Place } from '@/lib/model';
 import { db } from '@/lib/utils';
 import { Decimal } from '@prisma/client/runtime/library';
 import { NextResponse } from 'next/server';
