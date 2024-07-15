@@ -17,6 +17,7 @@ export const NavButton = ({ className, name, icon }: NavButtonProps) => {
     const params = new URLSearchParams(searchParams);
     const pathname = usePathname();
     const active = pathname.substring(1) || 'explore';
+    const hash = window && window.location.hash;
 
     const bg = active.toLowerCase() == name.toLowerCase() && 'bg-primary';
     const style = 'relative flex items-center w-auto z-10 sm:mx-0 md:mx-1 lg:mx-3 px-5 py-2 rounded-full';
@@ -25,7 +26,7 @@ export const NavButton = ({ className, name, icon }: NavButtonProps) => {
 
     return (
         <Link
-            href={`/${name.toLowerCase()}?${params.toString()}`}
+            href={`/${name.toLowerCase()}?${params.toString()}${hash}`}
             role='button'
             className={cn(style, bg, outline, className)}
         >
