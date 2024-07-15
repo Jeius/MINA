@@ -1,42 +1,50 @@
+export type Place = {
+    id: string;
+    name: string;
+    facility?: string;
+    category: string | null;
+    position: number[];
+};
 
-export type SearchResult = {
-    id: number;
-    name: string,
-    facility?: {
-        id: number; name: string,
-    }
-}[];
+export type Places = Place[];
 
 type Query = string | string[] | undefined;
 
-export const getSearchResult = async (query: Query): Promise<SearchResult> => {
+export const getSearchResult = async (query: Query): Promise<Place[]> => {
     try {
-        const q = Array.isArray(query) ? query.join(',') : query; // Handle array case
-
-        if (!q) return ([]) as SearchResult;
-
-        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/search?q=${encodeURIComponent(q)}`);
+        const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+        const res = await fetch(`${apiUrl}/api/places`);
 
         if (!res.ok) {
-            throw new Error('Failed to fetch search results');
+            throw new Error('Failed to fetch places');
         }
 
-        return (await res.json()) as SearchResult;
+        const data = await res.json();
+
+        // Verify if the fetched data is an array
+        if (!Array.isArray(data)) {
+            throw new Error('Expected an array of places');
+        }
+
+        const places = data as Places;
+
+        const q = Array.isArray(query) ? query.join(',') : query; // Handle array case
+        if (!q) return [];
+
+        const filteredPlaces = places.filter(place => place.name.toLowerCase().includes(q.toLowerCase()));
+
+        return filteredPlaces;
 
     } catch (error: any) {
+        console.error('Error fetching search results:', error);
         throw new Error(error.message);
     }
 };
 
 
-export type Data = {
-    id: string,
-    name: string,
-    category: string,
-    position: number[],
-}[]
 
-export const getPlaces = async (): Promise<Data> => {
+
+export const getPlaces = async (): Promise<Places> => {
     try {
         const res = await fetch(`/api/places`);
 
@@ -44,7 +52,9 @@ export const getPlaces = async (): Promise<Data> => {
             throw new Error('Failed to fetch places');
         }
 
-        return (await res.json()) as Data;
+        const places = (await res.json()) as Places;
+
+        return places;
     } catch (error: any) {
         throw new Error(error.message);
     }

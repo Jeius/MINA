@@ -1,42 +1,47 @@
 
+import { Place } from '@/lib/fetchers';
 import { db } from '@/lib/utils';
+import { Decimal } from '@prisma/client/runtime/library';
 import { NextResponse } from 'next/server';
 
-
 type Facility = {
-    id: string,
+    id: string | number,
     name: string,
     category: {
         name: string,
     },
     node: {
-        x_coord: number,
-        y_coord: number
+        x_coord: Decimal,
+        y_coord: Decimal,
     }
-}
+};
 
 type Room = {
-    id: string,
+    id: string | number,
     name: string,
-    category: {
-        name: string,
-    },
-    x_coord: number,
-    y_coord: number,
-}
+    category: { name: string } | null,
+    facility: { name: string },
+    x_coord: Decimal,
+    y_coord: Decimal,
+};
 
-const createData = (facilities: any, rooms: any) => {
-    const newFacilities = facilities.map((f: Facility) => ({
+type Facilities = Facility[];
+
+type Rooms = Room[];
+
+const createData = (facilities: Facilities, rooms: Rooms) => {
+    const newFacilities = facilities.map((f: Facility): Place => ({
         id: `F${f.id}`,
         name: f.name,
         category: f.category.name,
-        position: [f.node.y_coord, f.node.x_coord],
+        position: [f.node.y_coord.toNumber(), f.node.x_coord.toNumber()],
     }));
-    const newRooms = rooms.map((r: Room) => ({
+    const newRooms = rooms.map((r: Room): Place => ({
         id: `R${r.id}`,
         name: r.name,
-        category: r.category.name,
-        position: [r.y_coord, r.x_coord],
+        facility: r.facility.name,
+        category: r.category && r.category.name,
+        position: [r.y_coord.toNumber(), r.x_coord.toNumber()],
     }));
 
     return newFacilities.concat(newRooms);
@@ -68,12 +73,9 @@ const getPlaces = async () => {
                 y_coord: true,
                 category: {
                     select: { name: true }
-                }
-            },
-            where: {
-                category: {
-                    // Ensures that the category is not null
-                    isNot: null
+                },
+                facility: {
+                    select: { name: true }
                 }
             }
         });

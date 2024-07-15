@@ -3,7 +3,7 @@
 import { CircleMarker, Marker, Popup, useMap, useMapEvent } from "react-leaflet";
 import { DivIcon, LatLngTuple, PointExpression, } from 'leaflet';
 import { useAppContext } from "@/lib/context";
-import { Data, getPlaces } from "@/lib/fetchers";
+import { Place, getPlaces } from "@/lib/fetchers";
 import { ReactNode, useEffect, useState } from "react";
 import ReactDOMServer from 'react-dom/server';
 import { getCategoryMarkers } from "@/lib/data/CategoryMarkerIcons";
@@ -51,7 +51,7 @@ export const MapMarkers = () => {
     const pathname = usePathname();
     const router = useRouter();
     const map = useMap();
-    const [places, setPlaces] = useState<Data>();
+    const [places, setPlaces] = useState<Place[]>();
     const [currentZoom, setCurrentZoom] = useState(map.getZoom());
 
     useEffect(() => {
@@ -65,7 +65,9 @@ export const MapMarkers = () => {
         setCurrentZoom(event.target.getZoom());
     });
 
-    const filterRooms = (id: string, category: string) => {
+    const filterRooms = (id: string, category: string | null) => {
+        if (!category) return false;
+
         const categoryName = category.toLowerCase();
 
         if (id.includes('F')) return true;
@@ -128,14 +130,14 @@ export const MapMarkers = () => {
                 .map(p => {
                     const id = p.id;
                     const name = p.name;
-                    const categoryName = p.category.toLowerCase();
+                    const categoryName = p.category && p.category.toLowerCase();
                     const position = p.position as LatLngTuple;
                     return <Marker
                         key={id}
                         position={position}
-                        icon={createDivIcon({ icon: getCategoryMarkers(categoryName) })}
+                        icon={createDivIcon({ icon: getCategoryMarkers(categoryName || '') })}
                         title={name}
-                        alt={categoryName}
+                        alt={categoryName || 'none'}
                         riseOnHover={true}
                         interactive={true}
                         eventHandlers={{
