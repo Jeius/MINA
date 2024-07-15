@@ -3,11 +3,10 @@ import "@/styles/globals.css";
 import React from "react";
 import AppContext from "@/lib/context";
 import dynamic from "next/dynamic";
-import BottomNav from "@/components/BottomNav";
-import { MapMarkers } from "@/components/MapMarkers";
 import { cn } from "@/lib/utils";
 
 const MapComponent = dynamic(() => import('@/components/MapComponent'), { ssr: false });
+const BottomNav = dynamic(() => import('@/components/BottomNav'), { ssr: false });
 
 const inter = Inter({ subsets: ["latin"] });
 const scrollbar = 'scrollbar-thumb-gray-500 scrollbar-track-transparent';
