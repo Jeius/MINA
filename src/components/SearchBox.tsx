@@ -33,7 +33,7 @@ const SearchBox: React.FC<Props> = ({
     const style = 'relative flex items-center justify-center px-4 py-2';
     const iconStyle = 'h-full w-auto relative flex items-center fill-white';
 
-    const debouncedsetSearch = debounce(setQuery, 500);
+    const debouncedsetSearch = debounce(setQuery, 100);
 
     const handleClear = useCallback(() => {
         if (inputRef.current) {
