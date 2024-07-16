@@ -1,5 +1,6 @@
 
-import { useEffect } from 'react';
+import { Map } from 'leaflet';
+import { useEffect, useState } from 'react';
 import { useMap, useMapEvents } from 'react-leaflet';
 
 export const updateHash = (zoom: number, lat: number, lng: number) => {
@@ -12,20 +13,19 @@ export const updateHash = (zoom: number, lat: number, lng: number) => {
     }
 
     const hash = `#map=${zoom}/${latNumber.toFixed(6)}/${lngNumber.toFixed(6)}`;
-    history.replaceState(null, '', hash);
+    history.replaceState(undefined, '', hash);
 };
 
-export const MapCenterUpdater = () => {
-    const map = useMap();
-
+const FlyToOnHashChange = (map: Map) => {
     useEffect(() => {
         const handleHashChange = () => {
             const hash = window.location.hash;
+
             if (hash.startsWith('#map=')) {
                 const [hashZoom, hashLat, hashLng] = hash.replace('#map=', '').split('/');
                 const center = [parseFloat(hashLat), parseFloat(hashLng)] as [number, number];
                 const zoom = parseInt(hashZoom);
-                map.setView(center, zoom, {
+                map.flyTo(center, zoom, {
                     animate: true,
                     duration: 0.4,
                     easeLinearity: 0.25,
@@ -33,7 +33,7 @@ export const MapCenterUpdater = () => {
             }
         };
 
-        // Handle initial load
+        // Call the handler to set the initial position based on the current hash
         handleHashChange();
 
         // Add event listener for hash changes
@@ -43,6 +43,34 @@ export const MapCenterUpdater = () => {
         return () => {
             window.removeEventListener('hashchange', handleHashChange);
         };
+
+    }, [map]);
+
+    return null;
+};
+
+const MapCenter = (map: Map) => {
+    useEffect(() => {
+        const hash = window.location.hash;
+
+        if (hash.startsWith('#map=')) {
+            const [hashZoom, hashLat, hashLng] = hash.replace('#map=', '').split('/');
+            const center = [parseFloat(hashLat), parseFloat(hashLng)] as [number, number];
+            const zoom = parseInt(hashZoom);
+            map.setView(center, zoom, {
+                animate: true,
+                duration: 0.4,
+                easeLinearity: 0.25,
+            });
+        } else {
+            const center = [8.241531, 124.243855] as [number, number];
+            const zoom = 16;
+            map.setView(center, zoom, {
+                animate: true,
+                duration: 0.4,
+                easeLinearity: 0.25,
+            });
+        }
     }, [map]);
 
     return null;
@@ -50,7 +78,10 @@ export const MapCenterUpdater = () => {
 
 
 const MapEventsHandler = () => {
-    MapCenterUpdater();
+    const map = useMap();
+
+    MapCenter(map);
+    FlyToOnHashChange(map);
 
     useMapEvents({
         moveend: (event) => {
