@@ -12,8 +12,8 @@ type MapComponentProps = PropsWithChildren;
 
 const MapComponent: React.FC<MapComponentProps> = ({ children }) => {
     // const tileURL: string = 'https://jeius.github.io/MSUIIT_raster_tiles/framework/{z}/{x}/{y}.png';
-    const tileURL: string = 'https://jeius.github.io/MSUIIT_raster_tiles/tile/{z}/{x}/{y}.png';
-    // const tileURL: string = '/tiles/{z}/{x}/{y}.png';
+    // const tileURL: string = 'https://jeius.github.io/MSUIIT_raster_tiles/tile/{z}/{x}/{y}.png';
+    const tileURL: string = '/tiles/{z}/{x}/{y}.png';
     const campusBounds: LatLngBoundsExpression = [
         [8.248, 124.239],
         [8.233, 124.248]

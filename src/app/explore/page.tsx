@@ -14,7 +14,6 @@ type ExploreTabProps = {
 const ExploreTab = async ({ searchParams, params }: ExploreTabProps) => {
     const query = searchParams.query;
     const show = stringToBoolean(searchParams.s as string);
-    console.log(params);
 
     return (
         <section role='search' className="w-full max-w-xl place-self-center flex flex-col p-3 z-10 pointer-events-auto">
