@@ -28,6 +28,7 @@ export const NavButton = ({ className, name, icon }: NavButtonProps) => {
         <Link
             href={`/${name.toLowerCase()}?${params.toString()}${hash}`}
             role='button'
+            scroll={false}
             className={cn(style, bg, outline, className)}
         >
             {icon}
