@@ -1,6 +1,7 @@
 import {
     BuildingSVG,
     CampusSVG,
+    CircleSVG,
     ClinicSVG,
     CollegeSVG,
     ConstructionSVG,
@@ -38,7 +39,7 @@ export const getCategoryMarkers = (category?: string) => {
         'under construction': <CategoryMarkerIcon category={category} className='fill-underConstruction stroke-underConstruction-dark' />,
         'cluster': <CategoryMarkerIcon category={category} className='fill-slate-700 stroke-slate-800' />,
         'campus': <CategoryMarkerIcon category={category} className='fill-primary stroke-primary-dark' />,
-        'default': <CategoryMarkerIcon className='fill-slate-700 stroke-slate-800' />,
+        'default': <CategoryMarkerIcon category="default" className='fill-primary stroke-primary-dark' />,
     }
 
     return category ? categoryMarkerIcons[category] : categoryMarkerIcons['default'];
@@ -70,14 +71,15 @@ const CategoryMarkerIcon = ({
         'sports': <SportsSVG className='relative size-full fill-white' />,
         'under construction': <ConstructionSVG className='relative size-full fill-white' />,
         'cluster': <ExpandSVG className='relative size-full fill-white' />,
-        'campus': <CampusSVG className='relative size-full fill-white' />
+        'campus': <CampusSVG className='relative size-full fill-white' />,
+        'default': <CircleSVG className='relative size-full fill-primary-light' />
     }
 
     return (
         <>
             <LocationSVG className={cn(`relative size-full`, className)} {...props} />
             <div className="absolute inset-[15px] size-[17px]">
-                {category && categoryIcons[category]}
+                {categoryIcons[category]}
             </div>
         </>
     )

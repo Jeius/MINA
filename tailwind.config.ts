@@ -3,6 +3,7 @@ import type { Config } from "tailwindcss"
 const MyColorScheme: { [key: string]: string } = {
   "primary": "#931D23",
   "primary-dark": "#671419",
+  "primary-light": "#d4a5a7",
   "building": "#A28D75",
   "building-dark": "#615546",
   "park": "#3fb587",

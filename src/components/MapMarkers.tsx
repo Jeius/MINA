@@ -3,7 +3,7 @@
 import { CircleMarker, Marker, Popup, useMap, useMapEvent } from "react-leaflet";
 import { DivIcon, LatLngTuple, PointExpression, } from 'leaflet';
 import { useAppContext } from "@/lib/context";
-import { ReactNode, useState } from "react";
+import { ReactNode, useEffect, useState } from "react";
 import ReactDOMServer from 'react-dom/server';
 import { getCategoryMarkers } from "@/lib/data/CategoryMarkerIcons";
 import { useSearchParams, usePathname, useRouter } from "next/navigation";
@@ -46,14 +46,18 @@ export const LocationMarker = () => {
     );
 }
 
-
 export const MapMarkers = () => {
     const searchParams = useSearchParams();
     const pathname = usePathname();
     const router = useRouter();
     const map = useMap();
     const { places, isError, isLoading } = useFetchPlaces();
+    const [selected, setSelected] = useState<string | null>('');
     const [currentZoom, setCurrentZoom] = useState(map.getZoom());
+
+    useEffect(() => {
+        setSelected(new URLSearchParams(searchParams).get('name'));
+    }, [searchParams]);
 
     useMapEvent('zoomend', (event) => {
         setCurrentZoom(event.target.getZoom());
@@ -101,7 +105,6 @@ export const MapMarkers = () => {
         }
     }
 
-
     const iconCreateFunction = (cluster: any) => {
         const markers = cluster.getChildCount();
         if (markers >= 54) {
@@ -119,39 +122,62 @@ export const MapMarkers = () => {
                     <MyCircleLoader size={12} />
                 </div>
             }
-            <MarkerClusterGroup
-                chunkedLoading
-                iconCreateFunction={iconCreateFunction}
-                showCoverageOnHover={false}
-                maxClusterRadius={cluster}
-                disableClusteringAtZoom={21}
-                spiderfyOnMaxZoom={false}
-            >
-                {places?.filter(p => (filterRooms(p.id, p.category)))
-                    .map(p => {
-                        const id = p.id;
-                        const name = p.name;
-                        const categoryName = p.category && p.category.toLowerCase();
-                        const position = p.position as LatLngTuple;
-                        return <Marker
-                            key={id}
-                            position={position}
-                            icon={createDivIcon({ icon: getCategoryMarkers(categoryName || '') })}
-                            title={name}
-                            alt={categoryName || 'none'}
+            {!isError &&
+                places?.filter(p => (p.name === selected))
+                    .map(p => (
+                        <Marker  //Marker for the selected place
+                            key={p.id}
+                            position={p.position as LatLngTuple}
+                            icon={createDivIcon({ icon: getCategoryMarkers('default') })}
+                            title={p.name}
+                            alt='default'
                             riseOnHover={true}
                             interactive={true}
                             eventHandlers={{
                                 click: () => handleClick({
-                                    name: name,
-                                    pos: position,
+                                    name: p.name,
+                                    pos: p.position as LatLngTuple,
                                     z: currentZoom,
                                 }),
                             }}
-                        />;
-                    })
-                }
-            </MarkerClusterGroup>
+                        />
+                    ))
+            }
+            {!isError &&
+                <MarkerClusterGroup   //Markers for the map places
+                    chunkedLoading
+                    iconCreateFunction={iconCreateFunction}
+                    showCoverageOnHover={false}
+                    maxClusterRadius={cluster}
+                    disableClusteringAtZoom={21}
+                    spiderfyOnMaxZoom={false}
+                >
+                    {places?.filter(p => (filterRooms(p.id, p.category)))
+                        .map(p => {
+                            const id = p.id;
+                            const name = p.name;
+                            const categoryName = p.category && p.category.toLowerCase();
+                            const position = p.position as LatLngTuple;
+                            return selected !== name &&
+                                <Marker
+                                    key={id}
+                                    position={position}
+                                    icon={createDivIcon({ icon: getCategoryMarkers(categoryName || '') })}
+                                    title={name}
+                                    alt={categoryName || 'none'}
+                                    riseOnHover={true}
+                                    interactive={true}
+                                    eventHandlers={{
+                                        click: () => handleClick({
+                                            name: name,
+                                            pos: position,
+                                            z: currentZoom,
+                                        }),
+                                    }}
+                                />;
+                        })
+                    }
+                </MarkerClusterGroup>}
         </>
     );
 }
