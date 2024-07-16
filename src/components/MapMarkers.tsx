@@ -88,7 +88,6 @@ export const MapMarkers = () => {
     }) => {
         const params = new URLSearchParams(searchParams);
         params.set('name', name);
-        updateHash(z, pos[0], pos[1]);
         router.replace(`${pathname}?${params}`, { scroll: false });
         map.flyTo(pos, z, {
             animate: true,
@@ -123,25 +122,32 @@ export const MapMarkers = () => {
                 </div>
             }
             {!isError &&
-                places?.filter(p => (p.name === selected))
-                    .map(p => (
-                        <Marker  //Marker for the selected place
-                            key={p.id}
-                            position={p.position as LatLngTuple}
-                            icon={createDivIcon({ icon: getCategoryMarkers('default') })}
-                            title={p.name}
-                            alt='default'
-                            riseOnHover={true}
-                            interactive={true}
-                            eventHandlers={{
-                                click: () => handleClick({
-                                    name: p.name,
-                                    pos: p.position as LatLngTuple,
-                                    z: currentZoom,
-                                }),
-                            }}
-                        />
-                    ))
+                places?.filter(p => {
+                    const name = p.facility ? `${p.name}, ${p.facility}` : p.name;
+                    return name === selected;
+                })
+                    .map(p => {
+                        const id = p.id;
+                        const name = p.facility ? `${p.name}, ${p.facility}` : p.name;
+                        const position = p.position as LatLngTuple;
+                        return selected === name &&
+                            <Marker   //Marker for the selected place
+                                key={id}
+                                position={position}
+                                icon={createDivIcon({ icon: getCategoryMarkers('default') })}
+                                title={name}
+                                alt='default'
+                                riseOnHover={true}
+                                interactive={true}
+                                eventHandlers={{
+                                    click: () => handleClick({
+                                        name: name,
+                                        pos: position,
+                                        z: 20,
+                                    }),
+                                }}
+                            />;
+                    })
             }
             {!isError &&
                 <MarkerClusterGroup   //Markers for the map places
@@ -155,7 +161,7 @@ export const MapMarkers = () => {
                     {places?.filter(p => (filterRooms(p.id, p.category)))
                         .map(p => {
                             const id = p.id;
-                            const name = p.name;
+                            const name = p.facility ? `${p.name}, ${p.facility}` : p.name;
                             const categoryName = p.category && p.category.toLowerCase();
                             const position = p.position as LatLngTuple;
                             return selected !== name &&
