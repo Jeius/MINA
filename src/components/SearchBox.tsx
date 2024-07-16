@@ -7,7 +7,9 @@ import debounce from "debounce";
 
 type Props = React.InputHTMLAttributes<HTMLInputElement> & {
     query: string | null,
+    focus: boolean,
     setQuery: Dispatch<SetStateAction<string | null>>,
+    setFocus: Dispatch<SetStateAction<boolean>>,
     onClear?: () => void,
 };
 
@@ -15,6 +17,8 @@ type Props = React.InputHTMLAttributes<HTMLInputElement> & {
 const SearchBox: React.FC<Props> = ({
     className,
     query,
+    focus,
+    setFocus,
     setQuery,
     onClear,
     ...props
@@ -22,7 +26,6 @@ const SearchBox: React.FC<Props> = ({
     const searchParams = useSearchParams();
     const pathname = usePathname();
     const router = useRouter();
-    const [focus, setFocus] = useState(false);
     const inputRef = useRef<HTMLInputElement | null>(null);
 
     const glass = 'backdrop-blur-md bg-black bg-opacity-70';
@@ -40,8 +43,7 @@ const SearchBox: React.FC<Props> = ({
             inputRef.current.value = '';
         }
         setQuery('');
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    }, [setQuery]);
 
     const handleChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
         const { value } = e.target;
@@ -58,25 +60,20 @@ const SearchBox: React.FC<Props> = ({
     const handleFocus = useCallback((e: React.FocusEvent<HTMLInputElement, Element>) => {
         e.preventDefault();
         setFocus(true);
-    }, []);
+    }, [setFocus]);
 
     const handleBlur = useCallback((e: React.FocusEvent<HTMLInputElement, Element>) => {
         e.preventDefault();
         setFocus(false);
-    }, []);
+    }, [setFocus]);
 
     useEffect(() => {
         const params = new URLSearchParams(searchParams);
         const hash = window.location.hash;
         if (query && focus) {
-            params.set('query', query);
+            params.set('search', query);
         } else {
-            params.delete('query');
-        }
-        if (focus) {
-            params.set('s', focus.toString());
-        } else {
-            params.delete('s');
+            params.delete('search');
         }
         router.replace(`${pathname}?${params.toString()}${hash}`, { scroll: false });
     }, [focus, pathname, router, query, searchParams]);
