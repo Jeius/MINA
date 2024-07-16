@@ -7,7 +7,7 @@ import { ReactNode, useEffect, useState } from "react";
 import ReactDOMServer from 'react-dom/server';
 import { getCategoryMarkers } from "@/lib/data/CategoryMarkerIcons";
 import { useSearchParams, usePathname, useRouter } from "next/navigation";
-import { updateHash } from "./MapEventsHandler";
+import { updateHash } from "./map-events-handler";
 import MarkerClusterGroup from "react-leaflet-cluster";
 import { MyCircleLoader } from "./ui/spinners";
 import { useFetchPlaces } from '@/lib/fetch-hooks';
@@ -86,14 +86,11 @@ export const MapMarkers = () => {
         pos: LatLngTuple,
         z: number,
     }) => {
+        const hash = `#map=${z}/${pos[0].toFixed(6)}/${pos[1].toFixed(6)}`;
         const params = new URLSearchParams(searchParams);
         params.set('name', name);
-        router.replace(`${pathname}?${params}`, { scroll: false });
-        map.flyTo(pos, z, {
-            animate: true,
-            duration: 0.4,
-            easeLinearity: 0.25,
-        });
+        window.history.replaceState(undefined, '', `${pathname}?${params.toString()}${hash}`)
+        window.dispatchEvent(new HashChangeEvent("hashchange"));
     }
 
     const cluster = (zoom: number) => {

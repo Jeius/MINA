@@ -3,10 +3,10 @@
 import { LatLngBoundsExpression } from 'leaflet';
 import { PropsWithChildren } from 'react';
 import { MapContainer, TileLayer } from 'react-leaflet';
-import MapEventsHandler from './MapEventsHandler';
+import MapEventsHandler from './map-events-handler';
 import 'leaflet/dist/leaflet.css';
 import 'leaflet-rotate';
-import { MapMarkers } from './MapMarkers';
+import { MapMarkers } from './map-markers';
 
 type MapComponentProps = PropsWithChildren;
 

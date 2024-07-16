@@ -5,7 +5,7 @@ import AppContext from "@/lib/context";
 import dynamic from "next/dynamic";
 import { cn } from "@/lib/utils";
 
-const MapComponent = dynamic(() => import('@/components/MapComponent'), { ssr: false });
+const MapComponent = dynamic(() => import('@/components/map-component'), { ssr: false });
 const BottomNav = dynamic(() => import('@/components/bottom-nav'), { ssr: false });
 
 const inter = Inter({ subsets: ["latin"] });

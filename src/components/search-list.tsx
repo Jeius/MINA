@@ -34,7 +34,7 @@ const SearchList: React.FC<Props> = ({
         const zoom = 20;
         const lat = result.position[0];
         const lng = result.position[1];
-        const hash = `#map=${zoom}/${lat}/${lng}`;
+        const hash = `#map=${zoom}/${lat.toFixed(6)}/${lng.toFixed(6)}`;
         const params = new URLSearchParams(searchParams);
         params.set('name', name);
 

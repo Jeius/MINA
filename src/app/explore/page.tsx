@@ -1,4 +1,4 @@
-import SearchList from "@/components/SearchList";
+import SearchList from "@/components/search-list";
 import Search from "@/app/explore/search";
 import { cn, stringToBoolean } from "@/lib/utils";
 import { Suspense } from "react";
