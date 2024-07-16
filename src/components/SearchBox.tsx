@@ -1,6 +1,6 @@
 "use client"
 import { cn } from "@/lib/utils";
-import { Dispatch, memo, SetStateAction, useCallback, useEffect, useRef, useState } from "react";
+import { Dispatch, memo, SetStateAction, useCallback, useEffect, useRef } from "react";
 import { CancelSVG, SearchSVG } from "./ui/icons";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import debounce from "debounce";

@@ -1,13 +1,11 @@
 "use client"
 import { Place, Places } from "@/lib/model";
 import { AnimatedLi, AnimatedUl, } from "./ui/animated";
-import { cn, stringToBoolean } from "@/lib/utils";
-import Link from "next/link";
+import { cn } from "@/lib/utils";
 import { useFetchPlaces } from "@/lib/fetch-hooks";
 import { useEffect, useState } from "react";
 import { CustomSkeleton } from "./ui/skeleton";
-import { useRouter, useSearchParams } from "next/navigation";
-import { updateHash } from "./MapEventsHandler";
+import { useSearchParams } from "next/navigation";
 
 const highlightText = (text: string, search: string) => {
     if (!search) return text;
@@ -26,13 +24,12 @@ const SearchList: React.FC<Props> = ({
     pathname,
 }) => {
     const searchParams = useSearchParams();
-    const router = useRouter();
     const search = searchParams.get('search');
 
     const { places, isError, isLoading } = useFetchPlaces();
     const [searchResult, setSearchResult] = useState<Places>();
 
-    const handleClick = (result: Place, e: React.MouseEvent<HTMLElement, MouseEvent>) => {
+    const handleClick = (result: Place) => {
         const name = result.facility ? `${result.name}, ${result.facility}` : result.name;
         const zoom = 20;
         const lat = result.position[0];
@@ -41,10 +38,8 @@ const SearchList: React.FC<Props> = ({
         const params = new URLSearchParams(searchParams);
         params.set('name', name);
 
-        e.preventDefault();
-
-        router.replace(`${pathname}?${params.toString()}`);
-        window.location.hash = hash;
+        window.history.replaceState(undefined, '', `${pathname}?${params.toString()}${hash}`)
+        window.dispatchEvent(new HashChangeEvent("hashchange"));
     }
 
     useEffect(() => {
@@ -74,7 +69,7 @@ const SearchList: React.FC<Props> = ({
                     const name = result.facility ? `${result.name}, ${result.facility}` : result.name;
                     return <AnimatedLi
                         key={index}
-                        onClick={e => handleClick(result, e)}
+                        onClick={() => handleClick(result)}
                         className={cn(
                             'min-h-14 my-1 outline outline-1 outline-primary-dark',
                             'size-full p-2 bg-primary rounded-xl bg-opacity-90',
