@@ -10,6 +10,7 @@ import { useSearchParams, usePathname, useRouter } from "next/navigation";
 import MarkerClusterGroup from "react-leaflet-cluster";
 import { MyCircleLoader } from "./ui/spinners";
 import { useFetchPlaces } from '@/lib/fetch-hooks';
+import { updateHash } from "@/lib/utils";
 
 
 export type MapIcon = React.HTMLAttributes<HTMLElement> & {
@@ -85,11 +86,10 @@ export const MapMarkers = () => {
         pos: LatLngTuple,
         z: number,
     }) => {
-        const hash = `#map=${z}/${pos[0].toFixed(6)}/${pos[1].toFixed(6)}`;
         const params = new URLSearchParams(searchParams);
         params.set('name', name);
-        window.history.replaceState(undefined, '', `${pathname}?${params.toString()}${hash}`)
-        window.dispatchEvent(new HashChangeEvent("hashchange"));
+        window.history.replaceState(undefined, '', `${pathname}?${params.toString()}`);
+        updateHash({ zoom: z, lat: pos[0], lng: pos[1] }, true);
     }
 
     const cluster = (zoom: number) => {
