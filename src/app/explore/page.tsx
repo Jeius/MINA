@@ -1,10 +1,6 @@
-import SearchList from "@/components/search-list";
 import Search from "@/app/explore/search";
-import { cn, stringToBoolean } from "@/lib/utils";
-import { Suspense } from "react";
-import { AnimatedUl } from "@/components/ui/animated";
-import { CustomSkeleton } from "@/components/ui/skeleton";
-
+import InfoSheet from "@/components/info-sheet";
+import { cn } from "@/lib/utils";
 
 type ExploreTabProps = {
     params: {},
@@ -12,13 +8,19 @@ type ExploreTabProps = {
 };
 
 const ExploreTab = async ({ searchParams, params }: ExploreTabProps) => {
-    const query = searchParams.query;
-    const show = stringToBoolean(searchParams.s as string);
+    const place = searchParams.name;
 
     return (
-        <section role='search' className="w-full max-w-xl place-self-center flex flex-col p-3 z-10 pointer-events-auto">
-            <Search />
-        </section >
+        <>
+            <section role='search' className={cn(
+                'relative w-full max-w-xl place-self-center',
+                'flex flex-col p-3 z-10 pointer-events-auto',
+            )}>
+                <Search />
+            </section >
+            <div className="flex flex-grow" />
+            <InfoSheet place={place} />
+        </>
     );
 };
 
