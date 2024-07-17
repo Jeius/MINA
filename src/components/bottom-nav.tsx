@@ -3,7 +3,6 @@
 import { ExploreSVG, DirectionsSVG, PlacesSVG } from './ui/icons';
 import { AnimatedSpan } from "@/components/ui/animated";
 import { cn } from '@/lib/utils';
-import { AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
 import { useSearchParams, usePathname } from 'next/navigation';
 
@@ -33,14 +32,13 @@ export const NavButton = ({ className, name, icon }: NavButtonProps) => {
         >
             {icon}
 
-            <AnimatePresence>
-                <AnimatedSpan
-                    key={active}
-                    className={textStyle}
-                >
-                    {active.toLowerCase() === name.toLowerCase() && name}
-                </AnimatedSpan>
-            </AnimatePresence>
+            <AnimatedSpan
+                key={active}
+                className={textStyle}
+            >
+                {active.toLowerCase() === name.toLowerCase() && name}
+            </AnimatedSpan>
+
         </Link>
     )
 }
