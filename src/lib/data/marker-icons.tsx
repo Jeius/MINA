@@ -39,7 +39,7 @@ export const getCategoryMarkers = (category?: string) => {
         'under construction': <CategoryMarkerIcon category={category} className='fill-underConstruction stroke-underConstruction-dark' />,
         'cluster': <CategoryMarkerIcon category={category} className='fill-slate-700 stroke-slate-800' />,
         'campus': <CategoryMarkerIcon category={category} className='fill-primary stroke-primary-dark' />,
-        'default': <CategoryMarkerIcon category="default" className='fill-primary stroke-primary-dark' />,
+        'default': <CategoryMarkerIcon category="default" className='fill-primary-500 stroke-primary-600' />,
     }
 
     return category ? categoryMarkerIcons[category] : categoryMarkerIcons['default'];
@@ -72,7 +72,7 @@ const CategoryMarkerIcon = ({
         'under construction': <ConstructionSVG className='relative size-full fill-white' />,
         'cluster': <ExpandSVG className='relative size-full fill-white' />,
         'campus': <CampusSVG className='relative size-full fill-white' />,
-        'default': <CircleSVG className='relative size-full fill-primary-light' />
+        'default': <CircleSVG className='relative size-full fill-gray-200' />
     }
 
     return (
