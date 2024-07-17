@@ -22,7 +22,7 @@ export const NavButton = ({ className, name, icon }: NavButtonProps) => {
     const bg = active.toLowerCase() == name.toLowerCase() && 'bg-primary';
     const style = 'relative flex items-center w-auto z-10 sm:mx-0 md:mx-1 lg:mx-3 px-5 py-2 rounded-full';
     const outline = active.toLowerCase() == name.toLowerCase() && 'outline outline-1 outline-primary-dark';
-    const textStyle = 'text-sm font-medium overflow-clip';
+    const textStyle = 'text-xs md:text-sm font-medium overflow-clip';
 
     return (
         <Link
