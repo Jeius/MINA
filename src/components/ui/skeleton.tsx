@@ -5,9 +5,10 @@ export const Skeleton = ({
   className,
   ...props
 }: React.HTMLAttributes<HTMLDivElement>) => {
+  const glass = "drop-shadow-lg backdrop-blur-md bg-black bg-opacity-70";
   return (
     <div
-      className={cn("animate-pulse rounded-md bg-slate-100 dark:bg-slate-800", className)}
+      className={cn("animate-pulse rounded-md dark:bg-gray-700", glass, className)}
       {...props}
     />
   )
