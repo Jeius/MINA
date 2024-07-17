@@ -108,6 +108,34 @@ export const MapMarkers = () => {
         return createDivIcon({ icon: getCategoryMarkers('cluster') });
     }
 
+    const selectedMarker = () => {
+        const p = places?.find(p => {
+            const name = p.facility ? `${p.name}, ${p.facility}` : p.name;
+            return name === selected;
+        });
+
+        const id = p?.id;
+        const name = p?.facility ? `${p.name}, ${p.facility}` : p?.name;
+        const position = p?.position as LatLngTuple;
+        return selected === name &&
+            <Marker   //Marker for the selected place
+                key={id}
+                position={position}
+                icon={createDivIcon({ icon: getCategoryMarkers('default') })}
+                title={name}
+                alt='default'
+                riseOnHover={true}
+                interactive={true}
+                eventHandlers={{
+                    click: () => handleClick({
+                        name: name,
+                        pos: position,
+                        z: 20,
+                    }),
+                }}
+            />;
+    }
+
 
     return (
         <>
@@ -117,34 +145,9 @@ export const MapMarkers = () => {
                     <MyCircleLoader size={12} />
                 </div>
             }
-            {!isError &&
-                places?.filter(p => {
-                    const name = p.facility ? `${p.name}, ${p.facility}` : p.name;
-                    return name === selected;
-                })
-                    .map(p => {
-                        const id = p.id;
-                        const name = p.facility ? `${p.name}, ${p.facility}` : p.name;
-                        const position = p.position as LatLngTuple;
-                        return selected === name &&
-                            <Marker   //Marker for the selected place
-                                key={id}
-                                position={position}
-                                icon={createDivIcon({ icon: getCategoryMarkers('default') })}
-                                title={name}
-                                alt='default'
-                                riseOnHover={true}
-                                interactive={true}
-                                eventHandlers={{
-                                    click: () => handleClick({
-                                        name: name,
-                                        pos: position,
-                                        z: 20,
-                                    }),
-                                }}
-                            />;
-                    })
-            }
+
+            {!isError && selectedMarker()}
+
             {!isError &&
                 <MarkerClusterGroup   //Markers for the map places
                     chunkedLoading
