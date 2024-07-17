@@ -60,7 +60,7 @@ const SearchList: React.FC<Props> = ({
             {isError &&
                 <AnimatedLi
                     key="noResults"
-                    className="place-self-center text-sm overflow-hidden">
+                    className="place-self-center text-xs overflow-hidden">
                     Failed to search {search}
                 </AnimatedLi>}
 
@@ -73,7 +73,7 @@ const SearchList: React.FC<Props> = ({
                         className={cn(
                             'min-h-14 my-1 outline outline-1 outline-primary-dark',
                             'size-full p-2 bg-primary rounded-xl bg-opacity-90',
-                            'relative flex items-center text-sm cursor-pointer'
+                            'relative flex items-center text-xs cursor-pointer'
                         )}
                     >
                         <span>
@@ -83,7 +83,7 @@ const SearchList: React.FC<Props> = ({
                 })
                 : <AnimatedLi
                     key="noResults"
-                    className="place-self-center text-sm overflow-hidden">
+                    className="place-self-center text-xs overflow-hidden">
                     No result found
                 </AnimatedLi>}
         </AnimatedUl>

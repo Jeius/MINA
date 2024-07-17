@@ -96,7 +96,7 @@ const SearchBox: React.FC<Props> = ({
                 onFocus={handleFocus}
                 onBlur={handleBlur}
                 onChange={handleChange}
-                className='w-full h-auto mr-2 text-sm placeholder:text-slate-300 bg-transparent outline-none'
+                className='w-full h-auto mr-2 text-xs placeholder:text-slate-300 bg-transparent outline-none'
                 {...props}
             />
             {query
