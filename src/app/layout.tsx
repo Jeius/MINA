@@ -34,9 +34,11 @@ const RootLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
               <strong>MSU-IIT Campus Navigation Guide</strong>
             </header>
 
-            {children}
+            <section className="relative flex flex-grow flex-col">
+              {children}
+            </section>
 
-            <footer className='fixed bottom-0 w-full pointer-events-auto'>
+            <footer className='w-full pointer-events-auto'>
               <BottomNav />
             </footer>
           </main>
