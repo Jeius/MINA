@@ -6,6 +6,7 @@ import { useFetchPlaces } from "@/lib/fetch-hooks";
 import { useEffect, useState } from "react";
 import { CustomSkeleton } from "./ui/skeleton";
 import { useSearchParams } from "next/navigation";
+import { AnimatePresence } from "framer-motion";
 
 const highlightText = (text: string, search: string) => {
     if (!search) return text;
@@ -50,43 +51,46 @@ const SearchList: React.FC<Props> = ({
         setSearchResult(filteredPlaces);
     }, [search, places]);
 
-    return (search &&
-        <AnimatedUl className={cn(
-            'relative flex flex-col rounded-xl my-2 px-3 py-2 w-full max-h-80 outline outline-1',
-            'outline-slate-500 overflow-x-auto overscroll-none scrollbar-thin',
-        )}>
-            {isLoading && <CustomSkeleton />}
+    return (
+        <AnimatePresence>
+            {search &&
+                <AnimatedUl className={cn(
+                    'relative flex flex-col rounded-xl my-2 px-3 py-2 w-full max-h-80 outline outline-1',
+                    'outline-slate-500 overflow-x-auto overscroll-none scrollbar-thin',
+                )}>
+                    {isLoading && <CustomSkeleton />}
 
-            {isError &&
-                <AnimatedLi
-                    key="noResults"
-                    className="place-self-center text-xs overflow-hidden">
-                    Failed to search {search}
-                </AnimatedLi>}
+                    {isError &&
+                        <AnimatedLi
+                            key='no-result'
+                            className='place-self-center text-xs overflow-hidden'>
+                            Failed to search {search}
+                        </AnimatedLi>}
 
-            {searchResult?.length !== 0
-                ? searchResult?.map((result, index) => {
-                    const name = result.facility ? `${result.name}, ${result.facility}` : result.name;
-                    return <AnimatedLi
-                        key={index}
-                        onClick={() => handleClick(result)}
-                        className={cn(
-                            'min-h-14 my-1 outline outline-1 outline-primary-dark',
-                            'size-full p-2 bg-primary rounded-xl bg-opacity-90',
-                            'relative flex items-center text-xs cursor-pointer'
-                        )}
-                    >
-                        <span>
-                            {highlightText(name, typeof search === 'string' ? search : search![0])}
-                        </span>
-                    </AnimatedLi>
-                })
-                : <AnimatedLi
-                    key="noResults"
-                    className="place-self-center text-xs overflow-hidden">
-                    No result found
-                </AnimatedLi>}
-        </AnimatedUl>
+                    {searchResult?.length !== 0
+                        ? searchResult?.map((result, index) => {
+                            const name = result.facility ? `${result.name}, ${result.facility}` : result.name;
+                            return <AnimatedLi
+                                key={`${index}:${name}`}
+                                onClick={() => handleClick(result)}
+                                className={cn(
+                                    'min-h-14 my-1 outline outline-1 outline-primary-dark',
+                                    'size-full p-2 bg-primary rounded-xl bg-opacity-90',
+                                    'relative flex items-center text-xs cursor-pointer'
+                                )}
+                            >
+                                <span>
+                                    {highlightText(name, typeof search === 'string' ? search : search![0])}
+                                </span>
+                            </AnimatedLi>
+                        })
+                        : <AnimatedLi
+                            key='no-result'
+                            className='place-self-center text-xs overflow-hidden'>
+                            No result found
+                        </AnimatedLi>}
+                </AnimatedUl>}
+        </AnimatePresence>
     );
 };
 
