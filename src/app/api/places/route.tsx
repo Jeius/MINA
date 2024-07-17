@@ -21,6 +21,7 @@ type Room = {
     name: string,
     category: { name: string } | null,
     facility: { name: string },
+    floor: number,
     x_coord: Decimal,
     y_coord: Decimal,
 };
@@ -40,6 +41,7 @@ const createData = (facilities: Facilities, rooms: Rooms) => {
         id: `R${r.id}`,
         name: r.name,
         facility: r.facility.name,
+        floor: r.floor,
         category: r.category && r.category.name,
         position: [r.y_coord.toNumber(), r.x_coord.toNumber()],
     }));
@@ -69,6 +71,7 @@ const getPlaces = async () => {
             select: {
                 id: true,
                 name: true,
+                floor: true,
                 x_coord: true,
                 y_coord: true,
                 category: {

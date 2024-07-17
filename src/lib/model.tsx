@@ -2,6 +2,7 @@ export type Place = {
     id: string;
     name: string;
     facility?: string;
+    floor?: number;
     category: string | null;
     position: number[];
 };
