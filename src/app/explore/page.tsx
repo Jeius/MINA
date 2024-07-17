@@ -1,6 +1,8 @@
 import Search from "@/app/explore/search";
-import InfoSheet from "@/components/info-sheet";
 import { cn } from "@/lib/utils";
+import dynamic from "next/dynamic";
+
+const InfoSheet = dynamic(() => import('@/components/info-sheet'), { ssr: false });
 
 type ExploreTabProps = {
     params: {},
@@ -19,7 +21,7 @@ const ExploreTab = async ({ searchParams, params }: ExploreTabProps) => {
                 <Search />
             </section >
             <div className="flex flex-grow" />
-            <InfoSheet place={place} />
+            <InfoSheet />
         </>
     );
 };
