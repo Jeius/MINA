@@ -1,20 +1,8 @@
 
+import { updateHash } from '@/lib/utils';
 import { Map } from 'leaflet';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useMap, useMapEvents } from 'react-leaflet';
-
-export const updateHash = (zoom: number, lat: number, lng: number) => {
-    const latNumber = Number(lat);
-    const lngNumber = Number(lng);
-
-    if (isNaN(latNumber) || isNaN(lngNumber)) {
-        console.error("Latitude or Longitude is not a valid number");
-        return;
-    }
-
-    const hash = `#map=${zoom}/${latNumber.toFixed(6)}/${lngNumber.toFixed(6)}`;
-    history.replaceState(undefined, '', hash);
-};
 
 const FlyToOnHashChange = (map: Map) => {
     useEffect(() => {
@@ -88,13 +76,13 @@ const MapEventsHandler = () => {
             const map = event.target;
             const { lat, lng } = map.getCenter();
             const zoom = map.getZoom();
-            updateHash(zoom, lat, lng);
+            updateHash({ zoom, lat, lng }, false);
         },
         zoomend: (event) => {
             const map = event.target;
             const { lat, lng } = map.getCenter();
             const zoom = map.getZoom();
-            updateHash(zoom, lat, lng);
+            updateHash({ zoom, lat, lng }, false);
         },
     });
 

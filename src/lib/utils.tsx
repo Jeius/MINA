@@ -23,3 +23,24 @@ if (process.env.NODE_ENV === 'production') {
 export const stringToBoolean = (str: string | undefined): boolean => {
   return str?.toLowerCase() === 'true';
 };
+
+export const updateHash = ({
+  zoom, lat, lng
+}: {
+  zoom: number, lat: number, lng: number
+},
+  triggerEvent: boolean
+) => {
+  const latNumber = Number(lat);
+  const lngNumber = Number(lng);
+
+  if (isNaN(latNumber) || isNaN(lngNumber)) {
+    console.error("Latitude or Longitude is not a valid number");
+    return;
+  }
+
+  const hash = `#map=${zoom}/${latNumber.toFixed(6)}/${lngNumber.toFixed(6)}`;
+  history.replaceState(undefined, '', hash);
+
+  triggerEvent && window.dispatchEvent(new HashChangeEvent("hashchange"));
+};
