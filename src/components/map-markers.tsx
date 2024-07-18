@@ -9,7 +9,7 @@ import { getCategoryMarkers } from "@/lib/data/marker-icons";
 import { useSearchParams, usePathname } from "next/navigation";
 import MarkerClusterGroup from "react-leaflet-cluster";
 import { MyCircleLoader } from "./ui/spinners";
-import { useFetchPlaces } from '@/lib/fetch-hooks';
+import { useFetchPlaces } from '@/lib/hooks';
 import { updateHash } from "@/lib/utils";
 
 

@@ -4,7 +4,7 @@ import { AnimatedDiv } from "./ui/animated"
 import { Button } from "./ui/button"
 import { CancelSVG, PlaceHolderSVG } from "./ui/icons"
 import { useRouter, useSearchParams } from "next/navigation"
-import { useFetchPlaces } from "@/lib/fetch-hooks"
+import { useFetchPlaces } from "@/lib/hooks"
 import { Skeleton } from "./ui/skeleton"
 import { AnimatePresence } from "framer-motion"
 import Modernizr from '@scripts/modernizr'

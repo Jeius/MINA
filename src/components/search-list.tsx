@@ -2,7 +2,7 @@
 import { Place, Places } from "@/lib/model";
 import { AnimatedLi, AnimatedUl, } from "./ui/animated";
 import { cn, highlightText, updateHash } from "@/lib/utils";
-import { useFetchPlaces } from "@/lib/fetch-hooks";
+import { useFetchPlaces } from "@/lib/hooks";
 import { useEffect, useState } from "react";
 import { CustomSkeleton } from "./ui/skeleton";
 import { usePathname, useSearchParams } from "next/navigation";
