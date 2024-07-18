@@ -45,6 +45,7 @@ const InfoSheet = () => {
                 <div className='relative flex w-full place-self-center justify-center max-w-xl px-3 py-2'>
                     <AnimatedDiv
                         key="info-sheet"
+                        role='contentinfo'
                         className={cn(
                             'w-full md:w-auto md:min-w-96 relative flex flex-row',
                             'items-center justify-center p-4 rounded-lg',
