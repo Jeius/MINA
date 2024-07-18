@@ -1,6 +1,7 @@
 import Search from "@/app/explore/search";
 import { cn } from "@/lib/utils";
 import dynamic from "next/dynamic";
+import { Suspense } from "react";
 
 const InfoSheet = dynamic(() => import('@/components/info-sheet'), { ssr: false });
 
@@ -19,7 +20,9 @@ const ExploreTab = async () => {
                 <Search />
             </section >
             <div className="flex flex-grow" />
-            <InfoSheet />
+            <Suspense>
+                <InfoSheet />
+            </Suspense>
         </>
     );
 };
