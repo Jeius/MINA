@@ -6,7 +6,7 @@ import { useAppContext } from "@/lib/context";
 import { ReactNode, useEffect, useState } from "react";
 import ReactDOMServer from 'react-dom/server';
 import { getCategoryMarkers } from "@/lib/data/marker-icons";
-import { useSearchParams, usePathname, useRouter } from "next/navigation";
+import { useSearchParams, usePathname } from "next/navigation";
 import MarkerClusterGroup from "react-leaflet-cluster";
 import { MyCircleLoader } from "./ui/spinners";
 import { useFetchPlaces } from '@/lib/fetch-hooks';
@@ -49,7 +49,6 @@ export const LocationMarker = () => {
 export const MapMarkers = () => {
     const searchParams = useSearchParams();
     const pathname = usePathname();
-    const router = useRouter();
     const map = useMap();
     const { places, isError, isLoading } = useFetchPlaces();
     const [selected, setSelected] = useState<string | null>('');
