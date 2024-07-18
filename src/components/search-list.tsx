@@ -26,7 +26,6 @@ const SearchList: React.FC<Props> = ({
 }) => {
     const searchParams = useSearchParams();
     const search = searchParams.get('search');
-
     const { places, isError, isLoading } = useFetchPlaces();
     const [searchResult, setSearchResult] = useState<Places>();
 
@@ -53,7 +52,7 @@ const SearchList: React.FC<Props> = ({
 
     return (
         <AnimatePresence>
-            {search &&
+            {search !== null &&
                 <AnimatedUl className={cn(
                     'relative flex flex-col rounded-xl my-2 px-3 py-2 w-full max-h-80 outline outline-1',
                     'outline-slate-500 overflow-x-auto overscroll-none scrollbar-thin',
@@ -67,8 +66,29 @@ const SearchList: React.FC<Props> = ({
                             Failed to search {search}
                         </AnimatedLi>}
 
-                    {searchResult?.length !== 0
-                        ? searchResult?.map((result, index) => {
+                    {(pathname === 'directions' && (!search || 'your location'.includes(search.toLowerCase()))) &&
+                        <AnimatedLi
+                            key='your-location'
+                            onClick={() => handleClick({
+                                id: "",
+                                name: "Your Location",
+                                category: null,
+                                position: []
+                            })}
+                            className={cn(
+                                'min-h-14 my-1 outline outline-1 outline-primary-dark',
+                                'size-full p-2 bg-primary rounded-xl bg-opacity-90',
+                                'relative flex items-center text-xs cursor-pointer'
+                            )}
+                        >
+                            <span>
+                                {highlightText('Your Location', typeof search === 'string' ? search : search![0])}
+                            </span>
+                        </AnimatedLi>
+                    }
+
+                    {search && searchResult?.length !== 0 &&
+                        searchResult?.map((result, index) => {
                             const name = result.facility ? `${result.name}, ${result.facility}` : result.name;
                             return <AnimatedLi
                                 key={`${index}:${name}`}
@@ -83,12 +103,15 @@ const SearchList: React.FC<Props> = ({
                                     {highlightText(name, typeof search === 'string' ? search : search![0])}
                                 </span>
                             </AnimatedLi>
-                        })
-                        : <AnimatedLi
+                        })}
+
+                    {searchResult?.length === 0 && !'your location'.includes(search.toLowerCase()) &&
+                        <AnimatedLi
                             key='no-result'
                             className='place-self-center text-xs overflow-hidden'>
                             No result found
-                        </AnimatedLi>}
+                        </AnimatedLi>
+                    }
                 </AnimatedUl>}
         </AnimatePresence>
     );

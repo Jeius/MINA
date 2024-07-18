@@ -1,15 +1,13 @@
 "use client"
 import { cn } from "@/lib/utils";
-import { Dispatch, memo, SetStateAction, useCallback, useEffect, useRef } from "react";
+import { Dispatch, memo, SetStateAction, useCallback, useEffect, useRef, useState } from "react";
 import { CancelSVG, SearchSVG } from "./ui/icons";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import debounce from "debounce";
 
 type Props = React.InputHTMLAttributes<HTMLInputElement> & {
     query: string | null,
-    focus: boolean,
     setQuery: Dispatch<SetStateAction<string | null>>,
-    setFocus: Dispatch<SetStateAction<boolean>>,
     onClear?: () => void,
 };
 
@@ -17,8 +15,6 @@ type Props = React.InputHTMLAttributes<HTMLInputElement> & {
 const SearchBox: React.FC<Props> = ({
     className,
     query,
-    focus,
-    setFocus,
     setQuery,
     onClear,
     ...props
@@ -26,6 +22,7 @@ const SearchBox: React.FC<Props> = ({
     const searchParams = useSearchParams();
     const pathname = usePathname();
     const router = useRouter();
+    const [focus, setFocus] = useState(false);
     const inputRef = useRef<HTMLInputElement | null>(null);
 
     const glass = 'backdrop-blur-md bg-black bg-opacity-70';
@@ -70,9 +67,12 @@ const SearchBox: React.FC<Props> = ({
     useEffect(() => {
         const params = new URLSearchParams(searchParams);
         const hash = window.location.hash;
-        if (query && focus) {
+        if (pathname == 'directions' && query !== null && focus) {
             params.set('search', query);
-        } else {
+        } else if (pathname == 'explore' && query && focus) {
+            params.set('search', query);
+        }
+        else {
             params.delete('search');
         }
         router.replace(`${pathname}?${params.toString()}${hash}`, { scroll: false });
