@@ -1,31 +1,17 @@
 "use client"
 import { Place, Places } from "@/lib/model";
 import { AnimatedLi, AnimatedUl, } from "./ui/animated";
-import { cn } from "@/lib/utils";
+import { cn, highlightText, updateHash } from "@/lib/utils";
 import { useFetchPlaces } from "@/lib/fetch-hooks";
 import { useEffect, useState } from "react";
 import { CustomSkeleton } from "./ui/skeleton";
-import { useSearchParams } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
 import { AnimatePresence } from "framer-motion";
 
-const highlightText = (text: string, search: string) => {
-    if (!search) return text;
-
-    const parts = text.split(new RegExp(`(${search})`, 'gi'));
-    return parts.map((part, index) =>
-        part.toLowerCase() === search.toLowerCase() ? <strong key={index}>{part}</strong> : part
-    );
-};
-
-type Props = {
-    pathname: string,
-}
-
-const SearchList: React.FC<Props> = ({
-    pathname,
-}) => {
+const SearchList: React.FC = () => {
     const searchParams = useSearchParams();
     const search = searchParams.get('search');
+    const pathname = usePathname();
     const { places, isError, isLoading } = useFetchPlaces();
     const [searchResult, setSearchResult] = useState<Places>();
 
@@ -34,12 +20,11 @@ const SearchList: React.FC<Props> = ({
         const zoom = 20;
         const lat = result.position[0];
         const lng = result.position[1];
-        const hash = `#map=${zoom}/${lat.toFixed(6)}/${lng.toFixed(6)}`;
         const params = new URLSearchParams(searchParams);
         params.set('name', name);
 
-        window.history.replaceState(undefined, '', `${pathname}?${params.toString()}${hash}`)
-        window.dispatchEvent(new HashChangeEvent("hashchange"));
+        window.history.replaceState(undefined, '', `${pathname}?${params.toString()}`)
+        updateHash({ zoom, lat, lng }, true);
     }
 
     useEffect(() => {
@@ -66,7 +51,7 @@ const SearchList: React.FC<Props> = ({
                             Failed to search {search}
                         </AnimatedLi>}
 
-                    {(pathname === 'directions' && (!search || 'your location'.includes(search.toLowerCase()))) &&
+                    {(pathname === '/directions' && (!search || 'your location'.includes(search.toLowerCase()))) &&
                         <AnimatedLi
                             key='your-location'
                             onClick={() => handleClick({
@@ -105,7 +90,7 @@ const SearchList: React.FC<Props> = ({
                             </AnimatedLi>
                         })}
 
-                    {searchResult?.length === 0 && !'your location'.includes(search.toLowerCase()) &&
+                    {pathname === '/explore' && searchResult?.length === 0 &&
                         <AnimatedLi
                             key='no-result'
                             className='place-self-center text-xs overflow-hidden'>

@@ -17,7 +17,7 @@ const Search = () => {
                 query={search}
                 setQuery={setSearch}
             />
-            <SearchList pathname={'explore'} />
+            <SearchList />
         </>
     )
 }

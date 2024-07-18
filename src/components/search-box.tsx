@@ -67,9 +67,14 @@ const SearchBox: React.FC<Props> = ({
     useEffect(() => {
         const params = new URLSearchParams(searchParams);
         const hash = window.location.hash;
-        if (pathname == 'directions' && query !== null && focus) {
+
+        if (pathname == '/directions' && query !== null && focus) {
             params.set('search', query);
-        } else if (pathname == 'explore' && query && focus) {
+        } else {
+            params.delete('search');
+        }
+
+        if (pathname == '/explore' && query && focus) {
             params.set('search', query);
         }
         else {
