@@ -7,18 +7,31 @@ import { useRouter, useSearchParams } from "next/navigation"
 import { useFetchPlaces } from "@/lib/fetch-hooks"
 import { Skeleton } from "./ui/skeleton"
 import { AnimatePresence } from "framer-motion"
-
+import Modernizr from '@scripts/modernizr'
+import { useState, useEffect } from "react"
 
 const InfoSheet = () => {
     const searchParams = useSearchParams();
     const selectedPlace = searchParams.get('name');
     const router = useRouter();
     const { places, isLoading } = useFetchPlaces();
+    const [isMobile, setIsMobile] = useState(false);
+    const [isTouching, setIsTouching] = useState(false);
 
     const place = places?.find(p => {
         const name = p.facility ? `${p.name}, ${p.facility}` : p.name;
         return name === selectedPlace;
-    })
+    });
+
+    useEffect(() => { // Detects if the device is mobile and disables hover effects
+        setIsMobile(Modernizr.touchevents);
+    }, []);
+
+    /** Click/Touch Handlers */
+
+    const handleTouchStart = () => setIsTouching(true);
+
+    const handleTouchEnd = () => setIsTouching(false);
 
     const handleCancelClick = () => {
         const hash = window.location.hash;
@@ -28,7 +41,7 @@ const InfoSheet = () => {
     }
 
     const handleButtonClick = () => {
-
+        console.log('Get Directions: Button clicked');
     }
 
     const handleDivClick = () => {
@@ -53,10 +66,15 @@ const InfoSheet = () => {
                         )}
                     >
                         <PlaceHolderSVG
+                            onTouchStart={handleTouchStart}
+                            onTouchEnd={handleTouchEnd}
+                            onTouchCancel={handleTouchEnd}
                             onClick={handleDivClick}
                             className={cn(
-                                'size-full max-h-20 max-w-20 rounded-lg bg-gray-500 border-gray-700 border-2',
-                                'border-transparent cursor-pointer hover:bg-gray-400 hover:border-gray-500',
+                                'size-full max-h-20 max-w-20 rounded-lg bg-gray-500',
+                                'border-2 border-gray-700 cursor-pointer transition-colors',
+                                !isMobile && 'hover:bg-gray-400 hover:border-gray-500',
+                                isTouching ? 'bg-gray-400 border-gray-500' : 'bg-gray-500 border-gray-700'
                             )}
                         />
 
@@ -65,8 +83,14 @@ const InfoSheet = () => {
                                 <Skeleton className='h-4 w-28 bg-gray-300 dark:bg-gray-500' />}
 
                             <strong
+                                onTouchStart={handleTouchStart}
+                                onTouchEnd={handleTouchEnd}
+                                onTouchCancel={handleTouchEnd}
                                 onClick={handleDivClick}
-                                className='cursor-pointer hover:text-rose-200 transition-colors'
+                                className={cn('cursor-pointer transition-colors',
+                                    !isMobile && 'hover:underline',
+                                    isTouching ? 'underline' : '',
+                                )}
                             >
                                 {place?.name}
                             </strong>
@@ -76,7 +100,10 @@ const InfoSheet = () => {
                                     Floor {place.floor}, {place.facility}
                                 </span>}
 
-                            <Button onClick={handleButtonClick}>Get Directions</Button>
+                            <Button
+                                hover={!isMobile ? 'default' : undefined}
+                                onClick={handleButtonClick}
+                            >Get Directions</Button>
                         </div>
 
                         <CancelSVG
