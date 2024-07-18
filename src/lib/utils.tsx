@@ -44,3 +44,12 @@ export const updateHash = ({
 
   triggerEvent && window.dispatchEvent(new HashChangeEvent("hashchange"));
 };
+
+export const highlightText = (text: string, search: string) => {
+  if (!search) return text;
+
+  const parts = text.split(new RegExp(`(${search})`, 'gi'));
+  return parts.map((part, index) =>
+    part.toLowerCase() === search.toLowerCase() ? <strong key={index}>{part}</strong> : part
+  );
+};
