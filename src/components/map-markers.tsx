@@ -12,13 +12,24 @@ import { MyCircleLoader } from "./ui/spinners";
 import { useFetchPlaces } from '@/lib/hooks';
 import { updateHash } from "@/lib/utils";
 
+import L from "leaflet";
 
-export type MapIcon = React.HTMLAttributes<HTMLElement> & {
+let DefaultIcon = L.icon({
+    iconUrl: `/assets/images/marker-icon-2x.png`,
+    shadowUrl: `/assets/images/marker-shadow.png`,
+    iconSize: [25, 41],
+    iconAnchor: [12, 40],
+    shadowAnchor: [12, 40],
+});
+
+L.Marker.prototype.options.icon = DefaultIcon;
+
+type MapIcon = React.HTMLAttributes<HTMLElement> & {
     iconAnchor?: PointExpression,
     icon?: ReactNode,
 }
 
-export const createDivIcon = ({
+const createDivIcon = ({
     icon = getCategoryMarkers(),
     iconAnchor = [23, 43],
 }: MapIcon) => {
@@ -120,7 +131,7 @@ export const MapMarkers = () => {
             <Marker   //Marker for the selected place
                 key={id}
                 position={position}
-                icon={createDivIcon({ icon: getCategoryMarkers('default') })}
+                icon={DefaultIcon}
                 title={name}
                 alt='default'
                 riseOnHover={true}
@@ -144,8 +155,6 @@ export const MapMarkers = () => {
                     <MyCircleLoader size={12} />
                 </div>
             }
-
-            {!isError && selectedMarker()}
 
             {!isError &&
                 <MarkerClusterGroup   //Markers for the map places
@@ -182,6 +191,8 @@ export const MapMarkers = () => {
                         })
                     }
                 </MarkerClusterGroup>}
+
+            {!isError && selectedMarker()}
         </>
     );
 }
