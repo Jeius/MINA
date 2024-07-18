@@ -9,9 +9,7 @@ type ExploreTabProps = {
     searchParams: { [key: string]: string | string[] | undefined };
 };
 
-const ExploreTab = async ({ searchParams, params }: ExploreTabProps) => {
-    const place = searchParams.name;
-
+const ExploreTab = async () => {
     return (
         <>
             <section role='search' className={cn(
