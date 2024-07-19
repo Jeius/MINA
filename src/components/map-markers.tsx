@@ -1,11 +1,9 @@
 'use client';
 
 import { CircleMarker, Marker, Popup, useMap, useMapEvent } from "react-leaflet";
-import { DivIcon, LatLngTuple, PointExpression, } from 'leaflet';
+import { Icon, LatLngTuple, PointExpression, } from 'leaflet';
 import { useAppContext } from "@/lib/context";
-import { ReactNode, useEffect, useState } from "react";
-import ReactDOMServer from 'react-dom/server';
-import { getCategoryMarkers } from "@/lib/data/marker-icons";
+import { useEffect, useState } from "react";
 import { useSearchParams, usePathname } from "next/navigation";
 import MarkerClusterGroup from "react-leaflet-cluster";
 import { MyCircleLoader } from "./ui/spinners";
@@ -13,34 +11,53 @@ import { useFetchPlaces } from '@/lib/hooks';
 import { updateHash } from "@/lib/utils";
 
 import L from "leaflet";
+import { MarkerIconsURL } from "@/lib/data/markers";
 
-let DefaultIcon = L.icon({
-    iconUrl: `/assets/images/marker-icon-2x.png`,
-    shadowUrl: `/assets/images/marker-shadow.png`,
-    iconSize: [25, 41],
-    iconAnchor: [12, 40],
-    shadowAnchor: [12, 40],
-});
+// type MapIcon = React.HTMLAttributes<HTMLElement> & {
+//     iconAnchor?: PointExpression,
+//     icon?: ReactNode,
+// }
 
-L.Marker.prototype.options.icon = DefaultIcon;
+// const createDivIcon = ({
+//     icon,
+//     iconAnchor = [23, 43],
+// }: MapIcon) => {
+//     return new DivIcon(
+//         {
+//             html: ReactDOMServer.renderToString(icon),
+//             className: 'bg-transparent size-auto',
+//             iconAnchor: iconAnchor,
+//             iconSize: [47, 54.8],
+//         }
+//     );
+// }
 
-type MapIcon = React.HTMLAttributes<HTMLElement> & {
-    iconAnchor?: PointExpression,
-    icon?: ReactNode,
-}
+const createIcon = (category?: string) => {
 
-const createDivIcon = ({
-    icon = getCategoryMarkers(),
-    iconAnchor = [23, 43],
-}: MapIcon) => {
-    return new DivIcon(
-        {
-            html: ReactDOMServer.renderToString(icon),
-            className: 'bg-transparent size-auto',
-            iconAnchor: iconAnchor,
-            iconSize: [47, 54.8],
-        }
-    );
+    if (category) {
+        const size = category !== 'cluster' ? [28, 43] : [34, 43];
+        const anchor = category !== 'cluster' ? [14, 42] : [17, 42];
+        const shadowAnchor = category !== 'cluster' ? [13, 40] : [17, 40];
+
+        return new Icon({
+            iconUrl: MarkerIconsURL[category],
+            shadowUrl: `/markers/marker-shadow.png`,
+            iconSize: size as PointExpression,
+            iconAnchor: anchor as PointExpression,
+            shadowAnchor: shadowAnchor as PointExpression,
+        });
+    }
+
+    const DefaultIcon = new Icon({
+        iconUrl: `/markers/default.png`,
+        shadowUrl: `/markers/marker-shadow.png`,
+        iconSize: [28, 46],
+        iconAnchor: [14, 45],
+        shadowAnchor: [14, 40],
+    });
+
+    L.Marker.prototype.options.icon = DefaultIcon;
+    return DefaultIcon;
 }
 
 
@@ -113,9 +130,9 @@ export const MapMarkers = () => {
     const iconCreateFunction = (cluster: any) => {
         const markers = cluster.getChildCount();
         if (markers >= 54) {
-            return createDivIcon({ icon: getCategoryMarkers('campus') });
+            return createIcon('university');
         }
-        return createDivIcon({ icon: getCategoryMarkers('cluster') });
+        return createIcon('cluster');
     }
 
     const selectedMarker = () => {
@@ -131,7 +148,7 @@ export const MapMarkers = () => {
             <Marker   //Marker for the selected place
                 key={id}
                 position={position}
-                icon={DefaultIcon}
+                icon={createIcon()}
                 title={name}
                 alt='default'
                 riseOnHover={true}
@@ -175,7 +192,7 @@ export const MapMarkers = () => {
                                 <Marker
                                     key={id}
                                     position={position}
-                                    icon={createDivIcon({ icon: getCategoryMarkers(categoryName || '') })}
+                                    icon={createIcon(categoryName || '')}
                                     title={name}
                                     alt={categoryName || 'none'}
                                     riseOnHover={true}
