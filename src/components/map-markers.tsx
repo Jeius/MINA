@@ -4,7 +4,7 @@ import { CircleMarker, Marker, Popup, useMap, useMapEvent } from "react-leaflet"
 import { Icon, LatLngTuple, PointExpression, } from 'leaflet';
 import { useAppContext } from "@/lib/context";
 import { useEffect, useState } from "react";
-import { useSearchParams, usePathname } from "next/navigation";
+import { useSearchParams, usePathname, useParams } from "next/navigation";
 import MarkerClusterGroup from "react-leaflet-cluster";
 import { MyCircleLoader } from "./ui/spinners";
 import { useFetchPlaces } from '@/lib/hooks';
@@ -75,12 +75,15 @@ export const LocationMarker = () => {
 }
 
 export const MapMarkers = () => {
+    const params = useParams();
     const searchParams = useSearchParams();
-    const pathname = usePathname();
+    const [pathname] = usePathname().substring(1).split('/');
     const map = useMap();
     const { places, isError, isLoading } = useFetchPlaces();
     const [selected, setSelected] = useState<string | null>('');
     const [currentZoom, setCurrentZoom] = useState(map.getZoom());
+
+    console.log('pathname: ', pathname);
 
     useEffect(() => {
         setSelected(new URLSearchParams(searchParams).get('name'));
@@ -115,7 +118,7 @@ export const MapMarkers = () => {
     }) => {
         const params = new URLSearchParams(searchParams);
         params.set('name', name);
-        window.history.replaceState(undefined, '', `${pathname}?${params.toString()}`);
+        window.history.replaceState(undefined, '', `${name}`);
         updateHash({ zoom: z, lat: pos[0], lng: pos[1] }, true);
     }
 

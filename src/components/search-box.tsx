@@ -20,7 +20,7 @@ const SearchBox: React.FC<Props> = ({
     ...props
 }) => {
     const searchParams = useSearchParams();
-    const pathname = usePathname();
+    const [pathname] = usePathname().substring(1).split('/');
     const router = useRouter();
     const [focus, setFocus] = useState(false);
     const inputRef = useRef<HTMLInputElement | null>(null);
@@ -68,19 +68,19 @@ const SearchBox: React.FC<Props> = ({
         const params = new URLSearchParams(searchParams);
         const hash = window.location.hash;
 
-        if (pathname == '/directions' && query !== null && focus) {
+        if (pathname == 'directions' && query !== null && focus) {
             params.set('search', query);
         } else {
             params.delete('search');
         }
 
-        if (pathname == '/explore' && query && focus) {
+        if (pathname == 'explore' && query && focus) {
             params.set('search', query);
         }
         else {
             params.delete('search');
         }
-        router.replace(`${pathname}?${params.toString()}${hash}`, { scroll: false });
+        router.replace(`?${params.toString()}${hash}`, { scroll: false });
     }, [focus, pathname, router, query, searchParams]);
 
     return (

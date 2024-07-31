@@ -16,7 +16,7 @@ export const NavButton = ({ className, name, icon }: NavButtonProps) => {
     const searchParams = useSearchParams();
     const params = new URLSearchParams(searchParams);
     const pathname = usePathname();
-    const active = pathname.substring(1) || 'explore';
+    const [active] = pathname.substring(1).split('/') || 'explore';
     const hash = window.location.hash;
 
     const bg = active.toLowerCase() == name.toLowerCase() && 'bg-primary';

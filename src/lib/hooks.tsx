@@ -1,11 +1,10 @@
 import useSWR from 'swr';
 import { Places } from './model';
-import { useEffect } from 'react';
 
 export const useFetchPlaces = () => {
   const fetcher = (url: string): Promise<Places> => fetch(url).then(res => res.json());
 
-  const { data, error, isLoading } = useSWR('api/places', fetcher);
+  const { data, error, isLoading } = useSWR(`${process.env.NEXT_PUBLIC_API_URL}/api/places`, fetcher);
 
   return {
     places: data,

@@ -11,18 +11,7 @@ type ExploreTabProps = {
 };
 
 const ExploreTab = async () => {
-    return (
-        <Suspense>
-            <section role='search' className={cn(
-                'relative w-full max-w-xl place-self-center',
-                'flex flex-col p-3 z-10 pointer-events-auto',
-            )}>
-                <Search />
-            </section >
-            <div className="flex flex-grow" />
-            <InfoSheet />
-        </Suspense>
-    );
+    return null;
 };
 
 export default ExploreTab;

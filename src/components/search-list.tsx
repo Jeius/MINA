@@ -11,7 +11,7 @@ import { AnimatePresence } from "framer-motion";
 const SearchList: React.FC = () => {
     const searchParams = useSearchParams();
     const search = searchParams.get('search');
-    const pathname = usePathname();
+    const [pathname] = usePathname().substring(1).split('/');
     const { places, isError, isLoading } = useFetchPlaces();
     const [searchResult, setSearchResult] = useState<Places>();
 
@@ -51,7 +51,7 @@ const SearchList: React.FC = () => {
                             Failed to search {search}
                         </AnimatedLi>}
 
-                    {(pathname === '/directions' && (!search || 'your location'.includes(search.toLowerCase()))) &&
+                    {(pathname === 'directions' && (!search || 'your location'.includes(search.toLowerCase()))) &&
                         <AnimatedLi
                             key='your-location'
                             onClick={() => handleClick({
@@ -90,7 +90,7 @@ const SearchList: React.FC = () => {
                             </AnimatedLi>
                         })}
 
-                    {pathname === '/explore' && searchResult?.length === 0 &&
+                    {pathname === 'explore' && searchResult?.length === 0 &&
                         <AnimatedLi
                             key='no-result'
                             className='place-self-center text-xs overflow-hidden'>

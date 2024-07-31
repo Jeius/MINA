@@ -3,16 +3,17 @@ import { cn, updateHash } from "@/lib/utils"
 import { AnimatedDiv } from "./ui/animated"
 import { Button } from "./ui/button"
 import { CancelSVG, PlaceHolderSVG } from "./ui/icons"
-import { useRouter, useSearchParams } from "next/navigation"
+import { usePathname, useRouter, useSearchParams } from "next/navigation"
 import { useFetchPlaces } from "@/lib/hooks"
 import { Skeleton } from "./ui/skeleton"
 import { AnimatePresence } from "framer-motion"
 import Modernizr from '@scripts/modernizr'
 import { useState, useEffect } from "react"
 
-const InfoSheet = () => {
+const InfoSheet = ({ selectedPlace }: { selectedPlace: string }) => {
     const searchParams = useSearchParams();
-    const selectedPlace = searchParams.get('name');
+    const [pathname] = usePathname().substring(1).split('/');
+    // const selectedPlace = searchParams.get('name');
     const router = useRouter();
     const { places, isLoading } = useFetchPlaces();
     const [isMobile, setIsMobile] = useState(false);
@@ -35,9 +36,7 @@ const InfoSheet = () => {
 
     const handleCancelClick = () => {
         const hash = window.location.hash;
-        const params = new URLSearchParams(searchParams);
-        params.delete('name');
-        router.replace(`?${params.toString()}${hash}`, { scroll: false })
+        router.replace(`/${pathname}${hash}`, { scroll: false })
     }
 
     const handleButtonClick = () => {
